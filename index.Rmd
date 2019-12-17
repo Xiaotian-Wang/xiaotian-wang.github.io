@@ -5,4 +5,4 @@ output: html_document
 
 # Welcome to my webpage
 
-[this is a second page](xwacad.com/index2.html)
+[this is a second page](index2.html)
