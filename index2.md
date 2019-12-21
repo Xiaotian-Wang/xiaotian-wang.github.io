@@ -1,4 +1,4 @@
 Welcome to my webpage
 =====================
 
-[this is a second page](index2.md)
+this is the second webpage
