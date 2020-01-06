@@ -5,4 +5,4 @@ output: html_document
 
 # A Coke A Day, makes the doctors stay. --XW
 
-[thelink](UnderConstructionPage.html)
+[link](UnderConstructionPage.html)
