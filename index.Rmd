@@ -3,6 +3,13 @@ title: "XW-ACAD"
 output: html_document
 ---
 
-# A Coke A Day, makes the doctors stay. --XW
+A Coke A Day, makes the doctors stay. --XW
 
-[link](UnderConstructionPage.html)
+# Courses of 2020 Spring
+
+## 1 [Statistical Learning](UnderConstructionPage.html)
+
+## 2 [Bayesian Analysis](UnderConstructionPage.html)
+
+## 3 [Experiments Design](UnderConstructionPage.html)
+
