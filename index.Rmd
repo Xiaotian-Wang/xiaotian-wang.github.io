@@ -1,8 +1,8 @@
 ---
-title: "XWACAD"
-output: md_document
----
+title: "XW-ACAD"
+output: html_document
+---s
 
-# Welcome to my webpage
+# A Coke A Day, make the doctors stay. --XW
 
 [this is a second page](index2.md)
