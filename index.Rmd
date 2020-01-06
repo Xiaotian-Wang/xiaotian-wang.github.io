@@ -3,6 +3,6 @@ title: "XW-ACAD"
 output: html_document
 ---
 
-# A Coke A Day, make the doctors stay. --XW
+# A Coke A Day, makes the doctors stay. --XW
 
 [thelink](UnderConstructionPage.html)
