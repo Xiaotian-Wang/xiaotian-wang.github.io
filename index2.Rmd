@@ -1,8 +1,0 @@
----
-title: "XWACAD"
-output: md_document
----
-
-# Welcome to my webpage
-
-this is the second webpage

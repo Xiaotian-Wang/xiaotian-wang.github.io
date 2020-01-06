@@ -4,5 +4,3 @@ output: html_document
 ---
 
 # A Coke A Day, make the doctors stay. --XW
-
-[this is a second page](index2.md)
