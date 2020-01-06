@@ -1,7 +1,7 @@
 ---
 title: "XW-ACAD"
 output: html_document
----s
+---
 
 # A Coke A Day, make the doctors stay. --XW
 
