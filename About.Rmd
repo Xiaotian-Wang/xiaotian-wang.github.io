@@ -1,0 +1,20 @@
+---
+title: "About"
+output: html_document
+---
+
+## 1 About Me
+
+I am currently a graduate student at [Department of Statistics](https://stat.wisc.edu/), [University of Wisconsin-Madison](https://www.wisc.edu/).
+
+I received my Bachelor's Degree at [School of Mathematical Science](http://math.bnu.edu.cn/), [Beijing Normal University](http://www.bnu.edu.cn/).
+
+## 2 Contact Me
+
+My Github main page: [click here](https://github.com/Xiaotian-WANG/).
+
+My E-mail: wangxt96[at]126[dot]com
+
+&nbsp;
+
+[Click here to go back to the main page](index.html)
