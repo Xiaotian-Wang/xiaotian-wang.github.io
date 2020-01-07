@@ -17,4 +17,4 @@ My E-mail: wangxt96[at]126[dot]com
 
 &nbsp;
 
-[Click here to go back to the main page](index.html)
+[Back to the Main Page](index.html)
