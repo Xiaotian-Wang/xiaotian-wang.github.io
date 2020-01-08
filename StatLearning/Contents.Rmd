@@ -1,5 +1,5 @@
 ---
-title: "Contents of Statistcal Learning"
+title: "Contents of Statistical Learning"
 output: html_document
 ---
 
