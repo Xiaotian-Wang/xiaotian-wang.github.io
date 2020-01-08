@@ -127,13 +127,13 @@ In this section, it is explained that why k-NN will lead to worse results as dim
 
 There are three main points listed to explain why k-NN will fail when $p$ is large:
 
-**(1).** To capture $r$ proportion of data to form a local average, we need to cover more of the range of each input variable, as $p$ increases. 
+**(1)** To capture $r$ proportion of data to form a local average, we need to cover more of the range of each input variable, as $p$ increases. 
 
 For example, for a hypercube,$r$ proportion of each dimension means $r^p$ in the whole input space. So, if we need $r$ proportion data of the whole input space, $r^{1/p}$ data on each dimension will be needed. As $p$ increases, $r^{1/p}$ will also increase converging to $1$.
 
-**(2).** Sampling density decreases exponentially, when $p$ increases.
+**(2)** Sampling density decreases exponentially, when $p$ increases.
 
-**(3).** Average distance from other observations increase, and thus, the estimate tends to be 0 more.
+**(3)** Average distance from other observations increase, and thus, the estimate tends to be 0 more.
 
 For example, consider $N$ data points uniformly distributed in a $p$-dimensional unit ball centered at the origin. Suppose we consider a nearest-neighboor estimate at the origin, The median distance from the origin to the closest data point is give by
 $$

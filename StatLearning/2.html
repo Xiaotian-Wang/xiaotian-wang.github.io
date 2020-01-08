@@ -253,10 +253,10 @@ EPE=E_X\sum_{k=1}^{K}L(\mathcal{G}_k,\hat{G}(X))P(\mathcal{G}_k|X).
 <h1>2.5 Local Methods in High Dimensions.</h1>
 <p>In this section, it is explained that why k-NN will lead to worse results as dimension <span class="math inline">\(p\)</span> increases as well as why linear model can be more stable when rigid assumptions are satisfied.</p>
 <p>There are three main points listed to explain why k-NN will fail when <span class="math inline">\(p\)</span> is large:</p>
-<p><strong>(1).</strong> To capture <span class="math inline">\(r\)</span> proportion of data to form a local average, we need to cover more of the range of each input variable, as <span class="math inline">\(p\)</span> increases.</p>
+<p><strong>(1)</strong> To capture <span class="math inline">\(r\)</span> proportion of data to form a local average, we need to cover more of the range of each input variable, as <span class="math inline">\(p\)</span> increases.</p>
 <p>For example, for a hypercube,<span class="math inline">\(r\)</span> proportion of each dimension means <span class="math inline">\(r^p\)</span> in the whole input space. So, if we need <span class="math inline">\(r\)</span> proportion data of the whole input space, <span class="math inline">\(r^{1/p}\)</span> data on each dimension will be needed. As <span class="math inline">\(p\)</span> increases, <span class="math inline">\(r^{1/p}\)</span> will also increase converging to <span class="math inline">\(1\)</span>.</p>
-<p><strong>(2).</strong> Sampling density decreases exponentially, when <span class="math inline">\(p\)</span> increases.</p>
-<p><strong>(3).</strong> Average distance from other observations increase, and thus, the estimate tends to be 0 more.</p>
+<p><strong>(2)</strong> Sampling density decreases exponentially, when <span class="math inline">\(p\)</span> increases.</p>
+<p><strong>(3)</strong> Average distance from other observations increase, and thus, the estimate tends to be 0 more.</p>
 <p>For example, consider <span class="math inline">\(N\)</span> data points uniformly distributed in a <span class="math inline">\(p\)</span>-dimensional unit ball centered at the origin. Suppose we consider a nearest-neighboor estimate at the origin, The median distance from the origin to the closest data point is give by <span class="math display">\[
 d(p,N)=(1-\frac{1}{2}^{1/N})^{1/p}
 \]</span> For <span class="math inline">\(N = 500,p=10,d(p,N)\approx 0.52,\)</span> more than halfway to the boundary. Hence most data points are closer to the boundary of the sample space than to any other data point. An intuitive understanding to this example is similar to the example of the first point.</p>
