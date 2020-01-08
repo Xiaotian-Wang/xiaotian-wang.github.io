@@ -1,0 +1,133 @@
+---
+title: "Chapter 2: Overview of Supervised Learning"
+output: html_document
+---
+
+[Back to the Main Page](index.html)
+
+# 2.1 Introduction
+
+The main goal of unsupervised learning is to predict the Output(responses) via Input(predictors).
+
+# 2.2 Variable Types and Terminology
+
+Overall, there are mainly two kinds of outputs: quantitative outputs($Y$) and qualitative outputs($G$).
+
+For $Y$, it means that sime measurements are bigger than others, and the measurements close in value means the variables are close in nature. To predict quantitative outputs, we name the methods as regression.
+
+For $G$, it means that the values lay in a finite set and there is no explicit ordering among them. To code them, we can use dummy variables or other methods.To predictict qualitative outputs, we name the methods as classification.
+
+There are also other kind of outputs, such as ordered categorical outputs.
+
+Given the data
+$$X = (x_1,\cdots,x_N)^T,$$ 
+which is a $N\times p$ matrix, our task is to predict $\hat{Y}\in \mathbb{R}$, or $\hat{G}\in\mathcal{G}$.
+We have a set of training data: $(x_i,y_i),i=1,\cdots,N$
+
+# 2.3 Two Simple Approaches to Prediction: Least Squares and Nearesr Neighbors.
+
+## 2.3.1 Linear Models and Least Squares
+
+Input: $X = (X_1,\cdots,X_p)^T$, predict Y via $\hat{Y}=X^T\hat{\beta}$ (intercept included).
+The function $f(X) = X^T\beta$ is a linear function.
+
+To fit this model, we have
+$$RSS(\beta)=\sum_{i=1}^N(y_i-x_i^T\beta)^2=(y-X'\beta)^T(y-X'\beta).$$
+After minimizing it by taking derivatives, we get
+$$\hat{\beta}=(X'X)^{-1}X'y$$
+
+## 2.3.2 Nearest Neighbor Methods
+
+We find k observations with $x_i$ closest to x in input space and average their responses by
+
+$$\hat{Y}(x)=\frac{1}{k}\sum_{x_i\in N_k(x)}y_i,$$
+where $N_k(x)$ is the neighborhood of $x$ defined by the $k$ closest points $x_i$ in the training sample.
+
+## 2.3.3 From Least Square to Nearest Neighbors
+
+First we consider the complexity. To fit the least square model, we need to fit $p$ parameters, while for k-NN, a single parameter should be fit. However, for k-NN, if the neighborhoods were non-overlapping, there would be $N/k$ neighborhoods and we would fit one parameter(a mean) in each neighborhood, and $N/k$ is generally bigger than $p$.
+
+From bias and variance aspects, generally, linear models has low variance and potnetially high bias, while k-NN is wiggly and unstable with high variance and low bias.
+
+Considering where the constructed data came from, we have the two possible scenarios:
+
+**Scenario 1 :** The training data in each class were generated from bivariate Gaussian distributions with uncorrelated components and different means.
+
+**Scenario 2 :** The training data in each class came from a mixture of 10 lowvariance Gaussian distributions, with individual means themselves distributed as Gaussian.
+
+For Scenario 1, linear decision boundary is the best one[See Chapter 4]. For 2, other methods can be better, such as k-NN.
+
+Each method has its own situations for which it works best; in particular linear regression is more appropriate for Scenario 1 above, while nearest neighbors are more suitable for Scenario 2. The time has come to expose the oracle!
+
+# 2.4 Statistical Decision Theory
+
+## 2.4.1 Theory for Quantitative Output
+
+With joint probability $P(X,Y)$,to find $f$, such that $f(X)$ predicts $Y$, we have the EPE(expected prediction error) as follows:
+
+$$EPE(f) = E(L(Y,f(X))),$$
+where $L(\cdot,\cdot)$ here is the loss function. If $L(Y,f(X)) = (Y-f(X))^2$, we have
+$$
+EPE(f)=E(Y-f(X))^2=E_XE_{Y|X}([Y-f(X)]^2|X).
+$$
+To minimize it, let $c := f(X)|_{X=x}$, then compute 
+$$\min_cE(Y-c)^2$$
+and get $c_0=EY$.
+Thus, we know $f(x)=E(Y|X)$.
+
+## 2.4.2 Implementation to k-NN and Linear Model
+
+The nearest-neighbor methods attempt to directly implement this recipe using the training data. At each point $x$, we might ask for the average of all those $y_i$s with input $x_i = x$. Since there is typically at most one observation
+at any point $x$, we settle for
+$$\hat{f}(x)=Ave(y_i|x_i\in N_k(x)),$$
+where "Ave" denotes average,and $N_k(x)$ is the neighborhood containing
+the $k$ points in $\mathcal{T}$ closest to $x$. Two approximations are happening here:
+
+**$\bullet$** expectation is approximated by averaging over sample data;
+
+**$\bullet$** conditioning at a point is relaxed to conditioning on some region "close" to the target point.
+
+**Fact** With joint probability $P(X,Y)$, $\hat{f}(x)\to E(Y|X=x)$ as $k, N \to \infty$ and $k/N \to 0$. However, as dimension $p$ increases, the approximations will get worse.
+
+For linear model, we assume the function $f$ of the form
+$f(x)\approx x^T\beta$, and then plug it in the definition of EPE, we have
+$$EPE(f)=E(Y-X'\beta)^2.$$
+After minimizing it, we have
+$$\hat{\beta}=[E(X'X)]^{-1}E(XY).$$
+Note: we do not need it conditioned on $X$.
+
+So both k-nearest neighbors and least squares end up approximating conditional expectations by averages. But they differ dramatically in terms of model assumptions:
+
+**$\bullet$** Least squares assumes $f(x)$ is well approximated by a globally linear function.
+
+**$\bullet$** k-nearest neighbors assumes $f(x)$ is well approximated by a locally constant function.
+
+## 2.4.3 Bayes Classifier
+
+For outputs which are categorical variable $G$, the loss function can be represented as $L_{K\times K}$, where $K = card(\mathcal{G})$.$L_{i,j}$ is the price paid for classifying $G$ belonging to $\mathcal{G_i}$ as$\mathcal{G}_j$.(0 on the diagonal and non-negative elsewhere)
+
+More commonly, we use zero-one loss function which can be represented as
+
+$$L = J_{2\times 2}-Diag(1)_{2\times 2} \ or\ J_{3\times 3}-Diag(1)_{3\times 3},$$
+which is 0 on the diagonal and 1 elsewhere.
+
+With $P(G,X)$, we have
+
+$$
+EPE=E_X\sum_{k=1}^{K}L(\mathcal{G}_k,\hat{G}(X))P(\mathcal{G}_k|X).
+$$
+With 0-1 loss function, we can minimize it point-wisely, which is known as Bayes-optimal classifier.
+
+The error rate of this classifier is called Bayes rate.
+
+# 2.5 Local Methods in High Dimensions.
+
+
+
+# 2.6 Statistical Models, Supervised Learning and Function Approximation
+
+# 2.7 Structured Regression Models
+
+# 2.8 Classes of Restricted Estimators
+
+# 2.9 Model Selection and the Bias-Variance Tradeoff
