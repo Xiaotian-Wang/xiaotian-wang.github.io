@@ -157,7 +157,7 @@ Overall, By relying on rigid assumptions, the linear model has no bias at all an
 
 # 2.6 Statistical Models, Supervised Learning and Function Approximation
 
-To overcome the dimensionality problems,we anticipate using other classes of models for $f(x)$. Now, er discuss a frame work for incorporating them into the prediction problem.
+To overcome the dimensionality problems,we anticipate using other classes of models for $f(x)$. Now, we discuss a frame work for incorporating them into the prediction problem.
 
 ## 2.6.1 A Statistical Model for the Joint Distribution $P(X,Y)$
 
