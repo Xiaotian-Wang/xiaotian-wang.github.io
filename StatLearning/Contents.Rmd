@@ -1,0 +1,7 @@
+---
+title: "Contents of Statistcal Learning"
+output: html_document
+---
+
+[Chapter 2](2.html)
+

@@ -1,11 +1,10 @@
 ---
 title: 'Chapter 2: Overview of Supervised Learning'
 output:
-  pdf_document: default
   html_document: default
 ---
 
-[Back to the Contents]()
+[Back to the Contents](Contents.html)
 
 # 2.1 Introduction
 
@@ -267,3 +266,10 @@ Thus, as $k$ varies, there is a bias-variance tradeoff.
 
 More generally, as the model complexity of our procedure is increased, the variance tends to increase and the squared bias tends to decrease. The opposite behavior occurs as the model complexity is decreased. For k-nearest neighbors, the model complexity is controlled by $k$.
 
+&nbsp;
+&nbsp;
+
+[Back to the Contents](Contents.html)
+
+&nbsp;
+&nbsp;
