@@ -1,9 +1,11 @@
 ---
-title: "Chapter 2: Overview of Supervised Learning"
-output: html_document
+title: 'Chapter 2: Overview of Supervised Learning'
+output:
+  pdf_document: default
+  html_document: default
 ---
 
-[Back to the Main Page](index.html)
+[Back to the Contents]()
 
 # 2.1 Introduction
 
@@ -122,12 +124,146 @@ The error rate of this classifier is called Bayes rate.
 
 # 2.5 Local Methods in High Dimensions.
 
+In this section, it is explained that why k-NN will lead to worse results as dimension $p$ increases as well as why linear model can be more stable when rigid assumptions are satisfied.
 
+There are three main points listed to explain why k-NN will fail when $p$ is large:
+
+**(1).** To capture $r$ proportion of data to form a local average, we need to cover more of the range of each input variable, as $p$ increases. 
+
+For example, for a hypercube,$r$ proportion of each dimension means $r^p$ in the whole input space. So, if we need $r$ proportion data of the whole input space, $r^{1/p}$ data on each dimension will be needed. As $p$ increases, $r^{1/p}$ will also increase converging to $1$.
+
+**(2).** Sampling density decreases exponentially, when $p$ increases.
+
+**(3).** Average distance from other observations increase, and thus, the estimate tends to be 0 more.
+
+For example, consider $N$ data points uniformly distributed in a $p$-dimensional unit ball centered at the origin. Suppose we consider a nearest-neighboor estimate at the origin, The median distance from the origin to the closest data point is give by
+$$
+d(p,N)=(1-\frac{1}{2}^{1/N})^{1/p}
+$$
+For $N = 500,p=10,d(p,N)\approx 0.52,$ more than
+halfway to the boundary. Hence most data points are closer to the boundary of the sample space than to any other data point. An intuitive understanding to this example is similar to the example of the first point.
+
+Now, we discuss why linear model can be more robust to $p$ if the linear assumptions hold.
+
+The linear assumption: $$Y=X^T\beta+\varepsilon,\varepsilon\sim N(0,\sigma^2).$$
+
+Now, we have
+
+$$EPE(x_0)=\sigma^2+E_{\mathcal{T}}x_0'(X'X)^{-1}x_0\sigma^2.$$
+As $N$ is large enough,$\mathcal{T}$ is selected randomly,assume $E(X)=0$, $X'X\to NCov(X)$, we have
+$$E_{x_0}EPE(x_0)\sim \sigma^2+\sigma^2(p/N).$$
+This is linearly proportional to $p$. As $N$ is large and $\sigma^2$ is small, the growth of it can be ignored when $p$ is increasing.
+
+Overall, By relying on rigid assumptions, the linear model has no bias at all and negligible variance, while the error in 1-nearest neighbor is substantially larger. However, if the assumptions are wrong, all bets are off and the 1-nearest neighbor may dominate.
 
 # 2.6 Statistical Models, Supervised Learning and Function Approximation
 
+To overcome the dimensionality problems,we anticipate using other classes of models for $f(x)$. Now, er discuss a frame work for incorporating them into the prediction problem.
+
+## 2.6.1 A Statistical Model for the Joint Distribution $P(X,Y)$
+
+Suppose our data arose from a statistical model
+
+$$Y=f(X)+\varepsilon,$$
+where the random error $\varepsilon$ has $E(\varepsilon)=0$ and is independent of $X$.
+
+Note that for this model, $f(x)=E(Y|X=x)$, and in fact the conditional distribution $P(Y|X)$ depends on $X$ only through the conditional mean $f(x)$.
+
+This additive error model is typically not used for qualitative outputs $G$. In this case, the target function $p(X)$ is the conditional density $P(G|X)$, and is modeled directly.
+
+## 2.6.2 Supervised Learning
+
+In this section, the task of supervised learning is briefly introduced. That is to learn $f$ by example through a teacher.
+
+## 2.6.3 Function Approximation
+
+The function $f(x)$ has domain equal to the $p$-dimensional input subspace, and is related to the data via a model such as $y_i=f(x_i)+\varepsilon_i$. For convenience, in this chapter we will assume the domain is $\mathbb{R}^p$, a $p$-dimensional Euclidean space, although in general the inputs can be of mixed type.
+
+Note: many of the approximations we will encounter as associated a set of parameters $\theta$ that can be modified to suit the data at hand.
+
+For additive error models, RSS seems to be a reasonalbe criterion. However, least square is not the only criterion used and in some cases it would not make much sense, although it is generally convenient.
+
+A more general principle for estimation is maximum likelihood estimation.
+
 # 2.7 Structured Regression Models
+
+First we discuss the difficulty of the problem. Consider
+$$RSS(f)=\sum_{i=1}^N(y_i-f(x_i))^2,$$
+minimizing it without any constrain leads to infinitely many solutions: any functions $\hat{f}$ passing all the training points. And the results turn out to be useless. Thus, we need some constrains of $f$ when finding the function $f$.
+
+In general the constraints imposed by most learning methods can be described as complexity restrictions of one kind or another. This usually means some kind of regular behavior in small neighborhoods of the input space. That is, for all input points $x$ sufficiently close to each other in some metric, $\hat{f}$ exhibits some special structure such as nearly constant, linear or low-order polynomial behavior. The estimator is then obtained by averaging or polynomial fitting in that neighborhood.
+
+The strength of the constraint is dictated by the neighborhood size. The larger the size of the neighborhood, the stronger the constraint, and the more sensitive the solution is to the particular choice of constraint. For example, local constant fits in infinitesimally small neighborhoods is no constraint at all; local linear fits in very large neighborhoods is almost a globally linear model, and is very restrictive.
+
+The nature of the constraint depends on the metric used. Some methods, such as kernel and local regression and tree-based methods, directly specify the metric and size of the neighborhood. The nearest-neighbor methods discussed so far are based on the assumption that locally the function is constant; close to a target input $x_0$, the function does not change much, and
+so close outputs can be averaged to produce $\hat{f}(x_0)$. Other methods such as splines, neural networks and basis-function methods implicitly define neighborhoods of local behavior.
+
+One fact should be clear by now. Any method that attempts to produce locally varying functions in small isotropic neighborhoods will run into problems in high dimensions --- again the curse of dimensionality.
+
 
 # 2.8 Classes of Restricted Estimators
 
+The variety of nonparametric regression techniques or learning methods fall into a number of different classes depending on the nature of the restrictions imposed. Here three croad classes are described.
+
+## 2.8.1 Roughness Penalty and Bayesian Methods
+
+Here the class of functions is controlled by explicitly penalizing $RSS(f)$ with a roughness penalty
+$$
+PRSS(f;\lambda)=RSS(f)+\lambda J(f).
+$$
+The user-seected penalty $J(f)$ here controls some property of $f$.It will be large for functions $f$ that vary too rapidly over small regions of input space. The amount of penalty is dictated by $\lambda \geqslant0$. For $\lambda=0$, no penalty is imposed, and any interpolating function will do.
+
+Penalty function, or regularization methods, express our prior belief that the type of functions we seek exhibit a certain type of smooth behavior, and indeed can usually be cast in a Bayesian framework.
+
+## 2.8.2 Kernel Methods and Local Regression
+
+These methods can be thought of as explicitly providing estimates of the regression function or conditional expectation by specifying the nature of the local neighborhood, and of the class of regular functions fitted locally. The local neighborhood is specified by a kernel function $K_\lambda (x_0,x),$ which assigns weights to points $x$ in a region around $x_0$.
+
+In general, we can define a local regression estimate of $f(x_0)$ as $f_{\hat{\theta}}(x_0)$, where $\hat{\theta}$ minimizes 
+$$
+RSS(f_\theta,x_0)=\sum_{i=0}^NK_\lambda(x_0,x_i)(y_i-f_\theta(x_i))^2,
+$$
+and $f_\theta$ is some parameterized function, such as low-ordered polynimial.
+
+Note: basically, $K_\lambda(x_0,x)$ is larger when $x$ is closer to $x_0$. It means that the points in the neighborhood of $x_0$ are considered to be more important.
+
+## 2.8.3 Basis Functions and Dictionary Methods
+
+Here the model of function $f$ is a linear expansion of basis functions
+$$
+f_\theta(x)=\sum_{m=1}^M\theta_mh_m(x),
+$$
+where each of the $h_m$ is a function of the input $x$, and the term linear here refers to the action of the parameters $\theta$. In some cases, the sequence of basis functions is prescribed, such as a basis for polynomials in $x$ of total degree $M$.
+
+The adaptively chosen basis function methods are known as dictionary methods, where one has available a possibly infinite set or dictionary $\mathcal{D}$ of candidate basis functions from which to choose, and models are built up by employing some kind of search mechanism.
+
 # 2.9 Model Selection and the Bias-Variance Tradeoff
+
+For the three classes drescribed in the last section, we need to determine:
+
+**$\bullet$** the multiplier of the penalty term;
+
+**$\bullet$** the width of the kernel;
+
+**$\bullet$** or the number of basis functions.
+
+The k-NN regression fit $\hat{f}_k(x_0)$ usefully illustrates the competing forces that affect the predictive ability of such approximations. Suppose the data arise from a model $Y = f(X)+\varepsilon$, with $E(\varepsilon)=0$ and $Var(\varepsilon)=\sigma^2$. For simplicity here we assume that the values of $x_i$ in the sample are fixed in advance. The expected prediction error at $x_0$ can be decomposed:
+
+\begin{equation*}
+\begin{aligned}
+EPE_k(x_0)&=E[(Y-\hat{f_k}(x_0))^2|X=x_0]\\
+&=\sigma^2+[Bias^2(\hat{f_k}(x_0))+Var_{\mathcal{T}}(\hat{f_k}(x_0))]\\
+&=\sigma^2+[f(x_0)-\frac{1}{k}\sum_{l=1}^kf(x_{(l)})]^2+\frac{\sigma^2}{k}.
+\end{aligned}
+\end{equation*}
+
+The first term $\sigma^2$ is beyond our control, even if we know the true $f(x_0)$.
+
+The second term will likely increase with $k$, if the true function is reasonably smooth.
+
+The second term is simply the variance of an average here, and decreases as teh inverse of $k$.
+
+Thus, as $k$ varies, there is a bias-variance tradeoff.
+
+More generally, as the model complexity of our procedure is increased, the variance tends to increase and the squared bias tends to decrease. The opposite behavior occurs as the model complexity is decreased. For k-nearest neighbors, the model complexity is controlled by $k$.
+
