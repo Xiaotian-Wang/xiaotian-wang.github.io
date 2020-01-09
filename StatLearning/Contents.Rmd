@@ -5,3 +5,4 @@ output: html_document
 
 # [Chapter 2](2.html)
 
+# [Chapter 3](3.html)

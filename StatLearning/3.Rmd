@@ -1,0 +1,101 @@
+---
+title: 'Chapter 3: Linear Methods for Regression'
+output:
+  html_document: default
+---
+
+[Back to the Contents](Contents.html)
+
+# 3.1 Introduction
+
+# 3.2 Linear Regression Models and Least Squares.
+
+In this Chapter, the linear models are of the form
+
+$$f(X)=X\beta,$$
+
+where $\beta$ is unknown parameter and the input $X_j$ can come from
+
+**$\bullet$** quantitative inputs or their transformations;
+
+**$\bullet$** basis expansions, such as $X_2 = X_1^2,X_3=X_1^3$;
+
+**$\bullet$** numeric or dummy coding of the levels of qualitative inputs;
+
+**$\bullet$** interactions between variables.
+
+And the basic assumption is $E(Y|X)$ is linear, or the linear model is a reasonable approximation.
+
+Minimizing $RSS(\beta)=(y-X\beta)'(y-X\beta)$, we get $\hat\beta=(X'X)^{-1}X'y$, $\hat y=X(X'X)^{-1}X'y$, and $H=X(X'X)^{-1}X'$ is the head matrix.
+
+**$\triangle$** Greometrical view of least quare: an orthogonal space way.
+
+**$\triangle$** What if $X'X$ is singular($X$ not full rank)?
+
+Then,$\hat\beta$ is not uniquely defined. However, $\hat y=X\hat\beta$ is still the projection of $y$ onto the column space of $X$. Why this happens?
+
+**$\bullet$** One or more qualitative variables are coded in a reduncant fashion.
+
+**$\bullet$** dimension $p$ exceed the number of training cases $N$.
+
+Basically, we can use filtering methods or regularization to solve this problem.
+
+&nbsp;
+
+For further work, we need more assumptions about $Y$:
+
+$y_i$ are uncorrelated and have constant variance $\sigma^2$, $x_i$ is non-random.
+
+Then, we know $Var(\hat\beta)=(X'X)^{-1}\sigma^2$, and an estimation of $\sigma^2$ is
+$$
+\hat{\sigma}^2=\frac{1}{N-p-1}\sum_{i=1}^N(y_i-\hat y_i)^2=\frac{1}{N-p-1}Y'(I-H)Y.
+$$
+To draw inference about parameters, we need additional assumptions:
+$E(Y|X)=X\beta,Y=E(Y|X)+\varepsilon$, where $\varepsilon\sim N(0,\sigma^2)$.
+
+Then, $\hat\beta\sim N(\beta,(X'X)^{-1}\sigma^2)$, and $(N-p-1)\hat\sigma^2\sim \sigma^2\chi^2_{N-p-1}$.
+
+**$\bullet$** Simple t test
+
+$z_j =\frac{\hat{\beta_j}}{\hat\sigma \sqrt{v_j}}$, where $v_j$ is $j$th diagonal element of $(X'X)^{-1}$.
+
+**$\bullet$** F test
+
+$F = \frac{(RSS_0-RSS_1)/(p_1-p_0)}{RSS_1/(N-p_1-1)}\sim F_{p_1-p_0,N-p_1-1}.$
+
+Then, we can derive the confidence interval as well.
+
+## 3.2.1 Example: Prostate Cancer
+
+## 3.2.2 The Gauss-Markov Theorem
+
+In this sunsection, we only focus on setimation of any linear combination of the parameters $\theta=a^T\beta$.
+
+The least squares estimate of $a'\beta$ is 
+$$\hat\theta=a'\hat\beta=a'(X'X)^{-1}X'y.$$
+If we assume that the linear model is correct, then this estimate is unbiased.
+
+**Gauss-Markov Theorem** For any other linear estimator $\tilde\theta=c'y$, unbiased for $a'\beta$,we have
+$$
+Var(a'\hat\beta)\leqslant Var(c'y).
+$$
+Note: unbiased estimators are not necessarily better than biased estimaters since the unbiased ones may have larger variance.
+
+**$\bullet$** MSE v.s. EPE
+
+For $Y_0=f(x_0)+\varepsilon_0$, the EPE of $\tilde f(x_0)=x_0'\tilde\beta$ is
+$$
+EPE=E(Y_0-\tilde{f}(x_0))^2=\sigma^2+E(x_0'\tilde\beta-f(x_0))^2=\sigma^2+MSE(\tilde f(x_0))
+$$
+
+## 3.2.3 Multiple Regression from Simple Univariate Regression
+
+**$\bullet$** Univariate model(without intercept)
+
+$Y=X\beta+\varepsilon$, and the least squares estimate is $\hat\beta=\frac{<x,y>}{<x,x>}$, where $<\cdot,\cdot>$ means innerproduct.
+
+**Fact:** when inputs are orthogonal, they have no effect on each other's parameter estimates in the model.
+
+The idea of the following algorithm is similar to Gram-Schmidt process, but without normalizing.
+
+
