@@ -1,0 +1,99 @@
+---
+title: 'Chapter 4: Linear Methods for Classification'
+output:
+  html_document: default
+---
+
+[Back to the Contents](Contents.html)
+
+# 4.1 Introduction
+
+In this chapter, we revisit the classification problem and focus on linear methods for classification.
+
+**$\bullet$** What does linear here mean?
+
+Depending on the prediction function, the boundaries of the input space can be rough or smooth. For an important class of the methods, these boundaries are linear.
+
+While this entire chapter is devoted to linear decision boundaries, there is considerable scope for generalization. For example, we can expand our variable
+set $X_1,\cdots, X_p$ by including their squares and cross-products $X_1^2,X_2^2,\cdots,X_1X_2,\cdots$, thereby adding $p(p+1)/2$ additional variables. Linear functions in the augmented space map down to quadratic functions in the original space --- hence linear decision boundaries to quadratic decision boundaries.This approach can be used with any basis transformation $h(X)$, where $h:\mathbb{R}^p\to\mathbb{R}^q$, with $q>p$,and will be explored in later chapters.
+
+# 4.2 Linear Regression of an Indicator Matrix
+
+In this section, a basic method is introduced. This method may have some problems which are solved to some extent by some other methods in later sections.
+
+Here, each of the respinse categories are coded via an indicator variable. If $\mathcal G$ has $K$ classes, there will be $K$ such indicators $Y_k,k=1,2,\cdots, K$, with $Y_k=1$, if $G=k$, else $0$. These are collected together in a vector $Y =(Y_1,\cdots, Y_K)$, and the $N$ training instances of these form an $N\times K$ indicator response matrix $Y$. Now, we can fit the linear regression model to each of the columns of $Y$ simultaneously, and the fit is given by
+$$
+\hat Y =X(X'X)^{-1}X'Y,
+$$
+and the coefficient matrix is 
+$$\hat B=(X'X)^{-1}X'Y.$$
+To classify a new observation with input $x$, we first comput the fitted output $\hat f(x)^T=x\hat B$, a $K$ vector,and then identify the largest component and classify accordingly.
+
+**$\triangle$** Why this method works? What is the rationale?
+
+**$\bullet$** One justification is to view the regression as an estimate of conditional expectation.
+
+For the random variable $Y_k, E(Y_k|X=x)=P(G=k|X=x)$, so conditional expectation of each of the $Y_k$ seems a sensible goal. The real issue is: how good an approximation to conditional expecttion is the rather rigid linear regression model? Alternatively, are the $\hat f(x)$ reasonable estimates of the posterior probabilities $P(G=k|X=x)$, and more importantly, does this matter?
+
+Although we can verify that $\sum_{k\in\mathcal{G}}\hat f_k(x)=1$ for any $x$, the $\hat{f_k}(x)$ can be negative or greater than $1$.
+
+**$\bullet$** Another more simplistic viewpoint is to construct target $t_k$ for each class, where $t_k$ is the $k$th column of the $K\times K$ identity matrix.$y_i=t_k$ if $g_i=k$. Then we can fit the linear model by least squares:
+
+$$min_B\sum_{i=1}^N\|y_i-B'x_i\|^2.$$
+A new observation is classified by computing its fitted vector $\hat f(x)$ and classifying to the closest target:
+$$\hat G(x)=argmin_k\|\hat f(x)-t_k\|^2$$
+
+This is exactly the same as the previous approach.
+
+**$\triangle$ A serious problem of this method:**
+
+When the number of classes $K\geqslant 3$, the model may work badly(especially prevalent when $K$ is large). Because of the rigid nature of the regression model, classes can be masked by others.
+
+# 4.3 Linear Discriminant Analysis
+
+Decision theory for classification (Section 2.4) tells us that we need to know the class posteriors $P(G|X)$ for optimal classification. Suppose $f_k(x)$ is the class-conditional density of $X$ in the class $G=k$, and let $\pi_k$ be the prior probability of class $k$, with $\sum_{k=1}^K \pi_k=1$. A simple application of Bayes Theorem gives us 
+$$
+P(G=k|X=x)=\frac{f_k(x)\pi_k}{\sum_{l=1}^Kf_l(x)\pi_l}.
+$$
+We see that in terms of ability to classify, having the $f_k(x)$ is almost equivalent to having the quantity $P(G=k|X=x)$.
+
+Suppose that we model each class density as multivariate Gaussian
+$$
+f_k(x)=\frac{1}{(2\pi)^{p/2}|\Sigma_k|^{1/2}}\exp(-\frac{1}{2}(x-\mu_k)^T\Sigma_k^{-1}(x-\mu_k)).
+$$
+Linear discriminant analysis (LDA) arises in the special case when we assume that the classes have a common covariance matrix $\Sigma_k=\Sigma,\forall k$. In comparing tow classes $k$ and $l$, it is sufficient to look at the log-ratio
+$$
+\log\frac{P(G=k|X=x)}{P(G=l|X=x)}=\log\frac{\pi_k}{\pi_l}-\frac{1}{2}(\mu_k+\mu_l)^T\Sigma^{-1}(\mu_k-\mu_l)+x^T\Sigma^{-1}(\mu_k-\mu_l).
+$$
+This is an equation linear in $x$. It implies that the decision boundary between classes $k$ and $l$ --- the set where $P(G=k|X=x)=P(G=l|X=x)$ is linear in $x$ in a $p$ dimensions hyperplane.
+
+We can also see that the linear discriminant functions
+$$
+\delta_k(x)=x^T\Sigma^{-1}\mu_k-\frac{1}{2}\mu_k^T\Sigma^{-1}\mu_k+\log\mu_k
+$$
+are an equivalent description of the decision rule, with $G(x)=argmax_k\delta_k(x)$.
+
+In practice, we do not know the parameters of the Gaussian distribution and will need to estimate them using our training data:
+
+**$\bullet$** $\hat\pi_k=N_k/N$, where $N_k$ is the number of class-$k$ observations;
+
+**$\bullet$** $\hat\mu_k=\sum_{g_i=k}x_i/N_k$;
+
+**$\bullet$** $\hat\Sigma=\sum_{k=1}^K\sum_{g_i=k}(x_i-\hat\mu_k)(x_i-\hat\mu_k)^T/(N-K)$.
+
+**$\triangle$ What if $\Sigma_k$ are not assumed to be equal?**
+
+The pieces quadratic in $x$ remain. We then get quadratic discriminant functions(QDA),
+$$
+\delta_k(x)=-\frac{1}{2}\log|\Sigma_k|-\frac{1}{2}(x-\mu_k)^T\Sigma_k^{-1}(x-\mu_k)+\log\pi_k.
+$$
+The decision boundary between each pair of classes $k$ and $l$ is described by a quadratic equation $\{x:\delta_k(x)=\delta_l(x)\}$.
+
+## 4.3.1 Regularized Descriminant Analysis
+
+
+
+# 4.4 Logistic Regression
+
+# 4.5 Separating Hyperplanes
+
