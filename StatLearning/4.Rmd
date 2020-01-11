@@ -214,7 +214,7 @@ There are a number of problems with this algorithm, summarized in Ripley(1996):
 
 **$\bullet$** When the data are separable, there are many solutions, and which one is found depends on the starting values.
 
-**$\bullet$** The ???finite??? number of steps can be very large. The smaller the gap, the longer the time to find it.
+**$\bullet$** The "finite" number of steps can be very large. The smaller the gap, the longer the time to find it.
 
 **$\bullet$** When the data are not separable, the algorithm will not converge, and cycles develop. The cycles can be long and therefore hard to detect.
 
