@@ -303,7 +303,7 @@ f_k(x)=\frac{1}{(2\pi)^{p/2}|\Sigma_k|^{1/2}}\exp(-\frac{1}{2}(x-\mu_k)^T\Sigma_
 <p>The goal is to minimize <span class="math display">\[D(\beta,\beta_0)=-\sum_{i\in \mathcal{M}}y_i(x_i^T\beta+\beta_0),\]</span> where <span class="math inline">\(\mathcal M\)</span> indexes the set of misclassified points. The algorithm in fact uses stochastic gradient descent to minimize the piecewise linear criterion.</p>
 <p>There are a number of problems with this algorithm, summarized in Ripley(1996):</p>
 <p><strong><span class="math inline">\(\bullet\)</span></strong> When the data are separable, there are many solutions, and which one is found depends on the starting values.</p>
-<p><strong><span class="math inline">\(\bullet\)</span></strong> The ???finite??? number of steps can be very large. The smaller the gap, the longer the time to find it.</p>
+<p><strong><span class="math inline">\(\bullet\)</span></strong> The “finite” number of steps can be very large. The smaller the gap, the longer the time to find it.</p>
 <p><strong><span class="math inline">\(\bullet\)</span></strong> When the data are not separable, the algorithm will not converge, and cycles develop. The cycles can be long and therefore hard to detect.</p>
 </div>
 <div id="optimal-separating-hyperplanes" class="section level2">
