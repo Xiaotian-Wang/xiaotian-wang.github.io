@@ -228,13 +228,88 @@ f_k(x)=\frac{1}{(2\pi)^{p/2}|\Sigma_k|^{1/2}}\exp(-\frac{1}{2}(x-\mu_k)^T\Sigma_
 \]</span> The decision boundary between each pair of classes <span class="math inline">\(k\)</span> and <span class="math inline">\(l\)</span> is described by a quadratic equation <span class="math inline">\(\{x:\delta_k(x)=\delta_l(x)\}\)</span>.</p>
 <div id="regularized-descriminant-analysis" class="section level2">
 <h2>4.3.1 Regularized Descriminant Analysis</h2>
+<p>In this subsection, a method which is a compromise between LDA and QDA is introduced.</p>
+<p>A regularized covarance matrices have the form:</p>
+<p><span class="math display">\[
+\hat\Sigma_k(\alpha)=\alpha\hat\Sigma_k+(1-\alpha)\hat{\Sigma},
+\]</span> where <span class="math inline">\(\hat\Sigma\)</span> is the polled covariance matrix as used in LDA. Here <span class="math inline">\(\alpha\in[0,1]\)</span> aloows a continuum of models between LDA and QDA, and needs to be specified (by cross-validation, etc.).</p>
+<p>Similar modifications allow <span class="math inline">\(\hat\Sigma\)</span> itself to be shrunk toward the scalar covariance, <span class="math display">\[
+\hat\Sigma(\gamma)=\gamma\hat\Sigma+(1-\gamma)\hat\sigma^2I
+\]</span> for <span class="math inline">\(\gamma\in[0,1]\)</span>.Replacing <span class="math inline">\(\hat\Sigma\)</span> by<span class="math inline">\(\hat\Sigma(\gamma)\)</span> leads to a more general family of covariances <span class="math inline">\(\hat\Sigma(\alpha,\gamma)\)</span> indexed by a pair of parameters.</p>
+</div>
+<div id="computation-for-lda" class="section level2">
+<h2>4.3.2 Computation for LDA</h2>
+<p>The computations of LDA and especially QDA are simplified by diagonalizing <span class="math inline">\(\hat\Sigma\)</span> or <span class="math inline">\(\hat\Sigma_k\)</span>.</p>
+<p>For the latter, suppose we compute the eigen-decomposition for each <span class="math inline">\(\hat\Sigma_k=U_kD_kU_k^T\)</span>, where <span class="math inline">\(U_k\)</span> is <span class="math inline">\(p\times p\)</span> orthonormal, and <span class="math inline">\(D_k\)</span> a diagonal matrix of positive eigenvalues <span class="math inline">\(d_{kl}\)</span>. Then the ingredients for <span class="math inline">\(\delta_k(x)\)</span> are <span class="math display">\[(x-\hat\mu_k)^T\hat\Sigma_k^{-1}(x-\hat\mu_k)=[U_k^T(x-\hat\mu_k)]^TD_k^{-1}[U_k^T(x-\hat\mu_k)];\]</span> <span class="math display">\[\log|\hat\Sigma_k|=\Sigma_l\log d_{kl}.\]</span></p>
+</div>
+<div id="reduced-rank-linear-discriminant-analysis" class="section level2">
+<h2>4.3.3 Reduced-Rank Linear Discriminant Analysis</h2>
+<p>Motivations:</p>
+<p><strong><span class="math inline">\(\bullet\)</span></strong> Gaussian classification with common covariances leads to linear dicision boundaries. Classification can be achieved by sphering the data with respect to <span class="math inline">\(W\)</span>, and classifying to the closest centroid (modulo <span class="math inline">\(\log \pi_k\)</span>) in the sphered space.</p>
+<p><strong><span class="math inline">\(\bullet\)</span></strong> Since only the relative distances to the centroids count, one can confine the data to the subspace spanned by the centroids in the sphered space.</p>
+<p><strong><span class="math inline">\(\bullet\)</span></strong> This subspace can be further decomposed into successively optimal subspaces in terms of centroid separation. This decomposition is identical to the decomposition due to Fisher.</p>
+<p>For the detailed discussions, please refer to the textbook.</p>
 </div>
 </div>
 <div id="logistic-regression" class="section level1">
 <h1>4.4 Logistic Regression</h1>
+<p>The logistic model arises from the desire to model the posterior probabilities of the <span class="math inline">\(K\)</span> classes via linear functions in <span class="math inline">\(x\)</span>, while at the same time ensuring that they sum to one and remain in <span class="math inline">\([0,1]\)</span>.</p>
+<p>The model has the form:</p>
+<p><span class="math display">\[
+\log\frac{P(G=i|X=x)}{P(G=K|X=x)}=\beta_{i0}+\beta_i^Tx,\ \ (i=1,2,\cdots,K-1).
+\]</span> The model is specified in terms of <span class="math inline">\(K-1\)</span> log-odds or logit transformations. Although the model uses the last class as the denominator in the odds-ratios, the choice of denominator is arbitrary in that the estimates are equivariant under this choice. A simple calculation shows taht</p>
+<p><span class="math display">\[P(G=k|X=x)=\dfrac{\exp(\beta_{k0}+\beta_k^Tx)}{1+\sum_{l=1}^{K-1}\exp(\beta_{l0}+\beta_l^Tx)},\ k=1,2,\cdots, K-1,\]</span> <span class="math display">\[P(G=K|X=x)=\dfrac{1}{1+\sum_{l=1}^{K-1}\exp(\beta_{l0}+\beta_l^Tx)},\]</span> and clearly sum to one. To emphasize the dependence on the entire parameter set <span class="math inline">\(\theta=\{\beta_{10},\beta_1^T,\cdots,\beta_{(K-1)0},\beta_{K-1}^T\}\)</span>, we denote the probabilities <span class="math inline">\(P(G=k|X=x)=P_k(x;\theta)\)</span>.</p>
+<div id="fitting-logistic-regression-model" class="section level2">
+<h2>4.4.1 Fitting Logistic Regression Model</h2>
+<p>Logistic regression models are usually fit by maximum likelihood, using the conditional likelihood of <span class="math inline">\(G\)</span> given <span class="math inline">\(X\)</span>. Since <span class="math inline">\(P(G|X)\)</span> completely specifies the conditional distribution, the multinomial distribution is approproate. The log-likelihood for <span class="math inline">\(N\)</span> obserbations is <span class="math display">\[l(\theta)=\sum_{i=1}^N\log p_{g_i}(x_i;\theta),\]</span> where <span class="math inline">\(p_k(x_i;\theta)=P(G=k|X=x_i;\theta)\)</span>.</p>
+<p>To maximize it, we need to solve the equation <span class="math inline">\(\frac{\partial l(\beta)}{\partial\beta}=0\)</span>, with Newton-Raphson algorithm. The whole method is referred to as iteratively reweighted least squares (IRLS). For detailed discuss, please refer to the textbook.</p>
+<p>Logistic regression models are used mostly as a data analysis and inference tool, where the goal is to understand the role of the input variables in explaining the outcome.</p>
+</div>
+<div id="example-south-african-heart-disease" class="section level2">
+<h2>4.4.2 Example: South African Heart Disease</h2>
+</div>
+<div id="quadratic-approximations-and-inference" class="section level2">
+<h2>4.4.3 Quadratic Approximations and Inference</h2>
+<p>The maximum-likelihood parameter estimates <span class="math inline">\(\hat\beta\)</span> satisfy a self-consistency relationship: they are the coefficients of a weighted least squares fit, where the responses are</p>
+<p><span class="math display">\[z_i=x_i^T\hat\beta+\frac{(y_i-\hat p_i)}{\hat p_i(1-\hat p_i)},\]</span> and the weights are <span class="math inline">\(w_i=\hat p_i(1-\hat p_i)\)</span>, both depending on <span class="math inline">\(\hat\beta\)</span> itself. Apart from providing a convenient algorithm, this connection with least quares has more to offer:</p>
+<p><strong><span class="math inline">\(\bullet\)</span></strong> The weighted residual sum-of-squares is the familiar Pearson chi-square statistic <span class="math display">\[
+\sum_{i=1}^N\frac{(y_i-\hat p_i)^2}{\hat p_i(1-\hat p_i)},
+\]</span> a quadratic approximation to the deviance;</p>
+<p><strong><span class="math inline">\(\bullet\)</span></strong> Asymptotic likelihood throey says that if the model is correct, then <span class="math inline">\(\hat\beta\)</span> is consistent (i.e., converges to the true <span class="math inline">\(\beta\)</span>).</p>
+<p><strong><span class="math inline">\(\bullet\)</span></strong> A central limit theorem then shows that the distribution of <span class="math inline">\(\hat\beta\)</span> converges to <span class="math inline">\(N(\beta,(X'WX)^{-1})\)</span>. This and other asymptotics can be derived directly from the weighted least squares fit by mimicking normal theory inference.</p>
+<p><strong><span class="math inline">\(\bullet\)</span></strong> Model building can be costly for logistic regression models, because each model fitted requires iteration. Popular shortcuts are the Rao score test which tests for inclusion of a term, and the Wald test which can be used to test for exclusion of a term. Neither of these require iterative fitting, and are based on the maximum-likelihood fit of the current model. It turns out that both of these amount to adding or dropping a term from the weighted least squares fit, using the same weights. Such computations can be done efficiently, without recomputing the entire weighted least squares fit.</p>
+</div>
+<div id="l_1-regularized-logistic-regression" class="section level2">
+<h2>4.4.4 <span class="math inline">\(L_1\)</span> Regularized Logistic Regression</h2>
+<p>The <span class="math inline">\(L_1\)</span> penalty used in the lasso can be used for variable selection and shinkage with any linear regression model. For logistic regression, we would maximize a penalized version:</p>
+<p><span class="math display">\[
+\max_{\beta_0,\beta}\{\sum_{i=1}^N\log p_{g_i}(x_i;\theta)-\lambda\sum_{j=1}^p|\beta_j|\},
+\]</span> where <span class="math display">\[\log p_{g_i}(x_i;\theta)=y_i(\beta_0+\beta^Tx_i)-\log(1+\exp(\beta_0+\beta^Tx_i)).\]</span> As with the lasso, we typically do not penalize the intercept term and standardize the predictors for the penalty to be meaningful. A solution can be found using nonlinear programming methods.</p>
+</div>
+<div id="logistic-regression-or-lda" class="section level2">
+<h2>4.4.5 Logistic Regression or LDA?</h2>
+</div>
 </div>
 <div id="separating-hyperplanes" class="section level1">
 <h1>4.5 Separating Hyperplanes</h1>
+<p>The main idea of this method is to find hyperplanes (classifier), which construct liner dicision boundaries that explicitly try to separate the data into different classes as well as possible.</p>
+<p>For equation <span class="math inline">\(f(x)=\beta_0+\beta^Tx=0\)</span>, it defines a hyperplane (or affine set) <span class="math inline">\(L\)</span>. We have some properties:</p>
+<p><strong><span class="math inline">\(\bullet\)</span></strong> <span class="math inline">\(\beta^*=\beta/\|\beta\|\)</span> is the vector normal to the hyperplane <span class="math inline">\(L\)</span>, since for any <span class="math inline">\(x_1,x_2\)</span> in <span class="math inline">\(L\)</span>, <span class="math inline">\(\beta^T(x_1-x_2)=0\)</span>;</p>
+<p><strong><span class="math inline">\(\bullet\)</span></strong> For any point <span class="math inline">\(x_0\)</span> in <span class="math inline">\(L\)</span>, <span class="math inline">\(\beta^Tx_0=-\beta_0\)</span></p>
+<p><strong><span class="math inline">\(\bullet\)</span></strong> The signed distance of any point <span class="math inline">\(x\)</span> to <span class="math inline">\(L\)</span> is given by <span class="math inline">\(\beta^{*T}(x-x_0)=\frac{1}{\|\beta\|}(\beta^Tx+\beta_0)=\frac{1}{\|f'(x)\|}f(x)\)</span>. Hence <span class="math inline">\(f(x)\)</span> is proportional to the signed distance from <span class="math inline">\(x\)</span> to the hyperplane defined by <span class="math inline">\(f(x)=0\)</span>.</p>
+<div id="rosenblatts-perceptron-learning-algorithm" class="section level2">
+<h2>4.5.1 Rosenblatt’s Perceptron Learning Algorithm</h2>
+<p>The perceptron learning algorithm tries to find a separating hyperplane by minimizing the distance of misclassified points to the decision boundary.</p>
+<p>The goal is to minimize <span class="math display">\[D(\beta,\beta_0)=-\sum_{i\in \mathcal{M}}y_i(x_i^T\beta+\beta_0),\]</span> where <span class="math inline">\(\mathcal M\)</span> indexes the set of misclassified points. The algorithm in fact uses stochastic gradient descent to minimize the piecewise linear criterion.</p>
+<p>There are a number of problems with this algorithm, summarized in Ripley(1996):</p>
+<p><strong><span class="math inline">\(\bullet\)</span></strong> When the data are separable, there are many solutions, and which one is found depends on the starting values.</p>
+<p><strong><span class="math inline">\(\bullet\)</span></strong> The ???finite??? number of steps can be very large. The smaller the gap, the longer the time to find it.</p>
+<p><strong><span class="math inline">\(\bullet\)</span></strong> When the data are not separable, the algorithm will not converge, and cycles develop. The cycles can be long and therefore hard to detect.</p>
+</div>
+<div id="optimal-separating-hyperplanes" class="section level2">
+<h2>4.5.2 Optimal Separating Hyperplanes</h2>
+<p>To be continued</p>
+</div>
 </div>
 
 
