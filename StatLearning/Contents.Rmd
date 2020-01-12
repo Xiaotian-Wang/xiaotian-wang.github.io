@@ -2,9 +2,12 @@
 title: "Contents of Statistical Learning"
 output: html_document
 ---
+# Chapter 1: Introduction
 
-# [Chapter 2](2.html)
+# [Chapter 2: Overview of Supervised Learning](2.html)
 
-# [Chapter 3](3.html)
+# [Chapter 3: Linear Methods for Regression](3.html)
 
-# [Chapter 4](4.html)
+# [Chapter 4: Linear Methods for Classification](4.html)
+
+# [Chapter 5: Basis Expansions and Regularization](5.html)

@@ -1,0 +1,174 @@
+---
+title: 'Chapter 5: Basis Expansions and Regularization'
+output:
+  html_document: default
+---
+
+[Back to the Contents](Contents.html)
+
+# 5.1 Introduction
+
+In this chapter, methods for moving beyond linearity are discussed. The core idea in this chapter is to argument/replace the vector of inputs $X$ with additional variables, which are transformations of $X$, and then use linear models in this new space of derived input features.
+
+Denote by $h_m(X):\mathbb{R}^p\to\mathbb{R}$, the $m$th transformation of $X,m=1,2,\cdots,M.$ We then model
+$$f(X)=\sum_{m=1}^M\beta_mh_m(X),$$
+a linear basis expansion in $X$. The beauty of this approach is that once the basis functions $h_m$ have been determined, the models are linear in these new variables, and the fitting proceeds as before.
+
+Sometimes the problem at hand will call for particular basis functions hm, such as logarithms or power functions.More often, however, we use the basis expansions as a device to achieve more flexible representations for $f(X)$.
+
+## 5.2 Piecewise Polynomials and Splines
+
+In this section, the concepts of Piecewise Polynomials and Splines are introduced. It is also shown that what the basis of spline can look like.
+
+The fixed-knots splines are also known as regression splines. We need to select the order of the spline, the number of knots and the placement. One simple approach is to parameterize a family of splines by the number of basis functions or degrees of freedom, and have the observations $x_i$ determine the positions of the knots.
+
+Since the space of spline functions of a particular order and knot sequence is a vector space, there are many equivalent bases for representing them
+(just as there are for ordinary polynomials.) While the truncated power basis is conceptually simple, it is not too attractive numerically: powers of large numbers can lead to severe rounding problems. The B-spline basis, described in the Appendix to this chapter, allows for efficient computations even when the number of knots $K$ is large
+
+# 5.2.1 Natural Cubic Splines
+
+**$\bullet$  Motivation** We know that the behavior of polynomials fit to data tends to be erratic near the boundaries, and extrapolation can be dangerous. These problems
+are exacerbated with splines. The polynomials fit beyond the boundary knots behave even more wildly than the corresponding global polynomials
+in that region.
+
+A natural cubic spline adds additional constraints, namely that the function is linear beyond the boundary knots. This frees up four degrees of
+freedom (two constraints each in both boundary regions), which can be spent more profitably by sprinkling more knots in the interior region.
+
+A natural cubic spline with $K$ knots is represented by $K$ basis functions. One can start from a basis for cubic splines, and derive the reduced basis by imposing the boundary constraints.
+
+# 5.3 Filtering and Feature Extraction
+
+Preprocessing of high-dimensional features is a very general and powerful method for improving the performance of a learning algorithm.
+
+The preprocessing need not be linear as it was above, but can be a general (nonlinear) function of the form $x^*= g(x)$. The derived features $x^*$ can then be used as inputs into any (linear or nonlinear) learning procedure.
+
+For example, for signal or image recognition a popular approach is to first transform the raw features via a wavelet transform.
+
+# 5.4 Smoothing Splines
+
+Here we discuss a spline basis method that avoids the knot selection problem completely by using a maximal set of knots. The complexity of the fit is controlled by regularization. Consider the following problem: among all functions $f(x)$ with two continuous derivatives, find one that minimizes the penalized residual sum of squares:
+$$
+RSS(f,\lambda)=\sum_{i=1}^N\{y_i-f(x_i)\}^2+\lambda\int\{f''(t)\}^2dt,
+$$
+where $\lambda$ is a fixed smoothing parameter.
+
+Remarkably, it can be shown that it has an explicit, finite-dimensional, unique minimizer which is a natural cubic spline with knots at the unique values of the $x_i,\ i=1,\cdots,N$. At face value it seems that the family is still over-parametrized, since there are as many as $N$ knots, which implies $N$ degrees of freedom. However, the penalty term translates to a penalty on the spline coefficients, which are shrunk some of the way
+toward the linear fit.
+
+Since the solution is a natural spline, we can write it as
+$$
+f(x)=\sum_{j=1}^NN_j(x)\theta_j,
+$$
+where the $N_j(x)$ are an $N$-dimensional set of basis functions for representing this family of natural splines. The criterion thus reduces to
+$$
+RSS(\theta,\lambda)=(y-N\theta)^T(y-N\theta)+\lambda\theta^T\Omega_N\theta,
+$$
+where $\{N\}_{ij}=N_j(x_i)$ and $\{\Omega_N\}_{jk}=\int N_j''(t)N_k''(t)dt$. The solution is easily seen to be
+$$
+\hat\theta=(N^TN+\lambda\Omega_N)^{-1}N^Ty,
+$$
+a generalized ridge regression. The fitted smoothing spline is given by
+$$\hat f(x)=\sum_{j=1}^N N_j(x)\hat \theta_j.$$
+
+## 5.4.1 Degrees of Freedom and Smoother Matrices
+
+In this section, we discuss intuitive ways of prespecifying the amount of smoothing.
+
+Donate by $\hat f$, the $N$-vector of fitted values $\hat f(x_i)$ at the training predictors $x_i$. Then,
+$$
+\hat f=N(N^TN+\lambda\Omega_N)^{-1}N^Ty=S_\lambda y.
+$$
+Again the fit is linear in $y$, and the finite linear operator $S_\lambda$ is known as the smoother matrix. One consequence of this linearity is that the recipe for producing $\hat f$ from $y$ does not depend on $y$ itself; $S_\lambda$ depends only on the $x_i$ and $\lambda$.
+
+Suppose $B_\xi$ is a $N\times M$ matrix of $M$ cubic-spline basis functions evaluated at the $N$ training points $x_i$, with kont sequence $\xi$, and $M\ll N$. Then th evector of fitted spline values is given by
+$$\hat f= B_\xi(B_\xi^TB_\xi)^{-1}B_{\xi}^Ty=H_{\xi}y.$$
+Here, the linear operator $H_\xi$ is a projection operator, also known as the hat matrix in statistics. There are some important similarities and differences between $H_\xi$ and $S_\lambda$:
+
+**$\bullet$** Both are symmetric, positive semidefinite matrices.
+
+**$\bullet$** $H_\xi H_\xi=H_\xi$(idempotent), while $S_\lambda S_\lambda\preceq S_\lambda$, meaning that the righthand side exceeds the left-hand side by a positive semidefinite matrix. This is a consequence of the shrinking nature of $S_\lambda$.
+
+**$\bullet$** $H_\xi$ has rank $M$, while $S_\lambda$ has rank $N$.
+
+The expression $M=trace(H_\xi)$ gives the dimension of the projection space, which is also the number of basis functions, and hence the number of parameters involved in the fit. By analogy we define the effective degrees of freedom of a smoothing spline to be 
+$$
+df_\lambda=trace(S_\lambda).
+$$
+
+Since $S_\lambda$ is symmetric and positive semidefinite, it has a real eigendecomposition. It is convenient to rewrite $S_\lambda$ in the Reinsch form
+$$
+S_\lambda=(I+\lambda K)^{-1},
+$$
+where $K$ does not depend on $\lambda$ (justification needed).
+
+Since $\hat f=S_\lambda y$ solves 
+$$
+\min_f (y-f)^T(y-f)+\lambda f^TKf,
+$$
+$K$ is known as the penalty matrix, and indeed a quadratic form in $K$ has a representation in terms of a weighted sum of squared second differences. The eigen-decomposition of $S_\lambda$ is 
+$$
+S_\lambda=\sum_{k=1}^N\rho_k(\lambda)u_ku_k^T
+$$
+with
+$$
+\rho_k(\lambda)=\frac{1}{1+\lambda d_k},
+$$
+and $d_k$ the corresponding eigenvalue of $K$.
+
+Some highlights are also listed, refer to the textbook.
+
+# 5.5 Automatic Selection of the Smoothing Parameters
+
+The smoothing parameters for regression splines encompass the degree of the splines, and the number and placement of the knots. For smoothing splines, we have only the penalty parameter $\lambda$ to select, since the knots are at all the unique training $X$'s, and cubic degree is almost always used in practice.
+
+## 5.5.1 Fixing the Degrees of Freedom
+
+Since $f_\lambda = trace(S_\lambda)$ is monotone in $\lambda$ for smoothing splines, we can invert the relationship and specify $\lambda$ by fixing df.
+
+## 5.5.2 The Bias-Variance Tradeoff
+
+# 5.6 Nonparametric Logistic Regression
+
+The smoothing spline problem in 5.4 is posted in a regression setting. It is typically straitforward to transfer this technology to other domains. Here we consider logistic regression with a single quantitative input $X$.
+
+The model is
+$$
+\log \frac{P(Y=1|X=x)}{P(Y=0|X=x)}=f(x),
+$$
+which implies
+$$
+P(Y=1|X=x)=\frac{\exp(f(x))}{1+\exp(f(x))}.
+$$
+Fitting $f(x)$ in a smooth fashion leads to a smooth estimate of the conditional probabiliry $P(Y=1|x)$, which can be used to classification or risk scoring.
+
+We construct the penalized log-likelihood criterion
+$$
+l(f;\lambda)=\sum_{i=1}^N[y_if(x_i)-\log(1+\exp(f(x_i)))]-\frac{1}{2}\lambda\int\{f''(t)\}^2dt.
+$$
+The arguments similar to those used in 5.4 show that the optimal $f$ is a finite-dimensional natural spline with knots at the unique values if $x$. This means that we can represent $f(x)=\sum_{j=1}^NN_j(x)\theta_j$.
+
+We can compute the first and second derivatives and then use Newton-Raphson for the regression.
+
+# 5.7 Multidimensional Splines
+
+One-dimensional smoothing splines (via regularization) generalize to higher dimensions as well. Suppose we have pairs $y_i,x_i$ with $x_i\in R^d$, and we seek a $d$-dimensional regression function $f(x)$. The idea is to set up the problem
+$$
+\min_f\sum_{i=1}^N\{y_i-f(x_i)\}^2+\lambda J[f],
+$$
+where $J$ is an appropriate penalty functional for stabilizing a function $f$ in $R^d$. 
+
+The solution has the form
+$$
+f(x)=\beta_0+\beta^Tx+\sum_{j=1}^N\alpha_jh_j(x),
+$$
+where $h_j(x)=\|x-x_j\|^2\log\|x-x_j\|$. These $h_j$ are examples of radial basis functions, which are discussed in more detail in the next section.
+
+## 5.8 Regularization and Reproducing Kernel Helbert Spaces
+
+To be continued.
+
+## 5.9 Wavelet Smoothing
+
+
+
+
