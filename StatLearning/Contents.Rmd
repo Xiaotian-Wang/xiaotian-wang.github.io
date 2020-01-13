@@ -11,3 +11,5 @@ output: html_document
 # [Chapter 4: Linear Methods for Classification](4.html)
 
 # [Chapter 5: Basis Expansions and Regularization](5.html)
+
+# [Chapter 6: Kernel Smoothing Methods](6.html)

@@ -211,7 +211,135 @@ K_\lambda (x_0,x)=D(\frac{|x-x_0|}{h_\lambda(x_0)}).
 <p><strong><span class="math inline">\(\bullet\)</span></strong> The smoothing parameter <span class="math inline">\(\lambda\)</span> has to be determined. Large <span class="math inline">\(\lambda\)</span> implies lower variance but higher bias (we essentially assume the true function is constant within the window).</p>
 <p><strong><span class="math inline">\(\bullet\)</span></strong> Metric window widths (constant <span class="math inline">\(h\lambda(x))\)</span> tend to keep the bias of the estimate constant, but the variance is inversely proportional to the local density.</p>
 <p><strong><span class="math inline">\(\bullet\)</span></strong> Issues arise with nearest-neighbors when there are ties in the <span class="math inline">\(x_i\)</span>. With most smoothing techniques one can simply reduce the data set by averaging the <span class="math inline">\(yi\)</span> at tied values of <span class="math inline">\(X\)</span>, and supplementing these new observations at the unique values of <span class="math inline">\(x_i\)</span> with an additional weight <span class="math inline">\(w_i\)</span>(which multiples the kernel weight).</p>
-<p><span class="math inline">\(\bullet\)</span> Boundary issues arise. The metric neighborhoods tend to contain less points on the boundaries, while the nearest-neighborhoods get wider.</p>
+<p><strong><span class="math inline">\(\bullet\)</span></strong> Boundary issues arise. The metric neighborhoods tend to contain less points on the boundaries, while the nearest-neighborhoods get wider.</p>
+<div id="local-linear-regression" class="section level2">
+<h2>6.1.1 Local Linear Regression</h2>
+<p>Locally weighted averages can be badly biased on the boundaries of the domain, because of the asymmetry of the kernel in that region. By fitting straight lines rather than constants locally, we can remove this bias exactly to first order.</p>
+<p>Locally weighted regression solves a separate weighted least squares problem at each target point <span class="math inline">\(x_0\)</span>: <span class="math display">\[
+\min_{\alpha(x_0),\beta(x_0)}\sum_{i=1}^N K_\lambda(x_0,x_i)[y_i-\alpha(x_0)-\beta(x_0)x_i]^2.
+\]</span> The estimate is then <span class="math inline">\(\hat f(x_0)=\hat\alpha(x_0) +\hat\beta(x_0)x_0\)</span>. Notice that although we fit an entire linear model to the data in the region, we only use it to evaluate the fit at the single point <span class="math inline">\(x_0\)</span>.</p>
+<p>Define the vector-valued function <span class="math inline">\(b(x)^T=(1,x)\)</span>. Let <span class="math inline">\(B\)</span> be the <span class="math inline">\(N\times 2\)</span> regression matrix with <span class="math inline">\(i\)</span>th row <span class="math inline">\(b(x_i)^T\)</span>, and <span class="math inline">\(W(x_0)\)</span> the <span class="math inline">\(N\times N\)</span> diagonal matrix with <span class="math inline">\(i\)</span>th diagonal element <span class="math inline">\(K_\lambda(x_0,x_i)\)</span>. Then <span class="math display">\[
+\hat f(x_0)=b(x_0)^T(b^TW(x_0)B)^{-1}B^TW(x_0)y=\sum_{i=1}^Nl_i(x_0)y_i.
+\]</span> It is linear in <span class="math inline">\(y_i\)</span> (the <span class="math inline">\(l_i(x_0)\)</span> do not involve <span class="math inline">\(y\)</span>). These weights <span class="math inline">\(l_i(x_0)\)</span> combine the weighting kernel <span class="math inline">\(K_\lambda(x_0,\cdot)\)</span> and the least squares operations, and are sometimes referred to as the equivalent kernel.</p>
+Local linear regression automatically modifies the kernel to correct the bias exactly to first order, a phenomenon dubbed as automatic kernel carpentry. Consider the following expansion for <span class="math inline">\(E\hat f(x_0)\)</span>, using the linearity of local regression and a series expansion of the true function <span class="math inline">\(f\)</span> around <span class="math inline">\(x_0\)</span>,
+<span class="math display">\[\begin{equation*}
+\begin{aligned}
+E\hat f(x_0)=&amp;\sum_{i=1}^Nl_i(x_0)f(x_i)\\
+=&amp;f(x_0)
+\sum_{i=1}^Nl_i(x_0)+f'(x_0)\sum_{i=1}^N(x_i-x_0)l_i(x_0)+\frac{f''(x_0)}{2}\sum_{i=1}^N(x_i-x_0)^2l_i(x_0)+R,
+\end{aligned}
+\end{equation*}\]</span>
+<p>where the remainder term <span class="math inline">\(R\)</span> involves third and higher order derivatives of <span class="math inline">\(f\)</span>, and is typically small under suitable smoothness assumptions. It can be shown that for local linear regression, <span class="math inline">\(\sum_{i=1}^Nl_i(x_0)=1\)</span> and <span class="math inline">\(\sum_{i=1}^N(x_i-x_0)l_i(x_0)=0\)</span>. Hence the midel term equals <span class="math inline">\(f(x_0)\)</span>, and since the bias is <span class="math inline">\(E\hat f(x_0)-f(x_0)\)</span>, we see that it dependes only on quadratic and higher order terms in the expansion of <span class="math inline">\(f\)</span>.</p>
+</div>
+<div id="local-polynomial-regression" class="section level2">
+<h2>6.1.2 Local Polynomial Regression</h2>
+<p>Similar as the previous subsection, we can also fit local polynomial fits of any degree <span class="math inline">\(d\)</span>, <span class="math display">\[
+\min_{\alpha(x_0),\beta_j(x_0),j=1,\cdots,d}\sum_{i=1}^NK_\lambda(x_0,x_i)[y_i-\alpha(x_0)-\sum_{j=1}^d\beta_j(x_0)x_i^j]^2
+\]</span> with solution <span class="math inline">\(\hat f(x_0)=\hat\alpha(x_0)+\sum_{j=1}^d\hat\beta_j(x_0)x_0^j\)</span>. In fact, the Taylor expansion will tell us that the bias will only have components of degree <span class="math inline">\(d+1\)</span> and higher.</p>
+<p>Local linear fits tend to be biased in regions of curvature of the true function, a phenomenon referred to as trimming the hills and filling the valleys. Local quadratic regression is generally able to correct this bias. There is of course a price to be paid for this bias reduction, and that is increased variance.</p>
+<p>To summarize some collected wiscom on this issue:</p>
+<p><strong><span class="math inline">\(\bullet\)</span></strong> Local linear fits can help bias dramatically at the boundaries at a modest cost in variance. Local quadratic fits do little at the boundaries for bias, but increase the variance a lot.</p>
+<p><strong><span class="math inline">\(\bullet\)</span></strong> Local quadratic fits tend to be most helpful in reducing bias due to curvature in the interior of the domain.</p>
+<p><strong><span class="math inline">\(\bullet\)</span></strong> Asymptotic analysis suggest that local polynomials of odd degree dominate those of even degree. This is largely due to the fact that asymptotically the MSE is dominated by boundary effects.</p>
+</div>
+</div>
+<div id="selecting-the-width-of-the-kernel" class="section level1">
+<h1>6.2 Selecting the Width of the Kernel</h1>
+<p>Generally, it is a bias-variance tradeoff. The details will be discussed in the later chapters.</p>
+</div>
+<div id="local-regression-in-mathbbrp" class="section level1">
+<h1>6.3 Local Regression in <span class="math inline">\(\mathbb{R}^p\)</span></h1>
+<p>Kernel smoothing and local regression generalize very naturally to two or more dimensions. The Nadaraya-Watson kernel smoother fits a constant locally with weights supplied by a <span class="math inline">\(p\)</span>-dimensional kernel. Local linear regression will fit a hyperplane locally in <span class="math inline">\(X\)</span>, by weighted least squares, with weights supplied by a <span class="math inline">\(p\)</span>-dimensional kernel. It is simple to implement and is generally preferred to the local constant fit for its superior performance on the boundaries.</p>
+<p>Let <span class="math inline">\(b(X)\)</span> be a vector of polynomial terms in <span class="math inline">\(X\)</span> of maximum degree <span class="math inline">\(d\)</span>. For example, with <span class="math inline">\(d=1\)</span> and <span class="math inline">\(p=2\)</span>, we get <span class="math inline">\(b(X)=(1,X_1,X_2)\)</span>; with <span class="math inline">\(d=2\)</span>, we get <span class="math inline">\(b(X)=(1,X_1,X_2,X_1^2,X_2^2,X_1X_2)\)</span>; and trivially with <span class="math inline">\(d=0\)</span>, we get <span class="math inline">\(b(X)=1\)</span>. At each <span class="math inline">\(x_0\in R^p\)</span>, solve <span class="math display">\[
+\min_{\beta(x_0)}\sum_{i=1}^NK_\lambda(x_0,x_i)(y_i-b(x_i))^T\beta(x_0))^2
+\]</span> to produce the fit <span class="math inline">\(\hat f(x_0)=b(x_0)^T\hat\beta(x_0)\)</span>. Typically the kernel will be a radial function, such as the radial Epanechnikov or tri-cube kernel <span class="math display">\[
+K_\lambda(x_0,x)=D(\frac{\|x-x_0\|}{\lambda}),
+\]</span> where <span class="math inline">\(\|\cdot\|\)</span> is the Euclidean norm.</p>
+</div>
+<div id="structured-local-regression-models-in-mathbbrp" class="section level1">
+<h1>6.4 Structured Local Regression Models in <span class="math inline">\(\mathbb{R}^p\)</span></h1>
+<p>When the dimension to sample-size ratio is unfavorable, local regression does not help us much, unless we are willing to make some structural assumptions about the model. Much of this book is about structured regression and classification models. Here we focus on some approaches directly related to kernel methods.</p>
+<div id="structured-kernels" class="section level2">
+<h2>6.4.1 Structured Kernels</h2>
+<p>One linear of approach is to modify the kernel. The defaut spherical kernel gives equal weight to each coordinate, and so a natural default strategy is to standardize each variable to unit standard deviation. A more general approach is to use a positive semidefinite matrix <span class="math inline">\(A\)</span> to weigh the different coordinates: <span class="math display">\[
+K_{\lambda,A}(x_0,x)=D(\frac{(x-x_0)^TA(x-x_0)}{\lambda}).
+\]</span> Entire coordinates or directions can be downgraded or omitted by imposing appropriate restrictions on <span class="math inline">\(A\)</span>. For example, if <span class="math inline">\(A\)</span> is diagonal, then we can increase or decrease the influence of individual predictors <span class="math inline">\(X_j\)</span> by increasing or decreasing <span class="math inline">\(A_{jj}\)</span> . Often the predictors are many and highly correlated, such as those arising from digitized analog signals or images. The covariance function of the predictors can be used to tailor a metric <span class="math inline">\(A\)</span> that focuses less, say, on high-frequency contrasts.</p>
+<p>Proposals have been made for learning the parameters for multidimensional kernels. For example, the projection-pursuit regression model discussed in Chapter 11 is of this flavor, where low-rank versions of <span class="math inline">\(A\)</span> imply ridge functions for <span class="math inline">\(\hat f(X)\)</span>. More general models for <span class="math inline">\(A\)</span> are cumbersome, and we favor instead the structured forms for the regression function discussed next.</p>
+</div>
+<div id="structured-regression-functions" class="section level2">
+<h2>6.4.2 Structured Regression Functions</h2>
+</div>
+</div>
+<div id="local-likelihood-and-other-models" class="section level1">
+<h1>6.5 Local Likelihood and Other Models</h1>
+<p>The concept of local regression and varying coefficient models is extremely broad: any parametric model can be made local if the fitting method accommodates observation weights.</p>
+<p>As an illustration of local likelihood, we consider the local version of the multiclass linear logistic regression model. The data consist of features <span class="math inline">\(x_i\)</span> and an associated categorical response <span class="math inline">\(g_i\in\{1,2,\cdots, J\}\)</span>, and the linear model has the form <span class="math display">\[
+P(G=j|X=x)=\frac{\exp(\beta_{j0}+\beta_j^Tx)}{1+\sum_{k=1}^{J-1}\exp(\beta_{k0}+\beta_k^Tx)}.
+\]</span> The local log-likelihood for this <span class="math inline">\(J\)</span> class model can be written <span class="math display">\[
+\sum_{i=1}^NK_\lambda(x_0,x_i)\{\beta_{g_i0}(x_0)+\beta_{g_i}(x_0)^T(x_i-x_0)-\\log[1+\sum_{k=1}^{J-1}\exp((\beta_{k0})+\beta_k(x_0)^T(x_i-x_0))]\}.
+\]</span> Notice that:</p>
+<p><strong><span class="math inline">\(\bullet\)</span></strong> we have used <span class="math inline">\(g_i\)</span> as a subscript in the first line to pick out the approprite numerator;</p>
+<p><strong><span class="math inline">\(\bullet\)</span></strong> <span class="math inline">\(\beta_{J0}=0\)</span> and <span class="math inline">\(\beta_J=0\)</span> by the definition of the model.</p>
+<p><strong><span class="math inline">\(\bullet\)</span></strong> we have centered the local regressions at <span class="math inline">\(x_0\)</span>, so that the fitted posteriou probabilities at <span class="math inline">\(x_0\)</span> are simply <span class="math display">\[
+\hat P(G=j|X=x_0)=\frac{\exp(\hat\beta_{j0}(x_0))}{1+\sum_{k=1}^{J-1}\exp(\hat \beta_{k0}(x_0))}.
+\]</span></p>
+</div>
+<div id="kernel-density-estimation-and-classification" class="section level1">
+<h1>6.6 Kernel Density Estimation and Classification</h1>
+<div id="kernel-density-estimation" class="section level2">
+<h2>6.6.1 Kernel Density Estimation</h2>
+<p>Suppose we have random sample <span class="math inline">\(x_1,\cdots,x_N\)</span> drawn from a probability density <span class="math inline">\(f_X(x)\)</span> and we wish to estimate <span class="math inline">\(f_X\)</span> at a point <span class="math inline">\(x_0\)</span>. For simplicity we assume for now taht <span class="math inline">\(X\in R\)</span>. Arguing as before, a natural local estimate has the form <span class="math display">\[
+\hat f_X(x_0)=\frac{\#x_i\in\mathcal N(x_0)}{N\lambda},
+\]</span> where <span class="math inline">\(\mathcal N(x_0)\)</span> is a small metric neighborhood around <span class="math inline">\(x_0\)</span> of width <span class="math inline">\(\lambda\)</span>. This estimate is bumpy, and the smooth Parzen estimate is preferred <span class="math display">\[
+\hat f_X(x_0)=\frac{1}{N\lambda}\sum_{i=1}^NK_\lambda(x_0,x_i).
+\]</span> The popular choice for <span class="math inline">\(K_\lambda\)</span> is the Gaussian kernel <span class="math inline">\(K_\lambda(x_0,x)=\phi(|x-x_0|/\lambda)\)</span>. Letting <span class="math inline">\(\phi_\lambda\)</span> denote the Gaussian density with mean zero and standard deviation <span class="math inline">\(\lambda\)</span>, then <span class="math inline">\(\hat f_X(x)\)</span> has the form <span class="math display">\[
+\hat f_X(x)=\frac{1}{N}\sum_{i=1}^N \phi_\lambda(x-x_i)=(\hat F\star\phi_\lambda)(x),
+\]</span> the convolution of the sample empirical distribution <span class="math inline">\(\hat F\)</span> with <span class="math inline">\(\phi_\lambda\)</span>. The distribution <span class="math inline">\(\hat F(x)\)</span> puts mass <span class="math inline">\(1/N\)</span> at each of the observed <span class="math inline">\(x_i\)</span>, and is jumpy; in <span class="math inline">\(\hat f_X(x)\)</span>, we have smoothed <span class="math inline">\(\hat F\)</span> by adding independent Gaussian noise to each observation <span class="math inline">\(x_i\)</span>.</p>
+</div>
+<div id="kernel-density-classification" class="section level2">
+<h2>6.6.2 Kernel Density Classification</h2>
+<p>One can use nonparametric density estimates for classification in a straightforward fashion using Bayes’ theorem. Suppose for a <span class="math inline">\(J\)</span> class problem we fit nonparametric density estimates <span class="math inline">\(\hat f_j(X),j = 1,\cdots,J\)</span> separately in each of the classes, and we also have estimates of the class priors <span class="math inline">\(\hat ??_j\)</span> usually the sample proportions).Then <span class="math display">\[
+\hat P(G=j|X=x_0)=\frac{\hat\pi_j\hat f_j(x_0)}{\sum_{k=1}^J\hat\pi_k\hat f_k(x_0)}.
+\]</span></p>
+</div>
+<div id="the-naive-bayes-classifier" class="section level2">
+<h2>6.6.3 The Naive Bayes Classifier</h2>
+<p>This technique is especially appropriate when the dimension <span class="math inline">\(p\)</span> of the feature space is high, making density estimation unattractive. The naive Bayes model assumes that given a class <span class="math inline">\(G=j\)</span>, the features <span class="math inline">\(X_k\)</span> are independent: <span class="math display">\[
+f_k(X)=\prod_{k=1}^pf_{jk}(X_k).
+\]</span> While this assumption is generally not true, it does simplify the estimation dramatically:</p>
+<p><strong><span class="math inline">\(\bullet\)</span></strong> The individual class-conditional marginal densities <span class="math inline">\(f_{jk}\)</span> can each be estimated separately using one-dimensional kernel density estimates. This is in fact a generalization of the original naive Bayes procedures, which used univariate Gaussians to represent these marginals.</p>
+<p><strong><span class="math inline">\(\bullet\)</span></strong> If a component <span class="math inline">\(X_j\)</span> of <span class="math inline">\(X\)</span> is discrete, then an appropriate histogram estimate can be used. This provides a seamless way of mixing variable types in a feature vector.</p>
+</div>
+</div>
+<div id="radial-basis-functions-and-kernels" class="section level1">
+<h1>6.7 Radial Basis Functions and Kernels</h1>
+<p>Kernel methods achieve flexibility by fitting simple models in a region local to the target point <span class="math inline">\(x_0\)</span>. Localization is achieved via a weighting kernel <span class="math inline">\(K_\lambda\)</span>, and individual observations receive weights <span class="math inline">\(K_\lambda(x_0, x_i)\)</span>.</p>
+<p>Radial basis functions combine these ideas, by treating the kernel functions <span class="math inline">\(K_\lambda(\xi,x)\)</span> as basis functions. This leads to the model <span class="math display">\[
+f(x)=\sum_{j=1}^MK_{\lambda_j}(\xi_j,x)\beta_j\\
+=\sum_{j=1}^MD(\frac{\|x-\xi_j\|}{\lambda_j})\beta_j,
+\]</span> where each basis element is indexed by location or prototype parameter <span class="math inline">\(\xi_j\)</span> and a scale parameter <span class="math inline">\(\lambda_j\)</span>. A popular choice for <span class="math inline">\(D\)</span> is the standard Gaussian density function.</p>
+<p>There are several approaches to learning the parameters <span class="math inline">\(\{\lambda_j,\xi_j,\beta_j\}, j = 1,\cdots,M\)</span>. For simplicity we will focus on least squares methods for regression, and use the Gaussian kernel.</p>
+<p><strong><span class="math inline">\(\bullet\)</span></strong> Optimize the sum-of-squares with respect to all the parameters: <span class="math display">\[
+\min_{\{\lambda_j,\xi_j,\beta_j\}}\sum_{i=1}^M(\beta_j\exp\{-\frac{(x_i-\xi_j)^T(x_i-\xi_j)}{\lambda_j^2}\})^2.
+\]</span> This model is commonly referred to as an RBF network, an alternative to the sigmoidal neural network discussed in Chapter 11. The criterion is nonconvex with multiple local minima, and the algorithms for optimization are similar to those used for neural networks.</p>
+<p><strong><span class="math inline">\(\bullet\)</span></strong> Estimate the <span class="math inline">\(\{\lambda_j, \xi_j\}\)</span> separately from the<span class="math inline">\(\beta_j\)</span>. Given the former, the estimation of the latter is a simple least squares problem. Often the kernel parameters <span class="math inline">\(\lambda_j\)</span> and <span class="math inline">\(\xi_j\)</span> are chosen in an unsupervised way using the <span class="math inline">\(X\)</span> distribution alone. One of the methods is to fit a Gaussian mixture density model to the training <span class="math inline">\(x_i\)</span>, which provides both the centers <span class="math inline">\(\xi_j\)</span> and the scales <span class="math inline">\(\lambda_j\)</span>. Other even more adhoc approaches use clustering methods to locate the prototypes<span class="math inline">\(\xi_j\)</span>, and treat <span class="math inline">\(\lambda_j=\lambda\)</span> as a hyper-parameter. The obvious drawback of these approaches is that the conditional distribution <span class="math inline">\(P(Y|X)\)</span> and in particular <span class="math inline">\(E(Y|X)\)</span> is having no say in where the action is concentrated. On the positive side, they are much simpler to implement.</p>
+<p>While it would seem attractive to reduce the parameter set and assume a constant value for <span class="math inline">\(\lambda_j=\lambda\)</span>, this can have an undesirable side effect of creating holes — regions of <span class="math inline">\(\mathbb{R}^p\)</span> where none of the kernels has appreciable support. Renormalized radial basis functions, <span class="math display">\[
+h_j(x)=\frac{F(\|x-\xi_j\|/\lambda)}{\sum_{k=1}^MD(\|x-\xi_k\|/\lambda)},
+\]</span> avoid this problem.</p>
+</div>
+<div id="mixture-models-for-density-estimation-and-classification" class="section level1">
+<h1>6.8 Mixture Models for Density Estimation and Classification</h1>
+<p>The mixture model is a useful tool for density estimation, and can be viewed as a kind of kernel method. The Gaussian mixture model has the form <span class="math display">\[
+f(x)=\sum_{m=1}^M\alpha_m\phi(x;\mu_m,\Sigma_m)
+\]</span> with mixing proportions <span class="math inline">\(\alpha_m,\sum_m\alpha_m=1\)</span>, and each Gaussian density has a mean <span class="math inline">\(\mu_m\)</span> and covariancce matrix <span class="math inline">\(\Sigma_m\)</span>. In general, mixture models can use any component densities in placce of the Gaussian: the Gaussian mixture model is by far the most popular one.</p>
+<p>The parameters are usually fit by maximum likelihood, using the EM algorithm as described in Chapter 8. Some special cases arise:</p>
+<p><strong><span class="math inline">\(\bullet\)</span></strong> If the covariance matrices are constrained to be scalar: <span class="math inline">\(\Sigma_m=\sigma_mI\)</span>, then <span class="math inline">\(f(x)\)</span> has the form of a radial basis expansion.</p>
+<p><strong><span class="math inline">\(\bullet\)</span></strong> If in addition <span class="math inline">\(\sigma_m=\sigma&gt;0\)</span> is fixed, and <span class="math inline">\(M\uparrow N\)</span>, then the maximum likelihood estimate for <span class="math inline">\(f(x)\)</span> approaches the kernel density estimate where <span class="math inline">\(\hat\alpha_m=1/N\)</span> and <span class="math inline">\(\hat\mu_m=x_m\)</span>.</p>
+</div>
+<div id="computational-considerations" class="section level1">
+<h1>6.9 Computational Considerations</h1>
+<p>Kernel and local regression and density estimation are memory-based methods: the model is the entire training data set, and the fitting is done at evaluation or prediction time. For many real-time applications, this can make this class of methods infeasible.</p>
+<p>The time complexities of the class of methods are also introduced briefly. Refer to the textbook.</p>
 </div>
 
 
