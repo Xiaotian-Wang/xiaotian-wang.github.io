@@ -1,0 +1,61 @@
+---
+title: 'Chapter 6: Kernel Smoothing Methods'
+output:
+  html_document: default
+---
+
+[Back to the Contents](Contents.html)
+
+In this chapter we describe a class of regression techniques that achieve flexibility in estimating the regression function f(X) over the domain $\mathbb{R}^p$ by fitting a different but simple model separately at each query point $x_0$. This is done by using only those observations close to the target point $x_0$ to fit the simple model, and in such a way that the resulting estimated function
+$\hat f(X)$ is smooth in $\mathbb R^p$. This localization is achieved via a weighting function or kernel $K_\lambda(x_0, x_i)$, which assigns a weight to $x_i$ based on its distance from
+$x_0$.
+
+We also discuss more general classes of kernel-based techniques, which tie in with structured methods in other chapters, and are useful for density estimation and classification.
+
+# 6.1 One-Dimensional Kernel Smoothers
+
+In Chapter 2, we motivated the $k$-nearest-neighber average
+$$
+\hat f(x)=Ave(y_i|x_i\in N_k(x))
+$$
+as an estimate of the regression function $E(Y|X=x)$. However, when doing the regression, this model is discontinuous.
+
+This discontinuity is ugly and unnecessary. Ranter than give al the points in the neighborhood equal weight, we can assign weights that die off smoothly with distance from the target point. An example of so-called Nadaraya-Watson kernel-erighted average
+$$
+\hat f(x_0)=\frac{\sum_{i=1}^NK_\lambda (x_0,x_i)y_i}{\sum_{i=1}^N K_\lambda (x_0,x_i)},
+$$
+with the Epanechnikov quadratic kernel
+$$
+K_\lambda(x_0,x)=D(\frac{|x-x_0|}{\lambda}),
+$$
+with
+\begin{equation}  
+D(t)=
+\left\{  
+             \begin{aligned}
+             &\frac{3}{4}(1-t^2), &|t|\leqslant 1;  \\  
+             &0,          &otherwise.
+             \end{aligned}
+\right.  
+\end{equation} 
+
+The fitted function is now continuous.
+
+Let $h_\lambda(x_0)$ be a width function (indexed by $\lambda$) that determines the width of the neighborhood at $x_0$. Then, more generally we have
+$$
+K_\lambda (x_0,x)=D(\frac{|x-x_0|}{h_\lambda(x_0)}).
+$$
+In the previous example, $h_\lambda(x_0)=\lambda$ is constant, while for k-NN, the neighborhood size $k$ replaces $\lambda$, and we have $h_k(x_0)=|x_0-x_{[k]}|$ where $x_{[k]}$ is the $k$th closest $x_i$ to $x_0$.
+
+There are a number of details that we have to attend to in practice:
+
+**$\bullet$** The smoothing parameter $\lambda$ has to be determined. Large $\lambda$ implies lower variance but higher bias (we essentially assume the true function is constant within the window).
+
+**$\bullet$** Metric window widths (constant $h\lambda(x))$ tend to keep the bias of the estimate constant, but the variance is inversely proportional to the local density.
+
+**$\bullet$** Issues arise with nearest-neighbors when there are ties in the $x_i$. With most smoothing techniques one can simply reduce the data set by averaging the $yi$ at tied values of $X$, and supplementing these new observations at the unique values of $x_i$ with an additional weight $w_i$(which multiples the kernel weight).
+
+$\bullet$ Boundary issues arise. The metric neighborhoods tend to contain less
+points on the boundaries, while the nearest-neighborhoods get wider.
+
+
