@@ -13,3 +13,5 @@ output: html_document
 # [Chapter 5: Basis Expansions and Regularization](5.html)
 
 # [Chapter 6: Kernel Smoothing Methods](6.html)
+
+# [Chapter 7: Model Assessment and Selection](7.html)
