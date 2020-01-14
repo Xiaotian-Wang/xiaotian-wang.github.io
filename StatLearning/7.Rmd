@@ -1,0 +1,190 @@
+---
+title: 'Chapter 7 Model Assessment and Selection'
+output:
+  html_document: default
+---
+
+[Back to the Contents](Contents.html)
+
+# 7.1 IntroductIon
+
+In this chapter we describe and illustrate the key methods for performance assessment, and show how they are used to select models.
+
+# 7.2 Bias, Variance, Model Complexity
+
+Test error, also referred to as generalization error, is the prediction error over an independent test sample
+$$
+Err_\mathcal T=E[L(Y,\hat f(X))|\mathcal T],
+$$
+where both $X$ and $Y$ are drawn randomly from their joint distribution. Here the training set $\mathcal T$ is fixed, and test error refers to the error for this specific training set. A related quantity is the expected prediction error (or expected test error)
+$$Err=E(L(Y,\hat f(X)))=E[Err_\mathcal T].$$
+Note that this expectation averages over everything that is random, including the randomness in the training set that produced $\hat f$.
+
+Estimation of $Err_\mathcal T$ will be our goal, although we will see that Err is more amenable to statistical analysis, and most methods effectively estimate the expected error. It does not seem possible to estimate conditional error effectively, given only the information in the same training set.
+
+Training error is the average loss over the training sample
+$$
+\overline{err}=\frac{1}{N}\sum_{i=1}^NL(y_i,\hat f(x_i)).
+$$
+It is not a good estimate of the test error.
+
+The story is similar for a qualitative or categorical response $G$ taking
+one of $K$ values in a set $\mathcal G$, labeled for convenience as $1,2,\cdots, K$. The typical loss functions are
+$$
+L(G,\hat G(X))=I(G\neq\hat G(X))\ \  \mathrm{(0-1\ loss)},\\
+L(G,\hat p(X))=-2\sum_{k=1}^KI(G=k)\log \hat p_k(X)=-2\log \hat p_G(X)\ \ \mathrm{(-2\times log-likelihood)}.
+$$
+The quantity $-2\times\mathrm{log-likelihood}$ is sometimes referred to as the deviance.
+
+Again, test error here is $Err_\mathcal T = E[L(G, \hat G (X))|\mathcal T ]$, the population misclassification error of the classifier trained on $\mathcal T$ , and Err is the expected misclassification error.
+
+Training error is the sample analogue, for example,
+$$
+\overline{err}=-\frac{2}{N}\sum_{i=1}^N\log\hat p_{g_i}(x_i),
+$$
+the sample log-likelihood for the model.
+
+The "-2" in the definition makes the log-likelihood loss for the Gaussian
+distribution match squared-error loss.
+
+In this chapter, it is important to note that there are in fact two separate goals that we might have in mind:
+
+**Model selection:** estimating the performance of different models in order to choose the best one.
+
+**Model assessment:** having chosen a final model, estimating its prediction error (generalization error) on new data.
+
+
+# 7.3 The Bias-Variance Decomposition
+
+In this section, a more detailed description of bias-variance decomposition is stated.
+
+For bias-variance decompositions of k-NN and linear model, refer to the text book.
+
+For a linear model family such as ridge regression, we can break down the bias more finely. Let $\beta_*$ denote the parameters of the best-fitting linear approximation to $f$:
+
+$$
+\beta_*=\arg\min_\beta E(f(X)-X^T\beta)^2.
+$$
+Here the expectation is taken with respect to the distribution of the input variables $X$. Then we can write the average squared bias as
+
+\begin{aligned}
+E_{x_0}[f(x_0)-E\hat f_\alpha(x_0)]^2=&E_{x_0}[f(x_0)-x_0^T\beta_*]^2+E_{x_0}[x_0^T\beta_*-Ex_0^T\hat\beta_\alpha]^2\\
+=&\mathrm{Ave[Model\ Bias]^2+Ave[Estimation\ Bias]^2}
+\end{aligned}
+}
+
+The first term on the right-hand side is the average squared model bias, the error between the best-fitting linear approximation and the true function. The second term is the average squared estimation bias, the error between the average estimate $E(x_0^T\hat\beta)$ and the best-fitting linear approximation.
+
+For linear models fit by ordinary least squares, the estimation bias is zero. For restricted fits, such as ridge regression, it is positive, and we trade it off with the benefits of a reduced variance. The model bias can only be reduced by enlarging the class of linear models to a richer collection of models, by including interactions and transformations of the variables in the model.
+
+# 7.4 Optimism of the Training Error Rate
+
+Before we continue, we need a few definitions, elaborating on the material of Section 7.2.
+
+Give training set $\mathcal T=\{(x_1,y_1),\cdots,(x_N,y_N)\}$ the generalization error of a model $\hat f$ is 
+$$
+\mathrm{Err}_\mathcal T=E_{X^0,Y^0}[L(Y^0,\hat f(X^0))|\mathcal T];
+$$
+Note that the training set $\mathcal T$ is fixed. The point $(X^0,Y^0)$ is a new test data point, drawn from $F$, the joint distribution of the data. Averaging over training sets $\mathcal T$ yiels the expected error
+$$
+\mathrm{Err}=E_\mathcal T (\mathrm{Err_\mathcal T}),
+$$
+which is more amenable to statistical analysis.
+
+Now typically, the training error
+$$
+\overline{err}=\frac{1}{N}\sum_{i=1}^NL(y_i,\hat f(x_i)).
+$$
+will be less than the true error $Err_\mathcal T$, because the same data is being used to fit the method and assess its error (justification needed).
+
+Part of the discrepancy is due to where the evaluation points occur. The quantity $Err_\mathcal T$ can be thought of as extra-sample error, since the test input vectors don't need to coincide with the training input vectors. The nature of the optimism in $\overline{err}$ is easiest to understand when we focus instead on the in-sample error
+
+$$
+Err_{in}=\frac{1}{N}\sum_{i=1}^NE_{Y^0}[L(Y_i^0,\hat f(x_i))|\mathcal T].
+$$
+The $Y^0$ notation indicates that we observe $N$ new response values at each of the training points $x_i,i=1,2,\cdots,N$. We define the optimism as the difference between $Err_{in}$ and the training error $\overline{err}$:
+$$
+op=Err_{in}-\overline{err}.
+$$
+This is typically positive since $\overline{err}$ is usually biased downward as an estimate of prediction error. Finally, the average optimism is the expectation of the optimism over training sets
+$$
+\omega=E_y(op).
+$$
+Here the predictors in the training set are fixed, and the expectation is over the training set outcome values; hence we have used the notation $E_y$ instead of $E_\mathcal T$. We can estimate only the expected error $\omega$ rather than op, in the same way that we can estimate the expected error $Err$ rather than conditional error $Err_{\mathcal T}$.
+
+For squared error, 0-1, and other loss functions, one can show quite
+generally that
+$$
+\omega=\frac{2}{N}\sum_{i=1}^NCov(\hat y_i,y_i).
+$$
+In summary, we have the important relation
+$$
+E_y(Err_{in})=E_y(\overline{err})+\frac{2}{N}\sum_{i=1}^NCov(\hat y_i,y_i).
+$$
+This expression simplifies if $\hat y_i$ is obtained by a linear fit with $d$ inputs or basis functions. For example, 
+$$
+\sum_{i=1}^NCov(\hat y_i,y_i)=d\sigma^2_\varepsilon
+$$
+for the additive error model $Y=f(X)+\varepsilon$, and so
+$$
+E_y(Err_{in})=E_y(\overline{err})+2\frac{d}{N}\sigma^2_\varepsilon.
+$$
+
+# 7.5 Estimates of In-Sample Prediction Error
+
+The general form of the in-sample error estimates is 
+$$
+\widehat{Err}_{in}=\overline{err}+\hat \omega,
+$$
+where $\hat\omega$ is an estimate of the average optimism.
+
+When $d$ parameters and fit under squared error loss, it leads to a version of the so-called $C_p$ statistic
+$$
+C_p=\overline{err}+2\frac{d}{N}\hat\sigma_\varepsilon^2.
+$$
+Here, the $\hat\sigma_\varepsilon^2$ is an estimate of the noise variance, obtained from the mean-squared error of a low-biased model.
+
+The Akaike information criterion is a similar but more generally applicable estimate of $Err_{in}$ when a log-likelihood loss function is used. It relies on a relationship that holds asymptotically as $N \to \infty$:
+$$
+-2E[\log P_{\hat \theta}(Y)]\approx-\frac{2}{N}E[loglik]+2\frac{d}{N}.
+$$
+Here $P_\theta(Y)$ is a family of densities for $Y$, $\hat\theta$ is the maximum likelihood estimate of $\theta$, and "loglik" is the maximized log-likelihood:
+$$
+loglik=\sum_{i=1}^N\log P_{\hat\theta}(y_i).
+$$
+For example, for the logistic regression model, using the binomial log-likelihood, we have 
+$$
+AIC=-\frac{2}{N}loglik+2\frac{d}{N}
+$$
+
+
+# 7.6 The Effective Number of Parameters
+
+# 7.7 The Bayesian Approach and BIC
+
+# 7.8 Minimum Description Length
+
+# 7.9 Vapnik-Chervonenkis Dimension
+
+# 7.10 Cross-Validation
+
+# 7.11 Bootstrap Methods
+
+# 7.12 Conditional or Exoected Test Error?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
