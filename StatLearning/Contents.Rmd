@@ -18,4 +18,4 @@ output: html_document
 
 # [Chapter 8: Model Inference and Averaging](8.html)
 
-
+# [Chapter 9: Additive Models, Trees, and Related Methods](9.html)
