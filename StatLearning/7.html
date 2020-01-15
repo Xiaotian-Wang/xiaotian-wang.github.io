@@ -220,7 +220,6 @@ L(G,\hat p(X))=-2\sum_{k=1}^KI(G=k)\log \hat p_k(X)=-2\log \hat p_G(X)\ \ \mathr
 E_{x_0}[f(x_0)-E\hat f_\alpha(x_0)]^2=&amp;E_{x_0}[f(x_0)-x_0^T\beta_*]^2+E_{x_0}[x_0^T\beta_*-Ex_0^T\hat\beta_\alpha]^2\\
 =&amp;\mathrm{Ave[Model\ Bias]^2+Ave[Estimation\ Bias]^2}
 \end{aligned}\]</span>
-<p>}</p>
 <p>The first term on the right-hand side is the average squared model bias, the error between the best-fitting linear approximation and the true function. The second term is the average squared estimation bias, the error between the average estimate <span class="math inline">\(E(x_0^T\hat\beta)\)</span> and the best-fitting linear approximation.</p>
 <p>For linear models fit by ordinary least squares, the estimation bias is zero. For restricted fits, such as ridge regression, it is positive, and we trade it off with the benefits of a reduced variance. The model bias can only be reduced by enlarging the class of linear models to a richer collection of models, by including interactions and transformations of the variables in the model.</p>
 </div>

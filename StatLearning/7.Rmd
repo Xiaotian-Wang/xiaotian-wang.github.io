@@ -71,7 +71,6 @@ Here the expectation is taken with respect to the distribution of the input vari
 E_{x_0}[f(x_0)-E\hat f_\alpha(x_0)]^2=&E_{x_0}[f(x_0)-x_0^T\beta_*]^2+E_{x_0}[x_0^T\beta_*-Ex_0^T\hat\beta_\alpha]^2\\
 =&\mathrm{Ave[Model\ Bias]^2+Ave[Estimation\ Bias]^2}
 \end{aligned}
-}
 
 The first term on the right-hand side is the average squared model bias, the error between the best-fitting linear approximation and the true function. The second term is the average squared estimation bias, the error between the average estimate $E(x_0^T\hat\beta)$ and the best-fitting linear approximation.
 

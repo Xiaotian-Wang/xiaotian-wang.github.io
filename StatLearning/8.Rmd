@@ -1,0 +1,171 @@
+---
+title: 'Chapter 8: Model Inference and Averaging'
+output:
+  html_document: default
+---
+
+[Back to the Contents](Contents.html)
+
+# 8.1 IntroductIon
+
+In this chapter we provide a general exposition of the maximum likelihood approach, as well as the Bayesian method for inference.
+
+# 8.2 The Bootstrap and Maximum Likelihood Methods
+
+## 8.2.1 A Smoothing Example
+
+In this subsection, it is illustrated that if the model has additive Gaussian errors, the parametric bootstrap will agree with least squares.
+
+We assume that the model is of the form:
+
+$$
+Y=\mu(X)+\varepsilon;\ \varepsilon \sim N(0,\sigma^2)\\
+\mu(x)=\sum_{i=1}^7\beta_jh_j
+$$
+The bootstrap method described above, in which we sample with replacement
+from the training data, is called the nonparametric bootstrap. This really means that the method is "model-free", since it uses the raw data, not a specific parametric model, to generate new datasets. Consider a variation of the bootstrap, called the parametric bootstrap, in which we simulate new responses by adding Gaussian noise to the predicted values 
+$$
+y_i^*=\hat\mu(x_i)+\varepsilon^*_i;\ \varepsilon_i^*\sim N(0,\hat\sigma^2);i=1,2,\cdots,N.
+$$
+This process is repeated $B$ times, where $B = 200$ say. The resulting bootstrap datasets have the form $(x_1, y_1^*),\cdots,(x_N, y_N^*)$ and we recompute the B-spline smooth on each. The confidence bands from this method will exactly equal the least squares bands, as the number of bootstrap samples goes to infinity. A function estimated from a bootstrap
+sample $y^*$ is given by $\hat\mu^*(x)=h(x)^T(H^TH)^{-1}H^Ty^*$, and has distribution
+$$
+\hat\mu^*\sim N(\hat\mu(x),h(x)^T(H^TH)^{-1}h(x)\hat\sigma^2).
+$$
+Notice that the mean of this distribution is the least squares estimate, and the standard deviation is the same as the approximate formular
+$$
+\widehat{se}[\hat\mu(x)]=[h(x)^T(H^TH)^{-1}h(x)]^{1/2}\hat\sigma,
+$$
+which is the standard error of a prediction of $\hat\mu(x)=h(x)^T\hat \beta$.
+
+
+## 8.2.2 Maximum Likelihood Inference
+
+In general, the parametric bootstrap agrees not with least squares but with maximum likelihood. 
+
+It is not too difficult to understand. Refer to the textbook.
+
+## 8.2.3 Bootstrap versus Maximum Likelihood
+
+In essence the bootstrap is a computer implementation of nonparametric or parametric maximum likelihood. The advantage of the bootstrap over the maximum likelihood formula is that it allows us to compute maximum likelihood estimates of standard errors and other quantities in settings where no formulas are available.
+
+In our example, suppose that we adaptively choose by cross-validation the number and position of the knots that define the B-splines, rather than fix them in advance. Denote by $\lambda$ the collection of knots and their positions. Then the standard errors and confidence bands should account for the adaptive choice of $\lambda$, but there is no way to do this analytically. With the bootstrap, we compute the B-spline smooth with an adaptive choice of knots for each bootstrap sample. The percentiles of the resulting curves capture the variability from both the noise in the targets as well as that from $\hat\lambda$. In this particular example the confidence bands (not shown) don't look much different than the fixed $\lambda$ bands. But in other problems, here more adaptation is used, this can be an important effect to capture.
+
+# 8.3 Bayesian Methods
+
+In the Bayesian approach to inference, we specify a sampling model $P(Z|\theta)$ for out data given the parameters, and a prioir distribution for the parameter $P(\theta)$ reflecting our knowledge about $\theta$ before we see the data. We then compute the posterior distribution
+$$
+P(\theta|Z)=\frac{P(Z|\theta)P(\theta)}{\int P(Z|\theta)P(\theta)d\theta },
+$$
+which represents our updated knowledge about $\theta$ after we see the data.To understand this posterior distribution, one might draw samples from it or summarize by computing its mean or mode. The Bayesian approach differs from the standard (frequentist) method for inference in its use of a prior distribution to express the uncertainty present before seeing the data, and to allow the uncertainty remaining after seeing the data to be expressed in the form of a posterior distribution.
+
+The posterior distribution also provides the basis for predicting the values of a future observation $z^{new}$, via the predictive distribution:
+$$
+P(z^{new}|Z)=\int P(z^{new}|\theta)P(\theta|Z)d\theta.
+$$
+
+For detailed discussion about Bayesian approach in smoothing model(B-spline basis), refer to the textbook.
+
+# 8.4 Relationship Between the Bootstrap and Bayesian Inference
+
+To be filled in the future.
+
+# 8.5 The EM Algorithm
+
+The EM algorithm is a popular tool for simplifying difficult maximum likelihood problems. We first describe it in the context of a simple mixture model.
+
+## 8.5.1 Two-Component Mixture Model
+
+In this section we describe a simple mixture model for density estimation, and the associated EM algorithm for carrying out maximum likelihood estimation. This has a natural connection to Gibbs sampling methods for Bayesian inference.
+
+We would like to model the density of the data points, and due to the apparent bi-modality, a Gaussian distribution would not be appropriate. There seems to be two separate underlying regimes, so instead we model $Y$ as a mixture of two normal distributions:
+$$
+Y_1\sim N(\mu_1,\sigma_1^2)\\
+Y_2\sim N(\mu_2,\sigma_2^2)\\
+Y=(1-\Delta)Y_1+\Delta Y_2
+$$
+where $\Delta\in\{0,1\}$, with $P(\Delta=1)=\pi$. This generative representation is explicit: generate a $\Delta\in\{0,1\}$ with probability $\pi$, and then depending on the outcome, deliver eigher $Y_1$ or $Y_2$. Let $\phi_\theta(x)$ denote the normal density with parameters $\theta=(\mu,\sigma^2)$. Then the density of $Y$ is 
+$$
+g_Y(y)=(1-\pi)\phi_{\theta_1}(y)+\pi\phi_{\theta_2}(y).
+$$
+Now, suppose we wish to fit this model to the data by maximum likelihood. The parameters are 
+$$
+\theta=(\pi,\theta_1,\theta_2)=(\pi,\mu_1,\sigma_1^2,\mu_2,\sigma_2^2).
+$$
+The log-likelihood based on the N training cases is
+$$
+l(\theta;Z)=\sum_{i=1}^N \log[(1-\pi)\phi_{\theta_1}(y_i)+\pi\phi_{\theta_2}(y_i)].
+$$
+Direct maximization of $l(\theta;Z)$is quite difficult numerically, because of the sum of terms inside the logarithm. There is, however, a simpler approach. We consider unobserved latent variables $\Delta_i$ taking values 0 or 1 : if $\Delta_i=1$ then $Y_i$ comes from model 2, otherwise it comes from model 1. Suppose we knew the values of the $\Delta_i$'s. Then the log-likelihood would be
+$$
+l_0(\theta;Z,\Delta)=\sum_{i=1}^N[(1-\Delta_i)\log \phi_{\theta_1}(y_i)+\Delta_i\log \phi_{\theta_2}(y_2)]+\\
+\sum_{i=1}^N[(1-\Delta_i)\log (1-\pi)+\Delta_i\log \pi],
+$$
+and the maximum likelihood estimates of $\mu_1$ and $\sigma_1^2$ would be the sample mean and variance for those data with $\Delta_i=0$, and similarly those for $\mu_2$ and $\sigma_2^2$ would be the sample mean and variance of the data with $\Delta_i=1$. The estimation of $\pi$ would be the proportion of $\Delta_i=1$.
+
+Since the values of the $\Delta_i$'s are actually unknown, we proceed in an interative fashion, substituding for each $\Delta_i$ its expected value
+$$
+\gamma_i(\theta)=E(\Delta_i|\theta,Z)=P(\Delta_i=1|\theta,Z),
+$$
+also called the responsibility of model 2 for observation $i$. 
+
+We use a procedure called the EM algorithm for the special case of Gaussian mixtures. In the expectation step, we do a soft assignment of each observation to each model: the current estimates of the parameters are used to assign responsibilities according to the relative density of the training points under each model. In the maximization step, these responsibilities are used in weighted maximum-likelihood fits to update the estimates of the parameters.
+
+A good way to construct initial guesses for $\hat \mu_1$ and $\hat \mu_2$ is simply to choose two of the $y_i$ at random. Both $\hat{\sigma}_1^2$ and $\hat{\sigma}_2^2$ can be set equal to the overall sample variance $\sum_{i=1}^N(y_i-\bar y_i)^2/N$. The mixing proportion $\hat \pi$ can be starterd at the value 0.5.
+
+***
+EM Algorithm for Two-component Gaussian Mixture:
+
+1. Take initial guesses for the parameters$\hat\mu_1,\hat\sigma_1^2,\hat\mu_2,\hat\sigma^2,\hat\pi$.
+
+2. Expectation Step: compute the responsibilities
+$$
+\hat\gamma_i=\frac{\hat\pi\phi_{\hat\theta_2}(y_i)}{(1-\hat\pi)\phi_{\hat\theta_1}(y_i)+\hat\pi\phi_{\hat\theta_2}(y_i)},i=1,2,\cdots,N.
+$$
+
+3. Maximization Step: compute the weighted means and variances:
+
+$$
+\hat\mu_1=\frac{\sum_{i=1}^N(1-\hat\gamma_i)y_i}{\sum_{i=1}^N(1-\hat\gamma_i)},\ \hat\sigma_1^2=\frac{\sum_{i=1}^N(1-\hat\gamma_i)(y_i-\hat\mu_1)^2}{\sum_{i=1}^N(1-\hat\gamma_i)},\\
+\hat\mu_2=\frac{\sum_{i=1}^N\hat\gamma_iy_i}{\sum_{i=1}^N\hat\gamma_i},\ \hat\sigma_2^2=\frac{\sum_{i=1}^N\hat\gamma_i(y_i-\hat\mu_2)^2}{\sum_{i=1}^N\hat\gamma_i},
+$$
+and the mixing probability $\hat\pi=\sum_{i=1}^N\hat\gamma_i/N$.
+
+4. Iterate steps 2 and 3 until convergence.
+
+***
+
+## 8.5.2 The EM Algorithm in General
+
+To be filled later.
+
+## 8.5.3 EM as a Maximization-Maximization Procedure
+
+To be filled later.
+
+# 8.6 MCMC for Sampling from the Posterior
+
+Except for simple models, this is often a difficult computational problem. In this section we discuss the Markov chain Monte Carlo (MCMC) approach to posterior sampling. We will see that Gibbs sampling, an MCMC procedure, is closely related to the EM algorithm: the main difference is that it samples from the conditional distributions rather than maximizing over them.
+
+Consider first the following abstract problem. We have random variables $U_1,\cdots,U_K$ and we wish to draw a sample from their joint distribution. Suppose this is difficult to do, but it is easy to simulate from the conditional distributions $P(U_j|U_1,\cdots,U_{j-1},U_{j+1},\cdots,U_K),j=1,2,\cdots,K$. The Gibbs sampling procedure alternatively simulates from each of these distributions and when the process stabilizes, provides a sample from the desired joint distribution. It is defined as follows:
+
+***
+Algorithm: Gibbs Sampler
+
+1. Take same initial values $U_k^{(0)},k=1,\cdots,K$.
+
+2. Repeat for $t=1,2,\cdots,$: 
+
+For $k=1,2,\cdots,K$, generate $U_k^{(t)}$ from $P(U_k^{(t)}|U_1^{(t)},\cdots,U_{k-1}^{(t)},U_{k+1}^{(t-1)},\cdots,U_K^{(t-1)})$
+
+3. Continue step 2 until the joint distribution of $(U_1^{(t)},U_2^{(t)},\cdots,U_K^{(t)})$ does not change.
+
+***
+
+Under regularity conditions it can be shown that this procedure eventually stabilizes, and the resulting random variables are indeed a sample from the joint distribution of $U_1,\cdots,U_K$. This occurs despite the fact that the samples $(U_1^{(t)},U_2^{(t)},\cdots,U_K^{(t)})$ are clearly not independent for different $t$. More formally, Gibbs sampling produces a Markov chain whose stationary distribution is the true joint distribution, and hence the term "Markov chain Monte Carlo". It is not surprising that the true joint distribution is stationary under this process, as the successive steps leave the marginal distributions of the $U_k$'s unchanged.
+
+# 8.7-8.9 Bagging, Stacking and Bumping
+
+In these sections, some related techniques for model averaging and improvement, including committee methods, bagging, stacking and bumping are introduced. To be filled later.
+
+

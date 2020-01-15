@@ -15,3 +15,7 @@ output: html_document
 # [Chapter 6: Kernel Smoothing Methods](6.html)
 
 # [Chapter 7: Model Assessment and Selection](7.html)
+
+# [Chapter 8: Model Inference and Averaging](8.html)
+
+
