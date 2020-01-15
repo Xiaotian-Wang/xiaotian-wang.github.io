@@ -271,24 +271,78 @@ AIC=-\frac{2}{N}loglik+2\frac{d}{N}
 </div>
 <div id="the-effective-number-of-parameters" class="section level1">
 <h1>7.6 The Effective Number of Parameters</h1>
+<p>The concept of “number of parameters” can be generalized, especially to models where regularization is used in the fitting. Suppose we stack the outcomes <span class="math inline">\(y_1, y_2,\cdots,y_N\)</span> into a vector <span class="math inline">\(y\)</span>, and similarly for the predictions <span class="math inline">\(\hat y\)</span>. Then a linear fitting method is one for which we can write <span class="math display">\[
+\hat y=Sy,
+\]</span> where <span class="math inline">\(S\)</span> is an $NN $ matrix depending on the input vectors <span class="math inline">\(x_i\)</span> but not on the <span class="math inline">\(y_i\)</span>. Linear fitting methods include linear regression on the original features or on a derived basis set, and smoothing methods that use quadratic shrinkage, such as ridge regression and cubic smoothing splines. Then the effective number of parameters is defined as <span class="math display">\[
+df(S)=trance(S),
+\]</span> the sum of the diagonal elements of <span class="math inline">\(S\)</span> (also known as the effective degrees of freedom). Note that if <span class="math inline">\(S\)</span> is an orthogonal-projection matrix onto a basis set spanned by <span class="math inline">\(M\)</span> features, then <span class="math inline">\(trace(S)=M\)</span>. It turns out that <span class="math inline">\(trace(S)\)</span> is exactly the correct quantity to replace <span class="math inline">\(d\)</span> as the number of parameters in the <span class="math inline">\(C_p\)</span> statistic. If <span class="math inline">\(y\)</span> arises from an additive-error model <span class="math inline">\(Y=f(X)+\varepsilon\)</span> with <span class="math inline">\(Var(\varepsilon)=\sigma^2_\varepsilon\)</span>, then one can show that <span class="math inline">\(\sum_{i=1}^NCov(\hat y_i,y_i)=trace(S)\sigma^2_\varepsilon\)</span>, which motivates the more general definition <span class="math display">\[
+df(\hat y)=\frac{\sum_{i=1}^NCov(\hat y_i,y_i)}{\sigma^2_\varepsilon}.
+\]</span> For models like neural networks, in which we minimize an error function <span class="math inline">\(R(\omega)\)</span> with weight decay penalty <span class="math inline">\(\alpha\sum_m w^2_m\)</span>, the effective number of parameters has the form <span class="math display">\[
+df(\alpha)=\sum_{m=1}^M\frac{\theta_m}{\theta_m+\alpha},
+\]</span> where the <span class="math inline">\(\theta_m\)</span> are the eigenvalues of the Hessian matrix <span class="math inline">\(\partial^2R(w)/\partial w\partial w^T\)</span></p>
 </div>
 <div id="the-bayesian-approach-and-bic" class="section level1">
 <h1>7.7 The Bayesian Approach and BIC</h1>
+<p>The Bayesian information criterion (BIC), like AIC, is applicable in settings where the fitting is carried out by maximization of a log-likelihood. The generic form of BIC is <span class="math display">\[
+BIC=-2loglik+(\log N)d.
+\]</span> The BIC statistic (times 1/2) is also known as the Schwarz criterion.</p>
+<p>Under the Gaussian model, assuming the variance <span class="math inline">\(\sigma^2_\varepsilon\)</span> is known, <span class="math inline">\(-2loglik\)</span> equals (up to a constant) <span class="math inline">\(\sum_i(y_i-\hat f(x_i)^2)/\sigma^2_\varepsilon\)</span>, which is <span class="math inline">\(N\cdot\overline{err}/\sigma^2_\varepsilon\)</span> for squared error loss. Hence, we can write <span class="math display">\[
+BIC=\frac{N}{\sigma^2_\varepsilon}[\overline{err}+(\log N)\cdot \frac{d}{N}\sigma^2_\varepsilon].
+\]</span> Therefore BIC is proportional to AIC (<span class="math inline">\(C_p\)</span>), with the factor 2 replaced by <span class="math inline">\(\log(N)\)</span>. Assuming <span class="math inline">\(N&gt;e^2\approx 7.4\)</span>, BIC tends to penalize complex models more heavily, giving pregerence to simpler models in selection.</p>
+<p>Despite its similarity with AIC, BIC is motivated in quite a different way. It arises in the Bayesian approach to model selection, which is also described. Refer to the textbook.</p>
+<p>For model selection purposes, there is no clear choice between AIC and BIC. BIC is asymptotically consistent as a selection criterion. What this means is that given a family of models, including the true model, the probability that BIC will select the correct model approaches one as the sample size <span class="math inline">\(N \to \infty\)</span>. This is not the case for AIC, which tends to choose models which are too complex as <span class="math inline">\(N\to \infty\)</span>. On the other hand, for finite samples, BIC often chooses models that are too simple, because of its heavy penalty on complexity.</p>
 </div>
 <div id="minimum-description-length" class="section level1">
 <h1>7.8 Minimum Description Length</h1>
+<p>The minimum description length (MDL) approach gives a selection criterion formally identical to the BIC approach, but is motivated from an optimal coding viewpoint.</p>
+<p>For the detailed theory, refer to the text book.</p>
 </div>
 <div id="vapnik-chervonenkis-dimension" class="section level1">
 <h1>7.9 Vapnik-Chervonenkis Dimension</h1>
+<p>Refer to the textbook.(to be continued)</p>
 </div>
 <div id="cross-validation" class="section level1">
 <h1>7.10 Cross-Validation</h1>
+<p>Probably the simplest and most widely used method for estimating prediction error is cross-validation. This method directly estimates the expected extra-sample error <span class="math inline">\(Err=E[L(Y,\hat f(X))]\)</span>, the average generalization error when the method <span class="math inline">\(\hat f(X)\)</span> is applied to an independent test sample from the joint distribution of <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>.</p>
+<div id="k-fold-cross-validation" class="section level2">
+<h2>7.10.1 K-Fold Cross-Validation</h2>
+<p>K-fold cross validation is the method to finesse the problem that we do not have enough data to set aside a validation set and use it to assess the performance of our prediction model.</p>
+<p>Let <span class="math inline">\(\kappa:\{1,\cdots,N\}\to \{1,\cdots,K\}\)</span> be an indexing function that indicates the partition to which observation <span class="math inline">\(i\)</span> is allocated by the randomization. Denote <span class="math inline">\(\hat f^{-\kappa}(x)\)</span> the fitted function, computed with the <span class="math inline">\(k\)</span>th part of the data removed. Then the cross-validation estimate prediction error is <span class="math display">\[
+CV(\hat f)=\frac{1}{N}\sum_{i=1}^{N}L(y_i,\hat f^{-\kappa(i)}(x_i)).
+\]</span> The case <span class="math inline">\(K = N\)</span> is known as leave-one-out cross-validation.</p>
+<p>Given a set of models <span class="math inline">\(f(x,\alpha)\)</span> indexed by a tuning parameter <span class="math inline">\(\alpha\)</span>, denote by <span class="math inline">\(\hat f^{-\kappa}(x,\alpha)\)</span> the <span class="math inline">\(\alpha\)</span>th model fit with the <span class="math inline">\(k\)</span>th part of the data removed. Then for this set of models, we define <span class="math display">\[
+CV(\hat f,\alpha)=\frac{1}{N}\sum_{i=1}^NL(y_i,\hat f^{-\kappa(i)}(x_i,\alpha)).
+\]</span> The function <span class="math inline">\(CV(\hat f,\alpha)\)</span> provides an estimate of the test error curve, and we find the tuning parameter <span class="math inline">\(\hat\alpha\)</span> that minimizes it. Our final chosen model is <span class="math inline">\(f(x,\hat\alpha)\)</span>, which we then fit to all the data.</p>
+<p><strong>Generalized cross-validation</strong> provides a convenient approximation to leaveone out cross-validation, for linear fitting under squared-error loss. As defined in Section 7.6, A linear fitting method is one for which we can write <span class="math display">\[
+\hat{y}=Sy.
+\]</span> Now, for maty linear fitting methods, <span class="math display">\[
+\frac{1}{N}\sum_{i=1}^N[y_i-\hat f^{-i}(x_i)]^2=\frac{1}{N}\sum_{i=1}^N[\frac{y_i-\hat f(x_i)}{1-S_{ii}}]^2,
+\]</span> where <span class="math inline">\(S_{ii}\)</span> is the <span class="math inline">\(i\)</span>th diagonal element of <span class="math inline">\(S\)</span>. The GCV approximation is</p>
+<p><span class="math display">\[
+GCV(\hat f)=\frac{1}{N}\sum_{i=1}^N[\frac{y_i-\hat f(x_i)}{1-trace(S)/N}]^2.
+\]</span> The quantity <span class="math inline">\(trace(S)\)</span> is the effective number of parameters, as defined in Section 7.6.</p>
+<p>Some detailed discussion is in Subsection 7.10.2 and 7.10.3 including the wrong and the right way to do cross-validation and does cross-validation really work. Refer to the textbook.</p>
+</div>
 </div>
 <div id="bootstrap-methods" class="section level1">
 <h1>7.11 Bootstrap Methods</h1>
+<p>The bootstrap is a general tool for assessing statistical accuracy. First we describe the bootstrap in general, and then show how it can be used to estimate extra-sample prediction error. As with cross-validation, the bootstrap seeks to estimate the conditional error <span class="math inline">\(Err_\mathcal T\)</span> , but typically estimates well only the expected prediction error Err.</p>
+<p>Suppose we have a model fit to a set of training data. We denote the training set by <span class="math inline">\(Z = (z_1, z_2,\cdots,z_N)\)</span>, where <span class="math inline">\(z_i = (x_i, y_i)\)</span>. The basic idea is to randomly draw datasets with replacement from the training data, each sample the same size as the original training set. This is done <span class="math inline">\(B\)</span> times (say <span class="math inline">\(B = 100\)</span>), producing <span class="math inline">\(B\)</span> bootstrap datasets. Then we refit the model to each of the bootstrap datasets, and examine the behavior of the fits over the <span class="math inline">\(B\)</span> replications.</p>
+<p><span class="math inline">\(S(Z)\)</span> is any quantity computed from the data <span class="math inline">\(Z\)</span>, for example, the prediction at some input point. From the bootstrap sampling we can estimate any aspect of the distribution of <span class="math inline">\(S(Z)\)</span>, for example, its variance,</p>
+<p><span class="math display">\[
+\widehat{Var}[S(Z)]=\frac{1}{B-1}\sum_{b=1}^B(S(Z^{*b})-\bar{S}^*)^2,
+\]</span> where <span class="math inline">\(\bar S^*=\sum_bS(Z^{*b})/B\)</span>. Note that <span class="math inline">\(\widehat{Var}[S(Z)]\)</span> can be thought of as Monte-Carlo estimate of the variance of <span class="math inline">\(S(Z)\)</span> under sampling from the empirical distribution function <span class="math inline">\(\hat F\)</span> for the data <span class="math inline">\((z_1,z_2,\cdots,z_N)\)</span>.</p>
+<p>How can we apply the bootstrap to estimate prediction error? One approach would be to fit the model in question on a set of bootstrap samples, and then keep track of how well it predicts the original training set. If <span class="math inline">\(\hat f^{*b}(x_i)\)</span> is the predicted value at <span class="math inline">\(x_i\)</span>, from the model fitted to the <span class="math inline">\(b\)</span>th bootstrap dataset, our estimate is</p>
+<p><span class="math display">\[\widehat{Err}_{boot}=\frac{1}{BN}\sum_{b=1}^B\sum_{i=1}^NL(y_i,\hat f^{*b}(x_i)).\]</span> However, it is easy to see that <span class="math inline">\(\widehat{Err}_{boot}\)</span> does not provide a good estimate in general. The reason is that the bootstrap datasets are acting as the training samples, while the original training set is acting as the test sample, and these two samples have observations in common.</p>
+<p>By mimicking cross-validation, a better bootstrap estimate can be obtained. For each observation, we only keep track of predictions from bootstrap samples not containing that observation. The leave-one-out bootstrap estimate of prediction error is defined by</p>
+<p><span class="math display">\[
+\widehat{Err}^{(1)}=\frac{1}{N}\sum_{i=1}^N\frac{1}{card(C^{-i})}\sum_{b\in C^{-i}}L(y_i,\hat f^{*b}(x_i)).
+\]</span> Here <span class="math inline">\(C^{-i}\)</span> is the set of indices of the bootstrap samples <span class="math inline">\(b\)</span> that do not contain observation <span class="math inline">\(i\)</span>. In computing <span class="math inline">\(\widehat{Err}^{(1)}\)</span>, we either have to choose <span class="math inline">\(B\)</span> large enough to ensure that all of the <span class="math inline">\(card(C^{-i})\)</span> are greater that zero, or we can just leave out the terms corresponding to <span class="math inline">\(card(C^{-i})\)</span>’s that are zero.</p>
+<p>The leave-one out bootstrap solves the overfitting problem suffered by <span class="math inline">\(\widehat{Err}_{boot}\)</span>, but has the training-set-size bias mentioned in the discussion of cross-validation. For more details, refer to the textbook.</p>
 </div>
 <div id="conditional-or-exoected-test-error" class="section level1">
 <h1>7.12 Conditional or Exoected Test Error?</h1>
+<p>To be continued.</p>
 </div>
 
 

@@ -160,19 +160,127 @@ $$
 
 # 7.6 The Effective Number of Parameters
 
+The concept of "number of parameters" can be generalized, especially to
+models where regularization is used in the fitting. Suppose we stack the
+outcomes $y_1, y_2,\cdots,y_N$ into a vector $y$, and similarly for the predictions $\hat y$. Then a linear fitting method is one for which we can write
+$$
+\hat y=Sy,
+$$
+where $S$ is an $N\times N $ matrix depending on the input vectors $x_i$ but not on the $y_i$. Linear fitting methods include linear regression on the original features or on a derived basis set, and smoothing methods that use quadratic shrinkage, such as ridge regression and cubic smoothing splines. Then the effective number of parameters is defined as
+$$
+df(S)=trance(S),
+$$
+the sum of the diagonal elements of $S$ (also known as the effective degrees of freedom). Note that if $S$ is an orthogonal-projection matrix onto a basis set spanned by $M$ features, then $trace(S)=M$. It turns out that $trace(S)$ is exactly the correct quantity to replace $d$ as the number of parameters in the $C_p$ statistic. If $y$ arises from an additive-error model $Y=f(X)+\varepsilon$ with $Var(\varepsilon)=\sigma^2_\varepsilon$, then one can show that $\sum_{i=1}^NCov(\hat y_i,y_i)=trace(S)\sigma^2_\varepsilon$, which motivates the more general definition
+$$
+df(\hat y)=\frac{\sum_{i=1}^NCov(\hat y_i,y_i)}{\sigma^2_\varepsilon}.
+$$
+For models like neural networks, in which we minimize an error function $R(\omega)$ with weight decay penalty $\alpha\sum_m w^2_m$, the effective number of parameters has the form
+$$
+df(\alpha)=\sum_{m=1}^M\frac{\theta_m}{\theta_m+\alpha},
+$$
+where the $\theta_m$ are the eigenvalues of the Hessian matrix $\partial^2R(w)/\partial w\partial w^T$
+
 # 7.7 The Bayesian Approach and BIC
+
+The Bayesian information criterion (BIC), like AIC, is applicable in settings where the fitting is carried out by maximization of a log-likelihood. The generic form of BIC is
+$$
+BIC=-2loglik+(\log N)d.
+$$
+The BIC statistic (times 1/2) is also known as the Schwarz criterion.
+
+Under the Gaussian model, assuming the variance $\sigma^2_\varepsilon$ is known, $-2loglik$ equals (up to a constant) $\sum_i(y_i-\hat f(x_i)^2)/\sigma^2_\varepsilon$, which is $N\cdot\overline{err}/\sigma^2_\varepsilon$ for squared error loss. Hence, we can write 
+$$
+BIC=\frac{N}{\sigma^2_\varepsilon}[\overline{err}+(\log N)\cdot \frac{d}{N}\sigma^2_\varepsilon].
+$$
+Therefore BIC is proportional to AIC ($C_p$), with the factor 2 replaced by $\log(N)$. Assuming $N>e^2\approx 7.4$, BIC tends to penalize complex models more heavily, giving pregerence to simpler models in selection.
+
+Despite its similarity with AIC, BIC is motivated in quite a different
+way. It arises in the Bayesian approach to model selection, which is also described. Refer to the textbook.
+
+For model selection purposes, there is no clear choice between AIC and
+BIC. BIC is asymptotically consistent as a selection criterion. What this means is that given a family of models, including the true model, the probability that BIC will select the correct model approaches one as the sample size $N \to \infty$. This is not the case for AIC, which tends to choose models which are too complex as $N\to \infty$. On the other hand, for finite samples, BIC often chooses models that are too simple, because of its heavy penalty on complexity.
 
 # 7.8 Minimum Description Length
 
+The minimum description length (MDL) approach gives a selection criterion formally identical to the BIC approach, but is motivated from an optimal coding viewpoint.
+
+For the detailed theory, refer to the text book.
+
 # 7.9 Vapnik-Chervonenkis Dimension
+
+Refer to the textbook.(to be continued)
 
 # 7.10 Cross-Validation
 
+Probably the simplest and most widely used method for estimating prediction error is cross-validation. This method directly estimates the expected extra-sample error $Err=E[L(Y,\hat f(X))]$, the average generalization error when the method $\hat f(X)$ is applied to an independent test sample from the joint distribution of $X$ and $Y$. 
+
+## 7.10.1 K-Fold Cross-Validation
+
+K-fold cross validation is the method to finesse the problem that we do not have enough data to set aside a validation set and use it to assess the performance of our prediction model.
+
+Let $\kappa:\{1,\cdots,N\}\to \{1,\cdots,K\}$ be an indexing function that indicates the partition to which observation $i$ is allocated by the randomization. Denote $\hat f^{-\kappa}(x)$ the fitted function, computed with the $k$th part of the data removed. Then the cross-validation estimate prediction error is 
+$$
+CV(\hat f)=\frac{1}{N}\sum_{i=1}^{N}L(y_i,\hat f^{-\kappa(i)}(x_i)).
+$$
+The case $K = N$ is known as leave-one-out cross-validation.
+
+Given a set of models $f(x,\alpha)$ indexed by a tuning parameter $\alpha$, denote by $\hat f^{-\kappa}(x,\alpha)$ the $\alpha$th model fit with the $k$th part of the data removed. Then for this set of models, we define
+$$
+CV(\hat f,\alpha)=\frac{1}{N}\sum_{i=1}^NL(y_i,\hat f^{-\kappa(i)}(x_i,\alpha)).
+$$
+The function $CV(\hat f,\alpha)$ provides an estimate of the test error curve, and we find the tuning parameter $\hat\alpha$ that minimizes it. Our final chosen model is $f(x,\hat\alpha)$, which we then fit to all the data.
+
+**Generalized cross-validation** provides a convenient approximation to leaveone out cross-validation, for linear fitting under squared-error loss. As defined in Section 7.6, A linear fitting method is one for which we can write 
+$$
+\hat{y}=Sy.
+$$
+Now, for maty linear fitting methods,
+$$
+\frac{1}{N}\sum_{i=1}^N[y_i-\hat f^{-i}(x_i)]^2=\frac{1}{N}\sum_{i=1}^N[\frac{y_i-\hat f(x_i)}{1-S_{ii}}]^2,
+$$
+where $S_{ii}$ is the $i$th diagonal element of $S$. The GCV approximation is 
+
+$$
+GCV(\hat f)=\frac{1}{N}\sum_{i=1}^N[\frac{y_i-\hat f(x_i)}{1-trace(S)/N}]^2.
+$$
+The quantity $trace(S)$ is the effective number of parameters, as defined in Section 7.6.
+
+Some detailed discussion is in Subsection 7.10.2 and 7.10.3 including the wrong and the right way to do cross-validation and does cross-validation really work. Refer to the textbook.
+
+
 # 7.11 Bootstrap Methods
+
+The bootstrap is a general tool for assessing statistical accuracy. First we describe the bootstrap in general, and then show how it can be used to estimate extra-sample prediction error. As with cross-validation, the bootstrap seeks to estimate the conditional error $Err_\mathcal T$ , but typically estimates well only the expected prediction error Err.
+
+Suppose we have a model fit to a set of training data. We denote the
+training set by $Z = (z_1, z_2,\cdots,z_N)$, where $z_i = (x_i, y_i)$. The basic idea is to randomly draw datasets with replacement from the training data, each sample the same size as the original training set. This is done $B$ times (say $B = 100$), producing $B$ bootstrap datasets. Then we refit the model to each of the bootstrap datasets, and examine the behavior of the fits over the $B$ replications.
+
+$S(Z)$ is any quantity computed from the data $Z$, for example, the prediction at some input point. From the bootstrap sampling we can estimate any aspect of the distribution of $S(Z)$, for example, its
+variance,
+
+$$
+\widehat{Var}[S(Z)]=\frac{1}{B-1}\sum_{b=1}^B(S(Z^{*b})-\bar{S}^*)^2,
+$$
+where $\bar S^*=\sum_bS(Z^{*b})/B$. Note that $\widehat{Var}[S(Z)]$ can be thought of as Monte-Carlo estimate of the variance of $S(Z)$ under sampling from the empirical distribution function $\hat F$ for the data $(z_1,z_2,\cdots,z_N)$.
+
+How can we apply the bootstrap to estimate prediction error? One approach would be to fit the model in question on a set of bootstrap samples, and then keep track of how well it predicts the original training set. If $\hat f^{*b}(x_i)$ is the predicted value at $x_i$, from the model fitted to the $b$th bootstrap dataset, our estimate is
+
+$$\widehat{Err}_{boot}=\frac{1}{BN}\sum_{b=1}^B\sum_{i=1}^NL(y_i,\hat f^{*b}(x_i)).$$
+However, it is easy to see that $\widehat{Err}_{boot}$ does not provide a good estimate in general. The reason is that the bootstrap datasets are acting as the training samples, while the original training set is acting as the test sample, and these two samples have observations in common.
+
+By mimicking cross-validation, a better bootstrap estimate can be obtained. For each observation, we only keep track of predictions from bootstrap samples not containing that observation. The leave-one-out bootstrap estimate of prediction error is defined by
+
+$$
+\widehat{Err}^{(1)}=\frac{1}{N}\sum_{i=1}^N\frac{1}{card(C^{-i})}\sum_{b\in C^{-i}}L(y_i,\hat f^{*b}(x_i)).
+$$
+Here $C^{-i}$ is the set of indices of the bootstrap samples $b$ that do not contain observation $i$. In computing $\widehat{Err}^{(1)}$, we either have to choose $B$ large enough to ensure that all of the $card(C^{-i})$ are greater that zero, or we can just leave out the terms corresponding to $card(C^{-i})$'s that are zero.
+
+The leave-one out bootstrap solves the overfitting problem suffered by
+$\widehat{Err}_{boot}$, but has the training-set-size bias mentioned in the discussion of cross-validation. For more details, refer to the textbook.
 
 # 7.12 Conditional or Exoected Test Error?
 
-
+To be continued.
 
 
 
