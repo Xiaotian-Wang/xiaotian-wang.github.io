@@ -6,3 +6,123 @@ output:
 
 [Back to the Contents](Contents.html)
 
+In this chapter we begin our discussion of some specific methods for supervised learning. These techniques each assume a (different) structured form for the unknown regression function, and by doing so they finesse the curse of dimensionality.
+
+# 9.1 Generalized Additive Models
+
+This section describes more automatic flexible statistical methods that may be used to identify and characterize nonlinear regression effects. These methods are called "generalized additive models".
+
+In regression setting, a generalized additive model has the form
+$$
+E(Y|X_1,\cdots,X_p)=\alpha+f_1(X_1)+\cdots+f_p(X_p).
+$$
+As usual, $X_1,\cdots,X_p$ represent predictors and $Y$ is the outcome; the $f_j$'s are unspecified smooth ("nonparametric") functions. If we were to model each function using expansion of basis function, the resulting model could then be fit by simple least squares. Our approach here is different: we fit each function using a scatterplot smoother (e.g., a cubic smoothing spline or kernel smoother), and provide an algortithm for simultaneously estimating all $p$ functions.
+
+For two-class classification, the model has the form:
+$$
+\log{\frac{\mu(X)}{1-\mu(X)}}=\alpha+f_1(X_1)+\cdots+f_p(X_p),
+$$
+where each $f_j$ is an unspecified smooth function. In general, the conditional mean $\mu(X)$ of a response $Y$ is related to an additive function of the predictors via a link function $g$:
+$$
+g(\mu(X))=\alpha+f_1(X_1)+\cdots+f_p(X_p).
+$$
+Additive models can replace linear models in a wide variety of settings, for example an additive decomposition of time series,
+$$
+Y_t=S_t+T_t+\varepsilon_t,
+$$
+where $S_t$ is a seasonal component, $T_t$ is a trend and $\varepsilon$ is an error term.
+
+## 9.1.1 Fitting Additive Models
+
+In this section we describe a modular algorithm for fitting additive models and their generalizations. It is not too hard to understand. Refer to the textbook.
+
+# 9.2 Tree-Based Methods
+
+## 9.2.1 Background
+
+## 9.2.2 Regression Trees
+
+Our data consists of $p$ inputs and a response, for each of $N$ observations: that is $(x_i,y_i)$ for $i=1,2,\cdots,N$, with $x_i=(x_{i1},\cdots,x_{ip})$. The algorithm needs to automatically decide on the splitting variables and split points, and also what topology the tree should have. Suppose first that we have a partition into $M$ regions $R_1,\cdots,R_M$, and we model the response as a constant $c_m$ in each region:
+$$
+f(x)=\sum_{m=1}^Mc_mI(x\in R_m).
+$$
+If we adopt as our criterion minimization of the sum of squares $\sum(y_i-f(x_i))^2$, it is easy to see that the best $\hat c_m$ is just the average of $y_i$ in region $R_m$:
+$$
+\hat c_m=ave(y_i|x_i\in R_m).
+$$
+Now finding the best binary partition in terms of minimum sum of squares is generally computationally infeasible. Hence we proceed with a greedy algorithm. Starting with all of the data, consider a splitting variable $j$ and split point $s$, and define the pair of half-planes
+$$
+R_1(j,s)=\{X|X_j\leqslant s\}\ \mathrm{and}\ R_2(j,s)=\{X|X_j> s\}.
+$$
+Then, we seek the splitting variable $j$ and split point $s$ that solve
+$$
+\min_{j,s}[\min_{c_1}\sum_{x_i\in R_1(j,s)}(y_i-c_1)^2+\min_{c_2}\sum_{x_i\in R_2(j,s)}(y_i-c_2)^2].
+$$
+For any choice $j$ and $s$, the inner minimization is solved by
+$$
+\hat c_1=ave(y_i|x_i\in R_1(j,s))\ \mathrm{and}\ \hat c_2=ave(y_i|x_i\in R_2(j,s)).
+$$
+For each splitting variable, the determination of the split point s can be done very quickly and hence by scanning through all of the inputs, determination of the best pair $(j,s)$ is feasible.
+
+Having found the best split, we partition the data into the two resulting regions and repeat the splitting process on each of the two regions. Then this process is repeated on all of the resulting regions.
+
+**$\bullet$ How to decide the tree size?**
+
+The preferred strategy is to grow a large tree $T_0$, stopping the splitting process only when some minimum node size (say 5) is reached. Then this large tree is pruned using cost-complexity pruning, which we now describe.
+
+We define a subtree $T\in T_0$ to be any tree that can be obtained by pruning $T_0$, that is, collapsing any number of its internal (non-terminal) nodes. We index terminal nodes by $m$, with node $m$ representing region $R_m$. Let $|T|$ denote the number of terminal nodes in $T$. Letting 
+$$
+N_m=\#\{x_i\in R_m\},\\
+\hat c_m=\frac{1}{N_m}\sum_{x_i\in R_m}y_i,\\
+Q_m(T)=\frac{1}{N_m}\sum_{x_i\in R_m}(y_i-\hat c_m)^2,
+$$
+we define the cost complexity criterion
+$$
+C_\alpha(T)=\sum_{m=1}^{|T|}N_mQ_m(T)+\alpha|T|.
+$$
+The idea is to find, for each $\alpha$, the subtree $T_\alpha\subseteq T_0$ to minimize $C_\alpha(T)$. The tuning parameter $\alpha\geqslant0$ governs the tradeoff between tree size and its goodness of fit to the data. Large values of $\alpha$ result in smaller trees $T_\alpha$, and conversely for smaller values of $\alpha$. As the notation suggests, with $\alpha=0$ the solution is the full tree $T_0$. We discuss how to adaptively choose $\alpha$ below.
+
+For each $\alpha$ one can show that there is a unique smallest subtree $T_\alpha$ that minimizes $C_\alpha(T)$. To find $T_\alpha$ we use weakest link pruning: we successively collapse in the internal node that produces the smallest per-node (root) tree. This gives a (finite) sequence of subtrees, and one can show this sequence must contain $T_\alpha$. Estimation of $\alpha$ is achieved by five- or tenfold cross-validation: we choose the value $\hat\alpha$ to minimize the cross-validated sum of squares. Our final tree is $T_\hat\alpha$.
+
+## 9.2.3 Classification Trees
+
+If the target is a classification outcome taking values $1,\cdots,K$, the only changes need in the tree algorithm pertain to the criteria for splitting nodes and pruning the tree. For regression we used the squared-error node impurity measure $Q_m(T)$ defined before, but this is not suitable for classification. In a node $m$, representing a region $R_m$ with $N_m$ observations, let
+$$
+\hat p_{mk}=\frac{1}{N_m}\sum_{x_i\in R_m}I(y_i=k),
+$$
+the proportion of class $k$ observations in node $m$. We classify the observations in node $m$ to class $k(m)=\arg\max_k\hat p_{mk}$, the majority class in node $m$. Different measures $Q_m(T)$ of node impurity include the following:
+
+**Misclassification error:** $\frac{1}{N_m}\sum_{i\in R_m}I(y_i\neq k(m))=1-\hat p_{mk(m)}$.
+
+**Gini index:** $\sum_{k\neq k'}\hat p_{mk}\hat p_{mk'}=\sum_{k=1}^K\hat p_{mk}(1-\hat p_{mk})$
+
+**Cross-entropy of deviance** $-\sum_{k=1}^K\hat p_{mk}\log\hat p_{mk}$.
+
+## 9.2.4 Other Issues
+
+Refer to the textbook.
+
+# 9.3 PRIM: Bump Hunting
+
+Tree-based methods (for regression) partition the feature space into boxshaped regions, to try to make the response averages in each box as different as possible. The splitting rules defining the boxes are related to each through a binary tree, facilitating their interpretation.
+
+The patient rule induction method (PRIM) also finds boxes in the feature space, but seeks boxes in which the response average is high. Hence it looks for maxima in the target function, an exercise known as bump hunting. (If minima rather than maxima are desired, one simply works with the negative response values.)
+
+For details, refer to the textbook.
+
+# 9.4 MARS: Multivariate Adaptive Regression Splines
+
+MARS is an adaptive procedure for regression, and is well suited for highdimensional problems (i.e., a large number of inputs). It can be viewed as a generalization of stepwise linear regression or a modification of the CART method to improve the latter's performance in the regression setting. We introduce MARS from the first point of view, and later make the connection to CART.
+
+MARS uses expansions in piecewise linear basis functions of the form $(x-t)_+$ and $(t-x)_+$. Each function is piecewise linear, with a knot at the value $t$. In the terminology of Chapter 5, these are linear splines.We call the two functions a reflected pair in the discussion below. The idea is to form reflected pairs for each input $X_j$ with knots at each observed value $x_{ij}$ of that input. Therefore, the collection of basis functions is
+$$
+\mathcal C=\{(X_j-t)_+,(t-X_j)_+\}_{t\in\{x_{1j,}x_{2j},\cdots,x_{Nj}\},j=1,2,\cdots,p.}
+$$
+If all of the input values are distinct, there are $2Np$ basis functions altogether. Note that although each basis function depends only on a single $X_j$, for example, $h(X)=(x_j-t)_+$, it is considered as a function over the entire input space $\mathbb{R}^p$.
+
+
+
+
+
+
+

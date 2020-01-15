@@ -182,6 +182,82 @@ summary {
 
 
 <p><a href="Contents.html">Back to the Contents</a></p>
+<p>In this chapter we begin our discussion of some specific methods for supervised learning. These techniques each assume a (different) structured form for the unknown regression function, and by doing so they finesse the curse of dimensionality.</p>
+<div id="generalized-additive-models" class="section level1">
+<h1>9.1 Generalized Additive Models</h1>
+<p>This section describes more automatic flexible statistical methods that may be used to identify and characterize nonlinear regression effects. These methods are called “generalized additive models”.</p>
+<p>In regression setting, a generalized additive model has the form <span class="math display">\[
+E(Y|X_1,\cdots,X_p)=\alpha+f_1(X_1)+\cdots+f_p(X_p).
+\]</span> As usual, <span class="math inline">\(X_1,\cdots,X_p\)</span> represent predictors and <span class="math inline">\(Y\)</span> is the outcome; the <span class="math inline">\(f_j\)</span>’s are unspecified smooth (“nonparametric”) functions. If we were to model each function using expansion of basis function, the resulting model could then be fit by simple least squares. Our approach here is different: we fit each function using a scatterplot smoother (e.g., a cubic smoothing spline or kernel smoother), and provide an algortithm for simultaneously estimating all <span class="math inline">\(p\)</span> functions.</p>
+<p>For two-class classification, the model has the form: <span class="math display">\[
+\log{\frac{\mu(X)}{1-\mu(X)}}=\alpha+f_1(X_1)+\cdots+f_p(X_p),
+\]</span> where each <span class="math inline">\(f_j\)</span> is an unspecified smooth function. In general, the conditional mean <span class="math inline">\(\mu(X)\)</span> of a response <span class="math inline">\(Y\)</span> is related to an additive function of the predictors via a link function <span class="math inline">\(g\)</span>: <span class="math display">\[
+g(\mu(X))=\alpha+f_1(X_1)+\cdots+f_p(X_p).
+\]</span> Additive models can replace linear models in a wide variety of settings, for example an additive decomposition of time series, <span class="math display">\[
+Y_t=S_t+T_t+\varepsilon_t,
+\]</span> where <span class="math inline">\(S_t\)</span> is a seasonal component, <span class="math inline">\(T_t\)</span> is a trend and <span class="math inline">\(\varepsilon\)</span> is an error term.</p>
+<div id="fitting-additive-models" class="section level2">
+<h2>9.1.1 Fitting Additive Models</h2>
+<p>In this section we describe a modular algorithm for fitting additive models and their generalizations. It is not too hard to understand. Refer to the textbook.</p>
+</div>
+</div>
+<div id="tree-based-methods" class="section level1">
+<h1>9.2 Tree-Based Methods</h1>
+<div id="background" class="section level2">
+<h2>9.2.1 Background</h2>
+</div>
+<div id="regression-trees" class="section level2">
+<h2>9.2.2 Regression Trees</h2>
+<p>Our data consists of <span class="math inline">\(p\)</span> inputs and a response, for each of <span class="math inline">\(N\)</span> observations: that is <span class="math inline">\((x_i,y_i)\)</span> for <span class="math inline">\(i=1,2,\cdots,N\)</span>, with <span class="math inline">\(x_i=(x_{i1},\cdots,x_{ip})\)</span>. The algorithm needs to automatically decide on the splitting variables and split points, and also what topology the tree should have. Suppose first that we have a partition into <span class="math inline">\(M\)</span> regions <span class="math inline">\(R_1,\cdots,R_M\)</span>, and we model the response as a constant <span class="math inline">\(c_m\)</span> in each region: <span class="math display">\[
+f(x)=\sum_{m=1}^Mc_mI(x\in R_m).
+\]</span> If we adopt as our criterion minimization of the sum of squares <span class="math inline">\(\sum(y_i-f(x_i))^2\)</span>, it is easy to see that the best <span class="math inline">\(\hat c_m\)</span> is just the average of <span class="math inline">\(y_i\)</span> in region <span class="math inline">\(R_m\)</span>: <span class="math display">\[
+\hat c_m=ave(y_i|x_i\in R_m).
+\]</span> Now finding the best binary partition in terms of minimum sum of squares is generally computationally infeasible. Hence we proceed with a greedy algorithm. Starting with all of the data, consider a splitting variable <span class="math inline">\(j\)</span> and split point <span class="math inline">\(s\)</span>, and define the pair of half-planes <span class="math display">\[
+R_1(j,s)=\{X|X_j\leqslant s\}\ \mathrm{and}\ R_2(j,s)=\{X|X_j&gt; s\}.
+\]</span> Then, we seek the splitting variable <span class="math inline">\(j\)</span> and split point <span class="math inline">\(s\)</span> that solve <span class="math display">\[
+\min_{j,s}[\min_{c_1}\sum_{x_i\in R_1(j,s)}(y_i-c_1)^2+\min_{c_2}\sum_{x_i\in R_2(j,s)}(y_i-c_2)^2].
+\]</span> For any choice <span class="math inline">\(j\)</span> and <span class="math inline">\(s\)</span>, the inner minimization is solved by <span class="math display">\[
+\hat c_1=ave(y_i|x_i\in R_1(j,s))\ \mathrm{and}\ \hat c_2=ave(y_i|x_i\in R_2(j,s)).
+\]</span> For each splitting variable, the determination of the split point s can be done very quickly and hence by scanning through all of the inputs, determination of the best pair <span class="math inline">\((j,s)\)</span> is feasible.</p>
+<p>Having found the best split, we partition the data into the two resulting regions and repeat the splitting process on each of the two regions. Then this process is repeated on all of the resulting regions.</p>
+<p><strong><span class="math inline">\(\bullet\)</span> How to decide the tree size?</strong></p>
+<p>The preferred strategy is to grow a large tree <span class="math inline">\(T_0\)</span>, stopping the splitting process only when some minimum node size (say 5) is reached. Then this large tree is pruned using cost-complexity pruning, which we now describe.</p>
+<p>We define a subtree <span class="math inline">\(T\in T_0\)</span> to be any tree that can be obtained by pruning <span class="math inline">\(T_0\)</span>, that is, collapsing any number of its internal (non-terminal) nodes. We index terminal nodes by <span class="math inline">\(m\)</span>, with node <span class="math inline">\(m\)</span> representing region <span class="math inline">\(R_m\)</span>. Let <span class="math inline">\(|T|\)</span> denote the number of terminal nodes in <span class="math inline">\(T\)</span>. Letting <span class="math display">\[
+N_m=\#\{x_i\in R_m\},\\
+\hat c_m=\frac{1}{N_m}\sum_{x_i\in R_m}y_i,\\
+Q_m(T)=\frac{1}{N_m}\sum_{x_i\in R_m}(y_i-\hat c_m)^2,
+\]</span> we define the cost complexity criterion <span class="math display">\[
+C_\alpha(T)=\sum_{m=1}^{|T|}N_mQ_m(T)+\alpha|T|.
+\]</span> The idea is to find, for each <span class="math inline">\(\alpha\)</span>, the subtree <span class="math inline">\(T_\alpha\subseteq T_0\)</span> to minimize <span class="math inline">\(C_\alpha(T)\)</span>. The tuning parameter <span class="math inline">\(\alpha\geqslant0\)</span> governs the tradeoff between tree size and its goodness of fit to the data. Large values of <span class="math inline">\(\alpha\)</span> result in smaller trees <span class="math inline">\(T_\alpha\)</span>, and conversely for smaller values of <span class="math inline">\(\alpha\)</span>. As the notation suggests, with <span class="math inline">\(\alpha=0\)</span> the solution is the full tree <span class="math inline">\(T_0\)</span>. We discuss how to adaptively choose <span class="math inline">\(\alpha\)</span> below.</p>
+<p>For each <span class="math inline">\(\alpha\)</span> one can show that there is a unique smallest subtree <span class="math inline">\(T_\alpha\)</span> that minimizes <span class="math inline">\(C_\alpha(T)\)</span>. To find <span class="math inline">\(T_\alpha\)</span> we use weakest link pruning: we successively collapse in the internal node that produces the smallest per-node (root) tree. This gives a (finite) sequence of subtrees, and one can show this sequence must contain <span class="math inline">\(T_\alpha\)</span>. Estimation of <span class="math inline">\(\alpha\)</span> is achieved by five- or tenfold cross-validation: we choose the value <span class="math inline">\(\hat\alpha\)</span> to minimize the cross-validated sum of squares. Our final tree is <span class="math inline">\(T_\hat\alpha\)</span>.</p>
+</div>
+<div id="classification-trees" class="section level2">
+<h2>9.2.3 Classification Trees</h2>
+<p>If the target is a classification outcome taking values <span class="math inline">\(1,\cdots,K\)</span>, the only changes need in the tree algorithm pertain to the criteria for splitting nodes and pruning the tree. For regression we used the squared-error node impurity measure <span class="math inline">\(Q_m(T)\)</span> defined before, but this is not suitable for classification. In a node <span class="math inline">\(m\)</span>, representing a region <span class="math inline">\(R_m\)</span> with <span class="math inline">\(N_m\)</span> observations, let <span class="math display">\[
+\hat p_{mk}=\frac{1}{N_m}\sum_{x_i\in R_m}I(y_i=k),
+\]</span> the proportion of class <span class="math inline">\(k\)</span> observations in node <span class="math inline">\(m\)</span>. We classify the observations in node <span class="math inline">\(m\)</span> to class <span class="math inline">\(k(m)=\arg\max_k\hat p_{mk}\)</span>, the majority class in node <span class="math inline">\(m\)</span>. Different measures <span class="math inline">\(Q_m(T)\)</span> of node impurity include the following:</p>
+<p><strong>Misclassification error:</strong> <span class="math inline">\(\frac{1}{N_m}\sum_{i\in R_m}I(y_i\neq k(m))=1-\hat p_{mk(m)}\)</span>.</p>
+<p><strong>Gini index:</strong> <span class="math inline">\(\sum_{k\neq k'}\hat p_{mk}\hat p_{mk'}=\sum_{k=1}^K\hat p_{mk}(1-\hat p_{mk})\)</span></p>
+<p><strong>Cross-entropy of deviance</strong> <span class="math inline">\(-\sum_{k=1}^K\hat p_{mk}\log\hat p_{mk}\)</span>.</p>
+</div>
+<div id="other-issues" class="section level2">
+<h2>9.2.4 Other Issues</h2>
+<p>Refer to the textbook.</p>
+</div>
+</div>
+<div id="prim-bump-hunting" class="section level1">
+<h1>9.3 PRIM: Bump Hunting</h1>
+<p>Tree-based methods (for regression) partition the feature space into boxshaped regions, to try to make the response averages in each box as different as possible. The splitting rules defining the boxes are related to each through a binary tree, facilitating their interpretation.</p>
+<p>The patient rule induction method (PRIM) also finds boxes in the feature space, but seeks boxes in which the response average is high. Hence it looks for maxima in the target function, an exercise known as bump hunting. (If minima rather than maxima are desired, one simply works with the negative response values.)</p>
+<p>For details, refer to the textbook.</p>
+</div>
+<div id="mars-multivariate-adaptive-regression-splines" class="section level1">
+<h1>9.4 MARS: Multivariate Adaptive Regression Splines</h1>
+<p>MARS is an adaptive procedure for regression, and is well suited for highdimensional problems (i.e., a large number of inputs). It can be viewed as a generalization of stepwise linear regression or a modification of the CART method to improve the latter’s performance in the regression setting. We introduce MARS from the first point of view, and later make the connection to CART.</p>
+<p>MARS uses expansions in piecewise linear basis functions of the form <span class="math inline">\((x-t)_+\)</span> and <span class="math inline">\((t-x)_+\)</span>. Each function is piecewise linear, with a knot at the value <span class="math inline">\(t\)</span>. In the terminology of Chapter 5, these are linear splines.We call the two functions a reflected pair in the discussion below. The idea is to form reflected pairs for each input <span class="math inline">\(X_j\)</span> with knots at each observed value <span class="math inline">\(x_{ij}\)</span> of that input. Therefore, the collection of basis functions is <span class="math display">\[
+\mathcal C=\{(X_j-t)_+,(t-X_j)_+\}_{t\in\{x_{1j,}x_{2j},\cdots,x_{Nj}\},j=1,2,\cdots,p.}
+\]</span> If all of the input values are distinct, there are <span class="math inline">\(2Np\)</span> basis functions altogether. Note that although each basis function depends only on a single <span class="math inline">\(X_j\)</span>, for example, <span class="math inline">\(h(X)=(x_j-t)_+\)</span>, it is considered as a function over the entire input space <span class="math inline">\(\mathbb{R}^p\)</span>.</p>
+</div>
 
 
 
