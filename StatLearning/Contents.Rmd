@@ -7,7 +7,7 @@ output: html_document
 
 ***
 
-# [Chapter 0: A Preface by Myself](preface.html)
+# [Chapter 0: A Preface from Myself](Preface.html)
 
 # Chapter 1: Introduction
 
