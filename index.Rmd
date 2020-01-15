@@ -5,7 +5,7 @@ output: html_document
 
 A Coke A Day, makes the doctors stay. --XW
 
-# Courses of 2020 Spring
+# 2020 Spring
 
 ## 1 [Statistical Learning](StatLearning/Contents.html)
 

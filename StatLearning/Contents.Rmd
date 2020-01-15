@@ -1,7 +1,14 @@
 ---
-title: "Contents of Statistical Learning"
+title: "Statistical Learning"
 output: html_document
 ---
+
+<font size=6>Contents</font>
+
+***
+
+# [Chapter 0: A Preface by Myself](preface.html)
+
 # Chapter 1: Introduction
 
 # [Chapter 2: Overview of Supervised Learning](2.html)
