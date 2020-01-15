@@ -281,7 +281,13 @@ $\widehat{Err}_{boot}$, but has the training-set-size bias mentioned in the disc
 
 To be continued.
 
+&nbsp;
+&nbsp;
 
+[Back to the Contents](Contents.html)
+
+&nbsp;
+&nbsp;
 
 
 

@@ -222,7 +222,13 @@ There are a number of problems with this algorithm, summarized in Ripley(1996):
 
 To be continued
 
+&nbsp;
+&nbsp;
 
+[Back to the Contents](Contents.html)
+
+&nbsp;
+&nbsp;
 
 
 

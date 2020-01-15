@@ -98,4 +98,10 @@ $Y=X\beta+\varepsilon$, and the least squares estimate is $\hat\beta=\frac{<x,y>
 
 The idea of the following algorithm is similar to Gram-Schmidt process, but without normalizing.
 
+&nbsp;
+&nbsp;
 
+[Back to the Contents](Contents.html)
+
+&nbsp;
+&nbsp;

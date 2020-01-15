@@ -120,7 +120,13 @@ $$
 $$
 If all of the input values are distinct, there are $2Np$ basis functions altogether. Note that although each basis function depends only on a single $X_j$, for example, $h(X)=(x_j-t)_+$, it is considered as a function over the entire input space $\mathbb{R}^p$.
 
+&nbsp;
+&nbsp;
 
+[Back to the Contents](Contents.html)
+
+&nbsp;
+&nbsp;
 
 
 

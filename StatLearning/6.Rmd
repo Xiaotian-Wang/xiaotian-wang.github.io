@@ -250,5 +250,11 @@ Kernel and local regression and density estimation are memory-based methods: the
 
 The time complexities of the class of methods are also introduced briefly. Refer to the textbook.
 
+&nbsp;
+&nbsp;
 
+[Back to the Contents](Contents.html)
+
+&nbsp;
+&nbsp;
 

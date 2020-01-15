@@ -168,4 +168,10 @@ Under regularity conditions it can be shown that this procedure eventually stabi
 
 In these sections, some related techniques for model averaging and improvement, including committee methods, bagging, stacking and bumping are introduced. To be filled later.
 
+&nbsp;
+&nbsp;
 
+[Back to the Contents](Contents.html)
+
+&nbsp;
+&nbsp;
