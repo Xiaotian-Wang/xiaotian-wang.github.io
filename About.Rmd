@@ -5,9 +5,13 @@ output: html_document
 
 ## 1 About Me
 
+![](https://stat.wisc.edu/wp-content/uploads/sites/870/2020/01/wang_xiaotian-300x291.jpg)
+
 I am currently a graduate student at [Department of Statistics](https://stat.wisc.edu/), [University of Wisconsin-Madison](https://www.wisc.edu/).
 
 I received my Bachelor's Degree at [School of Mathematical Science](http://math.bnu.edu.cn/), [Beijing Normal University](http://www.bnu.edu.cn/).
+
+I am actively seeking for PhD position for 2021 Fall. If you are interested about me, please don't hesitate to contact me!
 
 ## 2 Contact Me
 
