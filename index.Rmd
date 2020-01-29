@@ -9,7 +9,7 @@ A Coke A Day, makes the doctors stay. --XW
 
 ## 1 [Statistical Learning](StatLearning/Contents.html)
 
-## 2 [Bayesian Analysis](UnderConstructionPage.html)
+## 2 [Bayesian Analysis](BayesAnalysis/Contents.html)
 
 ## 3 [Experiments Design](UnderConstructionPage.html)
 
