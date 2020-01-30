@@ -1,5 +1,5 @@
 ---
-title: "Bayes Analysis"
+title: "Bayesian Analysis"
 output: html_document
 ---
 
