@@ -8,3 +8,5 @@ output: html_document
 ***
 
 # [1. Dutch Book Argument](DutchBookArgument.html)
+
+# [2. Polya Urn Model](PolyaUrnModel.html)
