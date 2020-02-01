@@ -253,6 +253,60 @@ P(X=x)=\int_0^1P(X=x|Z=z)dz=\frac{\Gamma(a+b)}{\Gamma(a)\Gamma(b)}\cdot\frac{\Ga
 <p><strong>de Finetti Theorem</strong></p>
 <p>For <span class="math inline">\(X_1,\cdots,X_n\)</span>, they are exchageable if and only if <span class="math inline">\(\exists Z\sim p(z)\)</span>, such that <span class="math inline">\(X_i\)</span>’s are i.i.d conditional on <span class="math inline">\(Z\)</span>.</p>
 </div>
+<div id="related-problems" class="section level2">
+<h2>Related Problems</h2>
+<div id="problems-1" class="section level3">
+<h3>Problems 1</h3>
+<p>Consider the binary (values 0 and 1) Markov chain <span class="math inline">\(X_1, X_2, ..., X_n\)</span> for which <span class="math inline">\(P[X_1=1] = \alpha/(\alpha+\beta)\)</span> and for any <span class="math inline">\(i=2, 3, ..., n, P[X_i=1|X_1=x_1, X_2=x_2, ... X_{i-1} = c ]\)</span> equals <span class="math inline">\(\alpha\)</span>, if <span class="math inline">\(c=0\)</span> and equals <span class="math inline">\(1-\beta\)</span> if <span class="math inline">\(c=1\)</span> for transition rates <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> both in <span class="math inline">\((0,1)\)</span>. Show that <span class="math inline">\(X_1,X_2,...,X_n\)</span> is not exchangeable, but these variables are identically distributed.</p>
+<p><strong>Solution:</strong></p>
+<p>We first show that they are identically distributed. We prove it by induction:</p>
+<p>First, <span class="math inline">\(P(X_1=1)=\frac{\alpha}{\alpha+\beta}\)</span>, now we assume for any specific <span class="math inline">\(n\)</span>, <span class="math inline">\(X_n\)</span> has its marginal distribution <span class="math display">\[P(X_n=1)=\frac{\alpha}{\alpha+\beta},\]</span> then, for <span class="math inline">\(X_{n+1}\)</span>, we have <span class="math display">\[
+\begin{aligned}
+P(X_{n+1}=1)&amp;=P(X_{n+1}=1|X_n=0)P(X_n=0)+P(X_{n+1}=1|X_n=1)P(X_n=1)\\
+&amp;=\alpha\cdot\frac{\beta}{\alpha+\beta}+(1-\beta)\cdot\frac{\alpha}{\alpha+\beta}\\
+&amp;=\frac{\alpha}{\alpha+\beta}.
+\end{aligned}
+\]</span> So, they are identically distributed.</p>
+<p>Now, we show they are not exchangeable. Here, it suffices to only consider <span class="math inline">\(X_1,X_2,X_3\)</span> case.</p>
+<p><span class="math display">\[
+\begin{aligned}
+&amp;P(X_1=1,X_2=0,X_3=0)\\
+=&amp;P(X_1=1)P(X_2=0|X_1=1)P(X_3=0|X_1=1,X_2=0)\\
+=&amp;\frac{\alpha}{\alpha+\beta}\cdot \beta\cdot (1-\alpha)
+\end{aligned}
+\]</span> and <span class="math display">\[
+\begin{aligned}
+&amp;P(X_1=0,X_2=1,X_3=0)\\
+=&amp;P(X_1=0)P(X_2=1|X_1=0)P(X_3=0|X_1=0,X_2=1)\\
+=&amp;\frac{\beta}{\alpha+\beta}\cdot \alpha\cdot \beta.
+\end{aligned}
+\]</span> So, we can see that <span class="math inline">\(P(X_1=1,X_2=0,X_3=0)\neq P(X_1=0,X_2=1,X_3=0)\)</span>, and thus, they are not exchangeable.</p>
+<p>Note: the proof above only shows that they are not necessarily exchangeable. It is not hard to see that these variables are exchangeable (for any <span class="math inline">\(n\)</span>) if and only if <span class="math inline">\(\alpha=\beta=1/2\)</span>.</p>
+</div>
+<div id="problem-2" class="section level3">
+<h3>Problem 2</h3>
+<p>The so-called Chinese restaurant process is a discrete/continuous variation of Polya’s urn model. In one version, the first variable <span class="math inline">\(X_1\)</span> has a standard normal distribution [written <span class="math inline">\(X_1 \sim N(0,1)\)</span>]. There is a single parameter <span class="math inline">\(m\)</span>, say. With probability <span class="math inline">\(1/(m+1), X_2\)</span> equals <span class="math inline">\(X_1\)</span> exactly; with probability <span class="math inline">\(m/(m+1)\)</span>, on the other hand, <span class="math inline">\(X_2\)</span> is an independent <span class="math inline">\(N(0,1)\)</span> variate. With probability <span class="math inline">\(m/(m+2)\)</span>, then, <span class="math inline">\(X_3\)</span> is an independent <span class="math inline">\(N(0,1)\)</span>; else it is <span class="math inline">\(X_1\)</span> w.p. <span class="math inline">\(1/(m+2)\)</span> or <span class="math inline">\(X_2\)</span> w.p. <span class="math inline">\(1/(m+2)\)</span>. Let’s stop at three and consider <span class="math inline">\((X_1,X_2,X_3)\)</span>. Work out the marginal distribution of each variable. Also work out the joint distribution of <span class="math inline">\((X_2,X_3)\)</span> and similarly the conditional distribution of <span class="math inline">\(X_1\)</span> given <span class="math inline">\(X_2\)</span> and <span class="math inline">\(X_3\)</span>.</p>
+<p><strong>Solution:</strong></p>
+<p>From the statement, generally we can conclude 5 possible results:</p>
+<ol style="list-style-type: decimal">
+<li><p><span class="math inline">\(E_1=\{X_1=X_2=X_3\}\)</span>, and <span class="math inline">\(P(E_1)=\frac{2}{(m+1)(m+2)}\)</span></p></li>
+<li><p><span class="math inline">\(E_2=\{X_1=X_2,X_3\perp X_1\}\)</span>, and <span class="math inline">\(P(E_2)=\frac{m}{(m+1)(m+2)}\)</span></p></li>
+<li><p><span class="math inline">\(E_3=\{X_1=X_3,X_2\perp X_1\}\)</span>, and <span class="math inline">\(P(E_3)=\frac{m}{(m+1)(m+2)}\)</span></p></li>
+<li><p><span class="math inline">\(E_4=\{X_2=X_3,X_3\perp X_1\}\)</span>, and <span class="math inline">\(P(E_4)=\frac{m}{(m+1)(m+2)}\)</span></p></li>
+<li><p><span class="math inline">\(E_5=\{X_1,X_2,X_3\mathrm{\ mutually\ indenpendent}\}\)</span>, and <span class="math inline">\(P(E_5)=\frac{m^2}{(m+1)(m+2)}\)</span></p></li>
+</ol>
+<p>First, we consider the marginal distritution of the three variable. Since whether they are independent or not, they are all normal distributed. So, their marninal distribution is <span class="math inline">\(N(0,1)\)</span>.</p>
+<p>Now, consider the joint distribution of <span class="math inline">\((X_2,X_3)\)</span>. There are two situations: <span class="math inline">\(X_2=X_3\)</span> and <span class="math inline">\(X_2\perp X_3\)</span>, with probability <span class="math inline">\(1/(m+1)\)</span> and <span class="math inline">\(m/(m+1)\)</span>. Thus, the joint distribution of <span class="math inline">\((X_2,X_3)\)</span> is <span class="math display">\[
+f_{(X_2,X_3)}(x,y)=\frac{1}{(m+1)\sqrt{2\pi}}\exp(-\frac{x^2}{2})\mathbb{I}(y=x)+\frac{m}{(m+1)(2\pi)}\exp(-\frac{x^2+y^2}{2})
+\]</span> and similarly, the conditional distribution of <span class="math inline">\(X_1\)</span> given <span class="math inline">\((X_2,X_3)\)</span> is <span class="math display">\[
+\begin{aligned}
+f_{X_1|(X_2,X_3)}(x|x_2,x_3)=&amp;\frac{2}{(m+1)(m+2)}\mathbb{I}(x=x_2=x_3)+\frac{m}{(m+1)(m+2)}\mathbb{I}(x=x_2)+\\
+&amp;\frac{m}{(m+1)(m+2)}\mathbb{I}(x=x_3)+\frac{m}{(m+1)(m+2)}\frac{1}{\sqrt{2\pi}}\exp(-\frac{x^2}{2})\mathbb{I}(x_2=x_3)+\\
+&amp;\frac{m^2}{(m+1)(m+2)}\frac{1}{\sqrt{2\pi}}\exp(-\frac{x^2}{2}).
+\end{aligned}
+\]</span></p>
+</div>
+</div>
 
 
 
