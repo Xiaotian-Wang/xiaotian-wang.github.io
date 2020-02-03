@@ -11,3 +11,4 @@ output: html_document
 
 # [2. Polya Urn Model and Exchangeability](PolyaUrnModel.html)
 
+# [3. Statistical Decision Theory](StatisticalDecisionTheory.html)
