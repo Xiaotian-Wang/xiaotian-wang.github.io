@@ -211,9 +211,9 @@ summary {
 \begin{aligned}
 r(\delta)&amp;=\int_\theta\int_xL(\theta,\delta(x))p(x|\theta)p(\theta)dxd\theta\\
 &amp;=\int_x\int_\theta p(x)L(\theta,\delta(x))\frac{p(x|\theta)p(\theta)}{p(x)}d\theta dx\\
-&amp;=\int_xp(x)(\int_\theta L(\theta,\delta(x))p(x|\theta)d\theta )dx
+&amp;=\int_xp(x)(\int_\theta L(\theta,\delta(x))p(\theta|x)d\theta )dx
 \end{aligned},
-\]</span> where <span class="math inline">\(\int_\theta L(\theta,\delta(x))p(x|\theta)d\theta\)</span> is called posterior expected loss <span class="math inline">\(PEL(\delta(x))\)</span>, and <span class="math inline">\(r(\delta)=E(PEL(\delta(x)))\)</span>, with respect to <span class="math inline">\(p(x)\)</span>.</p>
+\]</span> where <span class="math inline">\(\int_\theta L(\theta,\delta(x))p(\theta|x)d\theta\)</span> is called posterior expected loss <span class="math inline">\(PEL(\delta(x))\)</span>, and <span class="math inline">\(r(\delta)=E(PEL(\delta(x)))\)</span>, with respect to <span class="math inline">\(p(x)\)</span>.</p>
 <p><strong>Bayes rule</strong> Any procedure that minimize the Bayes risk. In fact, we can compute the Bayes rule by minimizing <span class="math inline">\(PEL(x,\delta(x))\)</span> for each <span class="math inline">\(x\)</span> (data point by data point).</p>
 <p><strong>Fact</strong> under weak reularity conditions, if <span class="math inline">\(\delta^*\)</span> is the Bayes rule, then <span class="math inline">\(\delta^*\)</span> is admissible.</p>
 <p>Note: This means that whatever their deficiencies, at least they cannot be beaten by any other rule in terms of risk, univormly over the parameter space.</p>
