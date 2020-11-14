@@ -77,6 +77,7 @@ Next, instead of viewing each abstract as a whole object, we get words out of th
 
 
 ### Factors
+
 Based on the paper-word pair, we create a matrix with paper ID as row and each word as column. Then, we try the vsp package to see if there are any factors standing out.
 ```{r}
 text_df <- tibble(paper = 1:nrow(data), abstract = data$abstract)
