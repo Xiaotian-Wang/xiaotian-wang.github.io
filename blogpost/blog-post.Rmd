@@ -46,7 +46,7 @@ dat = pullDataFiles(outputPath)
 
 
 We read the data line by line, and decide whether to process the line by the includeLine function. 
-For getData function, it can be found [here](getData.R), and [here](getLine.R).
+For getData function, it can be found [here](./getData.R), and [here](./getLine.R).
 
 
 ### Data Exploration
