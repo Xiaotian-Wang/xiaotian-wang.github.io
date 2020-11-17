@@ -126,13 +126,20 @@ plot_varimax_z_pairs(fa, 1:3)
 
 From the plot above, we may conclude that there are some papers with more than one abstracts which are of different languages(just like the papers appearing in cluster 2).
 
-We now see the best feature functions
+We now see the best feature functions based on the words from the titles of these papers.
 
 ```{r}
-bff(fa$Z,A,6) %>% print
+text_df <- tibble(id = 1:length(data$title), 
+                  text = data$title)
+tt  = text_df %>% unnest_tokens(word, text)
+dt = cast_sparse(tt, id, word)
+cs = colSums(dt)
+dt = dt[,cs>3]
+bff(fa$Z,dt,10)%>%print
+
 ```
 
-We can see that for these clusters, the results are the commonly used words in English, French and German seperately.
+We can see that for these clusters, the results are the commonly used words in English, French, German and Chinese seperately.
 
 
 ### Attempts on the Analysis on English-only Papers
@@ -147,7 +154,7 @@ includeLine = function(x) {
 }
 ```
 
-The new includeLine rule becomes we process the line only when it includes the keywords LASSO and the commenly used English word "regression"" in the technical papers mentioning LASSO.
+The new includeLine rule becomes we process the line only when it includes the keywords LASSO and the commenly used English word "regression" in the technical papers mentioning LASSO.
 
 ```{r}
 filenames = list.files("data/LASSOreg")
@@ -197,7 +204,14 @@ fa2 = vsp(A, rank = 8)
 plot(fa2$d)
 plot_varimax_z_pairs(fa, 1:4)
 
-bff(fa$Z,A,6) %>% print
+text_df <- tibble(id = 1:length(data$title), 
+                  text = data$title)
+tt  = text_df %>% unnest_tokens(word, text)
+dt = cast_sparse(tt, id, word)
+cs = colSums(dt)
+dt = dt[,cs>3]
+bff(fa$Z,dt,10)%>%print
+
 ```
 
 We try to get rid of the influence from different language and instead, wish to find out the clusters from different technical topics. However the influence from the language still exists. As we mentioned before, there are some papers with more than one abstracts which are of different language. As a result, we can see our result this time that it can show the factors from both technical toplics and language.
