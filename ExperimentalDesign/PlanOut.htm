@@ -359,14 +359,14 @@ font-family:ËÎÌå'>£º</span></p>
 
 <p class=MsoNoSpacing align=center style='text-align:center;page-break-after:
 avoid'><span style='font-size:14.0pt;line-height:200%'><img width=434
-height=260 id="Picture 1" src="803_files/image001.png"
+height=260 id="Picture 1" src="PlanOut_files/image001.png"
 alt="Graphical user interface, text, application, email&#10;&#10;Description automatically generated"></span></p>
 
 <p class=MsoCaption align=center style='text-align:center'>Figure 1: high-high-high level registration interface</p>
 
 <p class=MsoNoSpacing align=center style='text-align:center;page-break-after:
 avoid'><span style='font-size:14.0pt;line-height:200%'><img width=439
-height=273 id="Picture 3" src="803_files/image002.png"
+height=273 id="Picture 3" src="PlanOut_files/image002.png"
 alt="Graphical user interface, application&#10;&#10;Description automatically generated"></span></p>
 
 <p class=MsoCaption align=center style='text-align:center'>Figure 2: low-low-low level interface. (Note: for the second interface, the font size is much
@@ -387,7 +387,7 @@ factors can be chosen by users randomly with equal probabilities, so we use the
 UniformChoice function from this planform to generate experiments meeting the
 requirements.</p>
 
-<p class=MsoNoSpacing><img width=624 height=136 src="803_files/image003.png"></p>
+<p class=MsoNoSpacing><img width=624 height=136 src="PlanOut_files/image003.png"></p>
 
 <p class=MsoNoSpacing>We use Flask package to generate the web-based app. Now
 we design the html page with the variables: font_size, font, and button_text to
@@ -402,7 +402,7 @@ the interface by 1-5 level. </p>
 <p class=MsoNoSpacing>The HTML code of the rating and the interface are as below:</p>
 
 <p class=MsoNoSpacing style='page-break-after:avoid'><img width=624 height=187
-src="803_files/image004.png"></p>
+src="PlanOut_files/image004.png"></p>
 
 <p class=MsoCaption align=center style='text-align:center'>Figure 3:rating input box</p>
 
@@ -412,19 +412,19 @@ src="803_files/image004.png"></p>
 be saved to a ¡°.log¡± file. Analysis can be implemented by analyzing the data of
 the log file.</p>
 
-<p class=MsoNoSpacing><img width=624 height=47 src="803_files/image005.png"></p>
+<p class=MsoNoSpacing><img width=624 height=47 src="PlanOut_files/image005.png"></p>
 
 <p class=MsoNoSpacing>The data structure of the log file is as shown below:</p>
 
 <p class=MsoNoSpacing>When a user clicks in the webpage, the following
 information will be logged,</p>
 
-<p class=MsoNoSpacing><img width=624 height=136 src="803_files/image006.png"></p>
+<p class=MsoNoSpacing><img width=624 height=136 src="PlanOut_files/image006.png"></p>
 
 <p class=MsoNoSpacing>and when he/she finishes the rating(say he/she rates 3 score),
 the following information will also be recorded:</p>
 
-<p class=MsoNoSpacing><img width=616 height=180 src="803_files/image007.png"></p>
+<p class=MsoNoSpacing><img width=616 height=180 src="PlanOut_files/image007.png"></p>
 
 <p class=MsoNoSpacing>After collecting the data, the time, user_id, parameters
 and the ratings are all provided. With these data from a period of time, we can
@@ -458,16 +458,16 @@ Instead, we only use the python-based PlanOut API.</p>
 <p class=MsoNoSpacing>However, if we use the PlanOut language to design the
 experiments in our project, the code will be like</p>
 
-<p class=MsoNoSpacing><img width=624 height=61 src="803_files/image008.png"></p>
+<p class=MsoNoSpacing><img width=624 height=61 src="PlanOut_files/image008.png"></p>
 
 <p class=MsoNoSpacing>If it is compiled to JSON file, for demonstration
 purpose, the first line of the code </p>
 
-<p class=MsoNoSpacing><img width=624 height=17 src="803_files/image009.png"></p>
+<p class=MsoNoSpacing><img width=624 height=17 src="PlanOut_files/image009.png"></p>
 
 <p class=MsoNoSpacing>will be compiled to be</p>
 
-<p class=MsoNoSpacing><img width=624 height=342 src="803_files/image010.png"></p>
+<p class=MsoNoSpacing><img width=624 height=342 src="PlanOut_files/image010.png"></p>
 
 <p class=MsoNoSpacing>This JSON file can be also interpreted to generate the
 experiments and then be called.</p>

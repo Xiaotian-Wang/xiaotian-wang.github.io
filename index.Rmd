@@ -11,7 +11,7 @@ A Coke A Day, makes the doctors stay. --XW
 
 ## 2 [Bayesian Analysis](BayesAnalysis/Contents.html)
 
-## 3 [Experiments Design](UnderConstructionPage.html)
+## 3 [Experiments Design](ExperimentalDesign/Contents.html)
 
 &nbsp;
 
