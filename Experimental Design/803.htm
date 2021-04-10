@@ -1,0 +1,1393 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=gb2312">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<title>Use PlanOut to Design an Online Factorial Experiment</title>
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:Wingdings;
+	panose-1:5 0 0 0 0 0 0 0 0 0;}
+@font-face
+	{font-family:宋体;
+	panose-1:2 1 6 0 3 1 1 1 1 1;}
+@font-face
+	{font-family:黑体;
+	panose-1:2 1 6 9 6 1 1 1 1 1;}
+@font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:"Segoe UI";
+	panose-1:2 11 5 2 4 2 4 2 2 3;}
+@font-face
+	{font-family:Consolas;
+	panose-1:2 11 6 9 2 2 4 3 2 4;}
+@font-face
+	{font-family:"\@黑体";
+	panose-1:2 1 6 0 3 1 1 1 1 1;}
+@font-face
+	{font-family:"\@宋体";
+	panose-1:2 1 6 0 3 1 1 1 1 1;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0in;
+	text-indent:.5in;
+	line-height:200%;
+	font-size:12.0pt;
+	font-family:"Times New Roman",serif;}
+h1
+	{mso-style-link:"Heading 1 Char";
+	margin:0in;
+	text-align:center;
+	line-height:200%;
+	page-break-after:avoid;
+	font-size:12.0pt;
+	font-family:"Times New Roman",serif;
+	font-weight:bold;}
+h2
+	{mso-style-link:"Heading 2 Char";
+	margin:0in;
+	line-height:200%;
+	page-break-after:avoid;
+	font-size:12.0pt;
+	font-family:"Times New Roman",serif;
+	font-weight:bold;}
+p.MsoCaption, li.MsoCaption, div.MsoCaption
+	{margin-top:0in;
+	margin-right:0in;
+	margin-bottom:10.0pt;
+	margin-left:0in;
+	line-height:normal;
+	font-size:11.0pt;
+	font-family:"Times New Roman",serif;
+	color:black;
+	font-style:italic;}
+p.MsoTitle, li.MsoTitle, div.MsoTitle
+	{mso-style-link:"Title Char";
+	margin-top:120.0pt;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:0in;
+	text-align:center;
+	line-height:200%;
+	font-size:12.0pt;
+	font-family:"Times New Roman",serif;}
+p.MsoTitleCxSpFirst, li.MsoTitleCxSpFirst, div.MsoTitleCxSpFirst
+	{mso-style-link:"Title Char";
+	margin-top:120.0pt;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:0in;
+	text-align:center;
+	line-height:200%;
+	font-size:12.0pt;
+	font-family:"Times New Roman",serif;}
+p.MsoTitleCxSpMiddle, li.MsoTitleCxSpMiddle, div.MsoTitleCxSpMiddle
+	{mso-style-link:"Title Char";
+	margin:0in;
+	text-align:center;
+	line-height:200%;
+	font-size:12.0pt;
+	font-family:"Times New Roman",serif;}
+p.MsoTitleCxSpLast, li.MsoTitleCxSpLast, div.MsoTitleCxSpLast
+	{mso-style-link:"Title Char";
+	margin:0in;
+	text-align:center;
+	line-height:200%;
+	font-size:12.0pt;
+	font-family:"Times New Roman",serif;}
+p.MsoNoSpacing, li.MsoNoSpacing, div.MsoNoSpacing
+	{mso-style-name:"No Spacing\,No Indent";
+	margin:0in;
+	line-height:200%;
+	font-size:12.0pt;
+	font-family:"Times New Roman",serif;}
+p.SectionTitle, li.SectionTitle, div.SectionTitle
+	{mso-style-name:"Section Title";
+	margin:0in;
+	text-align:center;
+	line-height:200%;
+	page-break-before:always;
+	font-size:12.0pt;
+	font-family:"Times New Roman",serif;}
+span.Heading1Char
+	{mso-style-name:"Heading 1 Char";
+	mso-style-link:"Heading 1";
+	font-family:"Times New Roman",serif;
+	font-weight:bold;}
+span.Heading2Char
+	{mso-style-name:"Heading 2 Char";
+	mso-style-link:"Heading 2";
+	font-family:"Times New Roman",serif;
+	font-weight:bold;}
+span.TitleChar
+	{mso-style-name:"Title Char";
+	mso-style-link:Title;
+	font-family:"Times New Roman",serif;}
+p.TableFigure, li.TableFigure, div.TableFigure
+	{mso-style-name:"Table\/Figure";
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:0in;
+	line-height:200%;
+	font-size:12.0pt;
+	font-family:"Times New Roman",serif;}
+p.TableFigureCxSpFirst, li.TableFigureCxSpFirst, div.TableFigureCxSpFirst
+	{mso-style-name:"Table\/FigureCxSpFirst";
+	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:0in;
+	line-height:200%;
+	font-size:12.0pt;
+	font-family:"Times New Roman",serif;}
+p.TableFigureCxSpMiddle, li.TableFigureCxSpMiddle, div.TableFigureCxSpMiddle
+	{mso-style-name:"Table\/FigureCxSpMiddle";
+	margin:0in;
+	line-height:200%;
+	font-size:12.0pt;
+	font-family:"Times New Roman",serif;}
+p.TableFigureCxSpLast, li.TableFigureCxSpLast, div.TableFigureCxSpLast
+	{mso-style-name:"Table\/FigureCxSpLast";
+	margin:0in;
+	line-height:200%;
+	font-size:12.0pt;
+	font-family:"Times New Roman",serif;}
+p.Title2, li.Title2, div.Title2
+	{mso-style-name:"Title 2";
+	margin:0in;
+	text-align:center;
+	line-height:200%;
+	font-size:12.0pt;
+	font-family:"Times New Roman",serif;}
+.MsoChpDefault
+	{font-size:12.0pt;}
+.MsoPapDefault
+	{text-indent:.5in;
+	line-height:200%;}
+ /* Page Definitions */
+ @page WordSection1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.0in 1.0in 1.0in;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0in;}
+ul
+	{margin-bottom:0in;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US vlink="#595959" style='word-wrap:break-word'>
+
+<div class=WordSection1>
+
+<p class=MsoTitle><span style='font-size:20.0pt;line-height:200%'>Use PlanOut
+to Design an Online Factorial Experiment</span></p>
+
+<p class=Title2><span style='font-size:14.0pt;line-height:200%'>Xiaotian Wang</span></p>
+
+<p class=Title2><span style='font-size:14.0pt;line-height:200%'>Department of
+Statistics, University of Wisconsin Madison</span></p>
+
+<p class=MsoTitle>&nbsp;</p>
+
+<p class=Title2>Final Project Report for Course STAT 803</p>
+
+<p class=SectionTitle>Abstract</p>
+
+<p class=MsoNoSpacing>PlanOut is a framework for online field experiments. We
+use PlanOut to design an online 2<sup>n</sup> factorial experiment. To figure
+out how do the users like the registration user interface, we choose font, font
+size and the button text as our factors to design the experiment. We design a
+web-based app to see user’s preference on registration interface. Then, more
+about PlanOut including PlanOut language, namespaces, strengths and weaknesses
+are discussed. </p>
+
+<p class=MsoNormal><em>Keywords</em>:&nbsp; PlanOut, A/B test, online
+experiment, factorial design, interface</p>
+
+<p class=SectionTitle>Use PlanOut to Design an Online Factorial Experiment</p>
+
+<p class=MsoNormal>In this project, we use PlanOut to design an online 2<sup>n</sup>
+factorial experiment to find out the preferred user interface when registering
+accounts for the users. More about the PlanOut platform is discussed.</p>
+
+<h1><span style='font-size:16.0pt;line-height:200%'>1 Introduction</span></h1>
+
+<h2><span style='font-size:15.0pt;line-height:200%'>1. 1 PlanOut</span></h2>
+
+<p class=MsoNoSpacing>PlanOut is a framework for online field experiment
+developed by Facebook. It was created to make it easy to run and iterate on
+sophisticated experiments in a statistically sound manner while satisfying the
+constraints of deployed Internet services. </p>
+
+<p class=MsoNoSpacing>PlanOut provides randomized parameter values to Internet
+services. Instead of using constants for user interface elements or switches
+controlling the rollout of a new feature or ranking model, with PlanOut, we
+only need to focus on the value of these parameters.</p>
+
+<p class=MsoNoSpacing>It is easy to use PlanOut to design simple A/B tests and
+other factorial or withing-subsects designs. Some more complex designs
+involving multiple types of units can also be handled by PlanOut.</p>
+
+<p class=MsoNoSpacing>PlanOut is written with portability and extensibility in
+mind and has been ported to all major Web programming languages, including
+Python, Java, PHP, JavaScript, Ruby, and Go.</p>
+
+<p class=MsoNoSpacing>The PlanOut framework includes:</p>
+
+<p class=MsoNoSpacing style='margin-left:.5in;text-indent:-.25in'><span
+style='font-family:Symbol'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span>Extensible classes for implementing and testing experiments,
+which automatically log important data.</p>
+
+<p class=MsoNoSpacing style='margin-left:.5in;text-indent:-.25in'><span
+style='font-family:Symbol'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span>A system for managing and deploying multiple mutually exclusive
+experiments, called namespaces.</p>
+
+<p class=MsoNoSpacing style='margin-left:.5in;text-indent:-.25in'><span
+style='font-family:Symbol'>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span>The PlanOut language, which lets you define, serialize, store,
+and execute experiment definitions in a platform-independent way.</p>
+
+<p class=MsoNoSpacing>(Note: most of the introductions to PlanOut are from the
+official website of PlanOut.)</p>
+
+<h2><span style='font-size:15.0pt;line-height:200%'>1.2 Our Experiment</span></h2>
+
+<p class=MsoNoSpacing>In this project, we have an online 2<sup>3</sup>
+factorial design to find out what are the better user interfaces (UI) when
+registering account for a website. We consider three factors that may be
+adjusted when designing the UI: font, font size and the button text. The levels
+are as the table below:</p>
+
+<p class=MsoNoSpacing>&nbsp;</p>
+
+<p class=MsoCaption style='page-break-after:avoid'>Table 1:
+Factors and levels</p>
+
+<table class=APAReport border=1 cellspacing=0 cellpadding=0 style='border-collapse:
+ collapse;border:none'>
+ <thead>
+  <tr>
+   <td width=208 valign=top style='width:156.0pt;border-top:solid windowtext 1.5pt;
+   border-left:none;border-bottom:solid windowtext 1.5pt;border-right:none;
+   padding:0in 5.4pt 0in 5.4pt'>
+   <p class=MsoNoSpacing style='line-height:normal'><span style='font-size:
+   14.0pt'>Factor</span></p>
+   </td>
+   <td width=208 valign=top style='width:156.0pt;border-top:solid windowtext 1.5pt;
+   border-left:none;border-bottom:solid windowtext 1.5pt;border-right:none;
+   padding:0in 5.4pt 0in 5.4pt'>
+   <p class=MsoNoSpacing style='line-height:normal'><span style='font-size:
+   14.0pt'>High Level</span></p>
+   </td>
+   <td width=208 valign=top style='width:156.0pt;border-top:solid windowtext 1.5pt;
+   border-left:none;border-bottom:solid windowtext 1.5pt;border-right:none;
+   padding:0in 5.4pt 0in 5.4pt'>
+   <p class=MsoNoSpacing style='line-height:normal'><span style='font-size:
+   14.0pt'>Low Level</span></p>
+   </td>
+  </tr>
+ </thead>
+ <tr>
+  <td width=208 valign=top style='width:156.0pt;border:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNoSpacing style='line-height:normal'><span style='font-size:14.0pt'>Font</span></p>
+  </td>
+  <td width=208 valign=top style='width:156.0pt;border:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNoSpacing style='line-height:normal'><span style='font-size:14.0pt'>Verdana</span></p>
+  </td>
+  <td width=208 valign=top style='width:156.0pt;border:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNoSpacing style='line-height:normal'><span style='font-size:14.0pt'>Times</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=208 valign=top style='width:156.0pt;border:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNoSpacing style='line-height:normal'><span style='font-size:14.0pt'>Font
+  Size</span></p>
+  </td>
+  <td width=208 valign=top style='width:156.0pt;border:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNoSpacing style='line-height:normal'><span style='font-size:14.0pt'>5</span></p>
+  </td>
+  <td width=208 valign=top style='width:156.0pt;border:none;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNoSpacing style='line-height:normal'><span style='font-size:14.0pt'>2</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width=208 valign=top style='width:156.0pt;border:none;border-bottom:solid windowtext 1.5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNoSpacing style='line-height:normal'><span style='font-size:14.0pt'>Button
+  text</span></p>
+  </td>
+  <td width=208 valign=top style='width:156.0pt;border:none;border-bottom:solid windowtext 1.5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNoSpacing style='line-height:normal'><span style='font-size:14.0pt'>Join
+  Us</span></p>
+  </td>
+  <td width=208 valign=top style='width:156.0pt;border:none;border-bottom:solid windowtext 1.5pt;
+  padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNoSpacing style='line-height:normal'><span style='font-size:14.0pt'>Sign
+  Up</span></p>
+  </td>
+ </tr>
+</table>
+
+<p class=MsoNoSpacing><span style='font-size:14.0pt;line-height:200%'>&nbsp;</span></p>
+
+<p class=MsoNoSpacing><span style='font-size:14.0pt;line-height:200%'>We build
+the web-based app to form the registration interface and to test how the users
+like them. So, we have totally 2<sup>3</sup>=8 different version of webs for
+the users to register their account to get our results. To know how the users
+like the interface, we also allow the users to rate our interface in these
+webs. The users can rate this interface by inputting a number 1(worst)-5(best).
+We will log the ratings from the users over time to see which kind of UI design
+is the best one, and how these factors will influence the results.</span></p>
+
+<p class=MsoNoSpacing><span style='font-size:14.0pt;line-height:200%'>Our
+low-low-low level interface and the High-high-high level interface are as shown
+below</span><span lang=ZH-CN style='font-size:14.0pt;line-height:200%;
+font-family:宋体'>：</span></p>
+
+<p class=MsoNoSpacing align=center style='text-align:center;page-break-after:
+avoid'><span style='font-size:14.0pt;line-height:200%'><img width=434
+height=260 id="Picture 1" src="803_files/image001.png"
+alt="Graphical user interface, text, application, email&#10;&#10;Description automatically generated"></span></p>
+
+<p class=MsoCaption align=center style='text-align:center'>Figure 1: high-high-high level registration interface</p>
+
+<p class=MsoNoSpacing align=center style='text-align:center;page-break-after:
+avoid'><span style='font-size:14.0pt;line-height:200%'><img width=439
+height=273 id="Picture 3" src="803_files/image002.png"
+alt="Graphical user interface, application&#10;&#10;Description automatically generated"></span></p>
+
+<p class=MsoCaption align=center style='text-align:center'>Figure 2: low-low-low level interface. (Note: for the second interface, the font size is much
+smaller than the first one, so the texts only occupy approximately a quarter of
+the whole interface.)</p>
+
+<p class=MsoNoSpacing><span style='font-size:14.0pt;line-height:200%'>With the
+ratings from the users, we can analyze the results in a period of time to
+figure out how these factors will influence the attitude of the users to the
+registration interface.</span></p>
+
+<h1><span style='font-size:16.0pt;line-height:200%'>2 Implementation</span></h1>
+
+<p class=MsoNoSpacing>We first design the experiment using the PlanOut
+platform. In this platform, a class SimpleExperiment is provided to generate
+some experiments with simple functions. Here we wish the high- and low-level
+factors can be chosen by users randomly with equal probabilities, so we use the
+UniformChoice function from this planform to generate experiments meeting the
+requirements.</p>
+
+<p class=MsoNoSpacing><img width=624 height=136 src="803_files/image003.png"></p>
+
+<p class=MsoNoSpacing>We use Flask package to generate the web-based app. Now
+we design the html page with the variables: font_size, font, and button_text to
+design 8 different pages. The code for the web-based app is attached in the
+appendix.</p>
+
+<p class=MsoNoSpacing>When a user clicks in the webpage, he/she will be
+allocated a unique user_id. The PlanOut platform will automatically hash the id
+and allocate the corresponding interface to the user. Then the user can rate
+the interface by 1-5 level. </p>
+
+<p class=MsoNoSpacing>The HTML code of the rating and the interface are as below:</p>
+
+<p class=MsoNoSpacing style='page-break-after:avoid'><img width=624 height=187
+src="803_files/image004.png"></p>
+
+<p class=MsoCaption align=center style='text-align:center'>Figure 3:rating input box</p>
+
+<p class=MsoNoSpacing>&nbsp;</p>
+
+<p class=MsoNoSpacing>All the actions from the users will be logged. They will
+be saved to a “.log” file. Analysis can be implemented by analyzing the data of
+the log file.</p>
+
+<p class=MsoNoSpacing><img width=624 height=47 src="803_files/image005.png"></p>
+
+<p class=MsoNoSpacing>The data structure of the log file is as shown below:</p>
+
+<p class=MsoNoSpacing>When a user clicks in the webpage, the following
+information will be logged,</p>
+
+<p class=MsoNoSpacing><img width=624 height=136 src="803_files/image006.png"></p>
+
+<p class=MsoNoSpacing>and when he/she finishes the rating(say he/she rates 3 score),
+the following information will also be recorded:</p>
+
+<p class=MsoNoSpacing><img width=616 height=180 src="803_files/image007.png"></p>
+
+<p class=MsoNoSpacing>After collecting the data, the time, user_id, parameters
+and the ratings are all provided. With these data from a period of time, we can
+implement the analysis to get some useful results.</p>
+
+<h1><span style='font-size:16.0pt;line-height:200%'>3 More about PlanOut</span></h1>
+
+<h2><span style='font-size:15.0pt;line-height:200%'>3. 1 PlanOut Language</span></h2>
+
+<p class=MsoNoSpacing>PlanOut language is a parsimonious, high-level language
+for thinking about and specifying complex experiments in a way that is useful
+to researchers as well as engineers building production systems. For
+researchers or engineers from different backgrounds in a same project, it is
+probable that they use different programming language for programming. With
+PlanOut Language, they can design or edit experiment with it because it is
+simple enough to use and understand. Additionally, PlanOut language is the key
+aspect to serialize the experiments. For example, when implementing large scale
+experiments, we may have many experiments with different designs. With PlanOut
+language, it is much easier to serialize the experiments and the administration
+will become easier. </p>
+
+<p class=MsoNoSpacing>The grammar of PlanOut language is similar to JavaScript.
+It can be compiled into JSON file and stored. With Interpreter API from PlanOut
+package, the stored JSON files (the experiments) can also be interpreted to be experiments
+and then be called directly. </p>
+
+<p class=MsoNoSpacing>In the example in this project, the structure of the
+experiment is not too complicated, so we do not use the PlanOut language.
+Instead, we only use the python-based PlanOut API.</p>
+
+<p class=MsoNoSpacing>However, if we use the PlanOut language to design the
+experiments in our project, the code will be like</p>
+
+<p class=MsoNoSpacing><img width=624 height=61 src="803_files/image008.png"></p>
+
+<p class=MsoNoSpacing>If it is compiled to JSON file, for demonstration
+purpose, the first line of the code </p>
+
+<p class=MsoNoSpacing><img width=624 height=17 src="803_files/image009.png"></p>
+
+<p class=MsoNoSpacing>will be compiled to be</p>
+
+<p class=MsoNoSpacing><img width=624 height=342 src="803_files/image010.png"></p>
+
+<p class=MsoNoSpacing>This JSON file can be also interpreted to generate the
+experiments and then be called.</p>
+
+<h2><span style='font-size:15.0pt;line-height:200%'>3. 2 Namespaces</span></h2>
+
+<p class=MsoNoSpacing>Namespaces are used to manage related experiments that
+manipulate the same parameter. These experiments might be run sequentially
+(over time) or in parallel. Namespaces can be used to keep experiments
+“exclusive” or “non-overlapping”.</p>
+
+<p class=MsoNoSpacing>Namespaces objects are like the Experiments objects, but
+randomly assign primary units (e.g., users) to experiments. Generally,
+namespaces are used whenever there is a variable used to experiment with.
+However, the namespace class of PlanOut platform is useful only when there are
+more than one experiments needed to be administrated. For the experiments in
+our project, the structure is so simple that we only need to use
+SimpleExperiment class. If we want to use the namespace in our project, we can
+first define a namespace class, and then add experiments to the class.</p>
+
+<p class=MsoNoSpacing>&nbsp;</p>
+
+<p class=MsoNoSpacing>&nbsp;</p>
+
+<h1><span style='font-size:16.0pt;line-height:200%'>4 Conclusion</span></h1>
+
+<h2><span style='font-size:15.0pt;line-height:200%'>4. 1 Strengths</span></h2>
+
+<p class=MsoNormal style='text-indent:0in'>The first strength of PlanOut is the
+randomization. It uses pseudo-random assignment through hashing, which make
+every experiment independent. Besides, it provides a “salt” method that help
+developer manually decide (if necessary) if some two experiments are needed to
+be correlated. </p>
+
+<p class=MsoNormal style='text-indent:0in'>The second strength of PlanOut is
+that it is a way to serialize experiments. We know in production, there will be
+a large number of experiments working simultaneously. If we can generate many
+experiments different by several line of code, it will save us a lot of works.</p>
+
+<p class=MsoNormal style='text-indent:0in'>Another strength is about the
+namespace class of the platform. With a large number o experiments, it is
+important to administrate them in a proper way and make them “exclusive”. </p>
+
+<h2><span style='font-size:15.0pt;line-height:200%'>4. 2 Weakness</span></h2>
+
+<p class=MsoNoSpacing>This platform does not provide any tools to analyze the
+data collected. So, for the developers, they need to design the analysis
+themselves. For the large-scale simultaneous experiments, automatic analyses
+are not easy. More future works on automatic analyses tools are needed,
+especially when some changes are made to the experiments. In fact, changes
+always happen when new knowledges are acquired.</p>
+
+<p class=MsoNoSpacing>&nbsp;According to the main page of PlanOut, the platform
+has been tested on Mac and Linux but not on Windows, and thus, some problems
+may occur when running the code from the official tutorial on Windows. For
+example, when compiling the PlanOut language to JSON, we can not use the node
+function in Linux shell scripts directly on Windows command line. Additionally,
+the tutorial is based on Python 2 which is outdated. Some problems may occur
+when running the code on Python 3.</p>
+
+<p class=MsoNoSpacing>&nbsp;</p>
+
+<p class=MsoNoSpacing>&nbsp;</p>
+
+<p class=MsoNoSpacing>&nbsp;</p>
+
+<p class=MsoNoSpacing>&nbsp;</p>
+
+<p class=MsoNoSpacing>&nbsp;</p>
+
+<p class=MsoNormal style='text-indent:0in'>&nbsp;</p>
+
+<p class=MsoNormal style='text-indent:0in'>&nbsp;</p>
+
+<p class=MsoNormal style='text-indent:0in'>&nbsp;</p>
+
+<p class=MsoNormal style='text-indent:0in'>&nbsp;</p>
+
+<p class=MsoNormal style='text-indent:0in'>&nbsp;</p>
+
+<p class=MsoNormal style='text-indent:0in'>&nbsp;</p>
+
+<p class=MsoNormal style='text-indent:0in'>&nbsp;</p>
+
+<p class=MsoNormal style='text-indent:0in'>&nbsp;</p>
+
+<p class=MsoNormal style='text-indent:0in'>&nbsp;</p>
+
+<h1><span style='font-size:16.0pt;line-height:200%'>Reference</span></h1>
+
+<p class=MsoNormal style='text-indent:0in'>[1] Bakshy, E. and Eckles, D. and
+Bernstein, M. S., Designing and Deploying Online Field Experiments, Proceedings
+of the 23rd ACM conference on the World Wide Web, 2014</p>
+
+<p class=MsoNormal style='text-indent:0in'>[2] https://facebook.github.io/planout/index.html</p>
+
+<span style='font-size:12.0pt;line-height:200%;font-family:"Times New Roman",serif'><br
+clear=all style='page-break-before:always'>
+</span>
+
+<p class=MsoNormal>&nbsp;</p>
+
+<h1 align=left style='text-align:left'><span style='font-size:16.0pt;
+line-height:200%'>Appendix:&nbsp; Code Used for the Experiment</span></h1>
+
+<div style='border:none;border-left:solid #6CE26C 2.25pt;padding:0in 0in 0in 0in;
+background:white;margin-left:.25in;margin-right:0in'>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:white;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>1.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
+</span></span><b><span style='font-size:9.0pt;font-family:Consolas;color:#006699'>import</span></b><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;random&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:#F8F8F8;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>2.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
+</span></span><b><span style='font-size:9.0pt;font-family:Consolas;color:#006699'>from</span></b><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;uuid&nbsp;</span><b><span
+style='font-size:9.0pt;font-family:Consolas;color:#006699'>import</span></b><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;uuid4&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:white;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>3.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
+</span></span><b><span style='font-size:9.0pt;font-family:Consolas;color:#006699'>from</span></b><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;flask&nbsp;</span><b><span
+style='font-size:9.0pt;font-family:Consolas;color:#006699'>import</span></b><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;(&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:#F8F8F8;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>4.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;Flask,&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:white;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>5.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;session,&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:#F8F8F8;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>6.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;request,&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:white;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>7.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;redirect,&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:#F8F8F8;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>8.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;url_for,&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:white;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>9.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;render_template_string&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:#F8F8F8;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>10.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:black'>)&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:white;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>11.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:#F8F8F8;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>12.<span style='font:7.0pt "Times New Roman"'>
+</span></span><b><span style='font-size:9.0pt;font-family:Consolas;color:#006699'>from</span></b><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;planout.experiment&nbsp;</span><b><span
+style='font-size:9.0pt;font-family:Consolas;color:#006699'>import</span></b><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;SimpleExperiment&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:white;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>13.<span style='font:7.0pt "Times New Roman"'>
+</span></span><b><span style='font-size:9.0pt;font-family:Consolas;color:#006699'>from</span></b><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;planout.ops.random&nbsp;</span><b><span
+style='font-size:9.0pt;font-family:Consolas;color:#006699'>import</span></b><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;*&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:#F8F8F8;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>14.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:white;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>15.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:black'>app&nbsp;=&nbsp;Flask(__name__)&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:#F8F8F8;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>16.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:white;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>17.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:black'>app.config.update(dict(&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:#F8F8F8;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>18.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;DEBUG=False,&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:white;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>19.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;SECRET_KEY=</span><span
+style='font-size:9.0pt;font-family:Consolas;color:blue'>'3.14159'</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>,&nbsp;</span><span
+style='font-size:9.0pt;font-family:Consolas;color:#008200'>#&nbsp;shhhhh</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:#F8F8F8;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>20.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:black'>))&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:white;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>21.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:#F8F8F8;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>22.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:white;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>23.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:#F8F8F8;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>24.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:white;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>25.<span style='font:7.0pt "Times New Roman"'>
+</span></span><b><span style='font-size:9.0pt;font-family:Consolas;color:#006699'>class</span></b><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;MyExperiment(SimpleExperiment):&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:#F8F8F8;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>26.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;</span><b><span
+style='font-size:9.0pt;font-family:Consolas;color:#006699'>def</span></b><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;setup(self):&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:white;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>27.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;&nbsp;&nbsp;self.set_log_file(</span><span
+style='font-size:9.0pt;font-family:Consolas;color:blue'>'register_webapp.log'</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>)&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:#F8F8F8;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>28.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:white;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>29.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;</span><b><span
+style='font-size:9.0pt;font-family:Consolas;color:#006699'>def</span></b><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;assign(self,&nbsp;params,&nbsp;userid):&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:#F8F8F8;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>30.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;&nbsp;&nbsp;params.font_size&nbsp;=&nbsp;UniformChoice(choices&nbsp;=[</span><span
+style='font-size:9.0pt;font-family:Consolas;color:blue'>'2'</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>,</span><span
+style='font-size:9.0pt;font-family:Consolas;color:blue'>'5'</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>],unit&nbsp;=&nbsp;userid)&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:white;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>31.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;&nbsp;&nbsp;params.font&nbsp;=&nbsp;UniformChoice(choices&nbsp;=[</span><span
+style='font-size:9.0pt;font-family:Consolas;color:blue'>'Times'</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>,</span><span
+style='font-size:9.0pt;font-family:Consolas;color:blue'>'Verdana'</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>],unit=userid)&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:#F8F8F8;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>32.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;&nbsp;&nbsp;params.button_text&nbsp;=&nbsp;UniformChoice(choices=[</span><span
+style='font-size:9.0pt;font-family:Consolas;color:blue'>'Sign&nbsp;Up'</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>,</span><span
+style='font-size:9.0pt;font-family:Consolas;color:blue'>'Join&nbsp;Us'</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>],unit=userid)&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:white;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>33.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:#F8F8F8;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>34.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:white;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>35.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:black'>@app.route(</span><span
+style='font-size:9.0pt;font-family:Consolas;color:blue'>'/'</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>)&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:#F8F8F8;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>36.<span style='font:7.0pt "Times New Roman"'>
+</span></span><b><span style='font-size:9.0pt;font-family:Consolas;color:#006699'>def</span></b><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;main():&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:white;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>37.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;&nbsp;&nbsp;</span><span
+style='font-size:9.0pt;font-family:Consolas;color:#008200'>#&nbsp;if&nbsp;no&nbsp;userid&nbsp;is&nbsp;defined&nbsp;make&nbsp;one&nbsp;up</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:#F8F8F8;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>38.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;&nbsp;&nbsp;</span><b><span
+style='font-size:9.0pt;font-family:Consolas;color:#006699'>if</span></b><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;</span><span
+style='font-size:9.0pt;font-family:Consolas;color:blue'>'userid'</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;</span><b><span
+style='font-size:9.0pt;font-family:Consolas;color:#006699'>not</span></b><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;</span><b><span
+style='font-size:9.0pt;font-family:Consolas;color:#006699'>in</span></b><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;session:&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:white;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>39.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;session[</span><span
+style='font-size:9.0pt;font-family:Consolas;color:blue'>'userid'</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>]&nbsp;=&nbsp;str(uuid4())&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:#F8F8F8;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>40.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:white;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>41.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;&nbsp;&nbsp;register_exp&nbsp;=&nbsp;MyExperiment(userid=session[</span><span
+style='font-size:9.0pt;font-family:Consolas;color:blue'>'userid'</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>])&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:#F8F8F8;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>42.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;&nbsp;&nbsp;size&nbsp;=&nbsp;register_exp.get(</span><span
+style='font-size:9.0pt;font-family:Consolas;color:blue'>'font_size'</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>)&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:white;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>43.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;&nbsp;&nbsp;font&nbsp;=&nbsp;register_exp.get(</span><span
+style='font-size:9.0pt;font-family:Consolas;color:blue'>'font'</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>)&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:#F8F8F8;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>44.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;&nbsp;&nbsp;button_text&nbsp;=&nbsp;register_exp.get(</span><span
+style='font-size:9.0pt;font-family:Consolas;color:blue'>'button_text'</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>)&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:white;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>45.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:#F8F8F8;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>46.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;&nbsp;&nbsp;</span><b><span
+style='font-size:9.0pt;font-family:Consolas;color:#006699'>return</span></b><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;render_template_string(</span><span
+style='font-size:9.0pt;font-family:Consolas;color:#008200'>&quot;&quot;&quot;</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:white;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>47.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:#008200'>&nbsp;&nbsp;&nbsp;&nbsp;&lt;html&gt;</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:#F8F8F8;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>48.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:#008200'>&nbsp;&lt;font&nbsp;size={{size}}&nbsp;face=&quot;{{font}}&quot;&gt;</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:white;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>49.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:#008200'>&lt;h1&gt;Join&nbsp;Us&nbsp;Now&lt;/h1&gt;</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:#F8F8F8;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>50.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:#008200'>&lt;form&nbsp;action&nbsp;=&nbsp;&quot;/register&quot;&nbsp;method=&quot;GET&quot;&gt;</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:white;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>51.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:#008200'>&nbsp;&nbsp;&lt;label&nbsp;for=&quot;email&quot;&gt;Email:&lt;/label&gt;</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:#F8F8F8;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>52.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:#008200'>&nbsp;&nbsp;&lt;input&nbsp;type=&quot;text&quot;&nbsp;id=&quot;fname&quot;&nbsp;name=&quot;fname&quot;&gt;&lt;br&gt;&lt;br&gt;</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:white;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>53.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:#008200'>&nbsp;&nbsp;&lt;label&nbsp;for=&quot;password&quot;&gt;Password:&lt;/label&gt;</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:#F8F8F8;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>54.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:#008200'>&nbsp;&nbsp;&lt;input&nbsp;type=&quot;text&quot;&nbsp;id=&quot;lname&quot;&nbsp;name=&quot;lname&quot;&gt;&lt;br&gt;&lt;br&gt;</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:white;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>55.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:#008200'>&nbsp;&nbsp;&lt;input&nbsp;type=&quot;submit&quot;&nbsp;value=&nbsp;'{{button_text}}'&gt;</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:#F8F8F8;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>56.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:#008200'>&lt;/form&gt;</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:white;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>57.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:#F8F8F8;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>58.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:#008200'>&lt;form&nbsp;action=&quot;/rate&quot;&nbsp;method=&quot;GET&quot;&gt;</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:white;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>59.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:#008200'>&lt;p&gt;How&nbsp;do&nbsp;you&nbsp;rate&nbsp;our&nbsp;register&nbsp;interface?&nbsp;please&nbsp;input&nbsp;1(worst)~5(best)&lt;/p&gt;</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:#F8F8F8;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>60.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:#008200'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;input&nbsp;type=&quot;text&quot;&nbsp;maxlength=&quot;1&quot;&nbsp;name&nbsp;=&nbsp;&quot;rate&quot;&gt;&lt;/input&gt;</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:white;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>61.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:#008200'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;input&nbsp;type=&quot;submit&quot;&nbsp;value&nbsp;=&nbsp;&quot;rate&quot;&gt;&lt;/input&gt;</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:#F8F8F8;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>62.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:#008200'>&lt;/form&gt;</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:white;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>63.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:#F8F8F8;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>64.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:#008200'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;br&gt;</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:white;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>65.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:#008200'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;&lt;a&nbsp;href=&quot;/&quot;&gt;Reload&nbsp;without&nbsp;resetting&nbsp;my&nbsp;session&nbsp;ID.&nbsp;&lt;/a&gt;&lt;/p&gt;</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:#F8F8F8;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>66.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:#008200'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;&lt;a&nbsp;href=&quot;/reset&quot;&gt;Reset&nbsp;my&nbsp;session&nbsp;ID&nbsp;so&nbsp;I&nbsp;get&nbsp;re-randomized&nbsp;into&nbsp;a&nbsp;new&nbsp;treatment.&lt;/a&gt;&lt;/p&gt;</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:white;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>67.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:#008200'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/body&gt;</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:#F8F8F8;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>68.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:#008200'>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/html&gt;</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:white;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>69.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:#008200'>&nbsp;&nbsp;&nbsp;&nbsp;&quot;&quot;&quot;</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>,&nbsp;size=size,&nbsp;font=font,&nbsp;button_text=button_text)&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:#F8F8F8;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>70.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:white;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>71.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:black'>@app.route(</span><span
+style='font-size:9.0pt;font-family:Consolas;color:blue'>'/reset'</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>)&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:#F8F8F8;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>72.<span style='font:7.0pt "Times New Roman"'>
+</span></span><b><span style='font-size:9.0pt;font-family:Consolas;color:#006699'>def</span></b><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;reset():&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:white;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>73.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;session.clear()&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:#F8F8F8;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>74.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;</span><b><span
+style='font-size:9.0pt;font-family:Consolas;color:#006699'>return</span></b><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;redirect(url_for(</span><span
+style='font-size:9.0pt;font-family:Consolas;color:blue'>'main'</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>))&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:white;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>75.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:#F8F8F8;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>76.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:black'>@app.route(</span><span
+style='font-size:9.0pt;font-family:Consolas;color:blue'>'/register'</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>)&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:white;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>77.<span style='font:7.0pt "Times New Roman"'>
+</span></span><b><span style='font-size:9.0pt;font-family:Consolas;color:#006699'>def</span></b><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;registered():&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:#F8F8F8;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>78.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;</span><b><span
+style='font-size:9.0pt;font-family:Consolas;color:#006699'>return</span></b><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;render_template_string(</span><span
+style='font-size:9.0pt;font-family:Consolas;color:#008200'>&quot;&quot;&quot;</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:white;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>79.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:#008200'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;html&gt;</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:#F8F8F8;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>80.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:#008200'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;head&gt;</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:white;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>81.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:#008200'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;h1&gt;Success!&nbsp;Welcome!&lt;/h1&gt;</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:#F8F8F8;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>82.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:#008200'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/head&gt;</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:white;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>83.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:#008200'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;body&gt;</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:#F8F8F8;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>84.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:#008200'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;title&gt;Success!&nbsp;Welcome!&lt;/title&gt;</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:white;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>85.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:#008200'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;&lt;a&nbsp;href=&quot;/&quot;&gt;Back&lt;/a&gt;&lt;/p&gt;</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:#F8F8F8;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>86.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:#008200'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/body&gt;</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:white;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>87.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:#008200'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/html&gt;</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:#F8F8F8;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>88.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:#008200'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;&quot;&quot;</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>)&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:white;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>89.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:#F8F8F8;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>90.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:white;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>91.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:#F8F8F8;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>92.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:black'>@app.route(</span><span
+style='font-size:9.0pt;font-family:Consolas;color:blue'>'/rate'</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>)&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:white;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>93.<span style='font:7.0pt "Times New Roman"'>
+</span></span><b><span style='font-size:9.0pt;font-family:Consolas;color:#006699'>def</span></b><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;rate():&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:#F8F8F8;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>94.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;rate_string&nbsp;=&nbsp;request.args.get(</span><span
+style='font-size:9.0pt;font-family:Consolas;color:blue'>'rate'</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>)&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:white;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>95.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;</span><b><span
+style='font-size:9.0pt;font-family:Consolas;color:#006699'>try</span></b><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>:&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:#F8F8F8;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>96.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;&nbsp;&nbsp;rate_amount&nbsp;=&nbsp;int(rate_string)&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:white;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>97.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:#F8F8F8;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>98.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;&nbsp;&nbsp;register_exp&nbsp;=&nbsp;MyExperiment(userid=session[</span><span
+style='font-size:9.0pt;font-family:Consolas;color:blue'>'userid'</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>])&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:white;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>99.<span style='font:7.0pt "Times New Roman"'>
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;&nbsp;&nbsp;register_exp.log_event(</span><span
+style='font-size:9.0pt;font-family:Consolas;color:blue'>'rate'</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>,&nbsp;{</span><span
+style='font-size:9.0pt;font-family:Consolas;color:blue'>'Rating'</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>:&nbsp;rate_amount})&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:#F8F8F8;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>100.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:white;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>101.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;&nbsp;&nbsp;</span><b><span
+style='font-size:9.0pt;font-family:Consolas;color:#006699'>return</span></b><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;render_template_string(</span><span
+style='font-size:9.0pt;font-family:Consolas;color:#008200'>&quot;&quot;&quot;</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:#F8F8F8;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>102.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:#008200'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;html&gt;</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:white;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>103.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:#008200'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;head&gt;</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:#F8F8F8;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>104.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:#008200'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;title&gt;Thank&nbsp;you!&lt;/title&gt;</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:white;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>105.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:#008200'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/head&gt;</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:#F8F8F8;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>106.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:#008200'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;body&gt;</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:white;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>107.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:#008200'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;head1&gt;Thank&nbsp;you!&lt;/head1&gt;</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:#F8F8F8;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>108.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:#008200'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;Your&nbsp;rating&nbsp;is&nbsp;{{rate_amount}}.&nbsp;&lt;/p&gt;</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:white;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>109.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:#008200'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;&lt;a&nbsp;href=&quot;/&quot;&gt;Back&lt;/a&gt;&lt;/p&gt;</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:#F8F8F8;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>110.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:#008200'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/body&gt;</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:white;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>111.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:#008200'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/html&gt;</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:#F8F8F8;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>112.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:#008200'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;&quot;&quot;</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>,&nbsp;rate_amount=rate_amount)&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:white;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>113.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;</span><b><span
+style='font-size:9.0pt;font-family:Consolas;color:#006699'>except</span></b><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;ValueError:&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:#F8F8F8;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>114.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;&nbsp;&nbsp;</span><b><span
+style='font-size:9.0pt;font-family:Consolas;color:#006699'>return</span></b><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;render_template_string(</span><span
+style='font-size:9.0pt;font-family:Consolas;color:#008200'>&quot;&quot;&quot;</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:white;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>115.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:#008200'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;html&gt;</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:#F8F8F8;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>116.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:#008200'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;head&gt;</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:white;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>117.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:#008200'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;title&gt;Thank&nbsp;you!&lt;/title&gt;</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:#F8F8F8;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>118.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:#008200'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/head&gt;</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:white;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>119.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:#008200'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;body&gt;</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:#F8F8F8;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>120.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:#008200'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;head1&gt;Thank&nbsp;you!&lt;/head1&gt;</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:white;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>121.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:#008200'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;But&nbsp;some&nbsp;error&nbsp;occured.&nbsp;You&nbsp;need&nbsp;to&nbsp;input&nbsp;a&nbsp;number.&lt;/p&gt;</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:#F8F8F8;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>122.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:#008200'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;p&gt;&lt;a&nbsp;href=&quot;/&quot;&gt;Back&lt;/a&gt;&lt;/p&gt;</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:white;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>123.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:#008200'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/body&gt;</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:#F8F8F8;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>124.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:#008200'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/html&gt;</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:white;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>125.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:#008200'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;&quot;&quot;</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>)&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:#F8F8F8;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>126.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:white;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>127.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:#F8F8F8;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>128.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><b><span style='font-size:9.0pt;font-family:Consolas;color:#006699'>if</span></b><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;__name__&nbsp;==&nbsp;</span><span
+style='font-size:9.0pt;font-family:Consolas;color:blue'>'__main__'</span><span
+style='font-size:9.0pt;font-family:Consolas;color:black'>:&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:white;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>129.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:black'>&nbsp;&nbsp;&nbsp;&nbsp;app.run()&nbsp;&nbsp;</span></p>
+
+<p class=MsoNormal style='margin-left:.25in;text-indent:-.25in;line-height:
+10.5pt;background:#F8F8F8;border:none;padding:0in'><span style='font-size:9.0pt;
+font-family:Consolas;color:#5C5C5C'>130.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span></span><span style='font-size:9.0pt;font-family:Consolas;color:black'>erid);&nbsp;&nbsp;</span></p>
+
+</div>
+
+<p class=TableFigure>&nbsp;</p>
+
+</div>
+
+</body>
+
+</html>
