@@ -1,0 +1,14 @@
+---
+title: "Paper List"
+output: html_document
+---
+
+<font size=6>Contents</font>
+
+***
+
+
+## [1. Electra : Pre-training Text Encoders as Distriminators Rather Than Generators]()
+
+## [2. DualTKB: A Dual Learning Bridge between Text and Knowledge Base]()
+

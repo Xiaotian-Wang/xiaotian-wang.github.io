@@ -5,13 +5,14 @@ output: html_document
 
 A Coke A Day, makes the doctors stay. --XW
 
-# 2020 Spring
 
 ## 1 [Statistical Learning](StatLearning/Contents.html)
 
 ## 2 [Bayesian Analysis](BayesAnalysis/Contents.html)
 
 ## 3 [Experiments Design](ExperimentalDesign/Contents.html)
+
+## [Let's Read Papers](ReadPapers/ReadPapers.html)
 
 &nbsp;
 
