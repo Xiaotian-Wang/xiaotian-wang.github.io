@@ -4,7 +4,7 @@ We only introduce how to import large data into graph database neo4j run on a do
 neo4j-admin import
 ````
 This method:
-* Very fast. For data $10^6 \sim 10^7$ nodes and relations, it usually takes only several seconds to import.
+* Very fast. For data 10^6 ~ 10^7 nodes and relations, it usually takes only several seconds to import.
 * Need the datafile to be some specific form.
 * Can only import the data to __*unused*__ database. Once the database is activated, data can not be imported by this method.  
 
