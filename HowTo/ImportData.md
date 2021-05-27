@@ -6,7 +6,7 @@ neo4j-admin import
 This method:
 * Very fast. For data $10^6 \sim 10^7$ nodes and relations, it usually takes only several seconds to import.
 * Need the datafile to be some specific form.
-* Can only import the data to __*unused*__ database. Once the database is activated, data can not be imported by this method.
+* Can only import the data to __*unused*__ database. Once the database is activated, data can not be imported by this method.  
 ### Step 1.  Setup the Neo4j database
 
 We first pull the image of neo4j database. 
