@@ -1,0 +1,13 @@
+---
+title: "Experimental Design"
+output: html_document
+---
+
+<font size=6>Contents</font>
+
+***
+
+# [1. An Experiment for Factors Influencing Mung Beans Sprouting Speed](SproutingSpeed.htm)
+
+# [2. Use PlanOut to Design an Online Factorial Experiment](PlanOut.htm)
+
