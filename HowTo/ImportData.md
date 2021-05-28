@@ -89,7 +89,7 @@ After logging in, we can see neo4j(default) as the default database. Now, switch
 ```
 system$ :CREATE DATABASE database1
 ```
-<<<<<<< HEAD
+
 and then you may see the database that you just created. However, this when you use this database, it will tell you this database is still not available. What you need to do is to restart the whole neo4j database.  
 A simple way to do this is to restart the neo4j container by the command
 ```
@@ -101,7 +101,5 @@ docker start neo4j
 ```
 
 Now, when you log in your neo4j by neo4j browser, you will see your data imported to the database1! Congratulations!
-=======
-Now, you can see your data imported in the database1! Congratulations!
->>>>>>> 64595f52a09fb44bca908a14f039828e2be90d8c
+
 
