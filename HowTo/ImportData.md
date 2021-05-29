@@ -1,10 +1,12 @@
+## How to Import Large Data into Neo4j Database
+
 ### Preface
 We only introduce how to import large data into graph database neo4j run on a docker container environment operated on Linux. Here, we use the official method provided by neo4j database:
 ````
 neo4j-admin import
 ````
 This method:
-* Very fast. For data 10^6 ~ 10^7 nodes and relations, it usually takes only several seconds to import.
+* Very fast. For data $10^6 \sim 10^7$ nodes and relations, it usually takes only several seconds to import.
 * Need the datafile to be some specific form.
 * Can only import the data to __*unused*__ database. Once the database is activated, data can not be imported by this method.  
 
@@ -54,6 +56,12 @@ carrieanne,"Trinity",tt0242653,ACTED_IN
 
 The *ID* should be the unique tag for each node in this graph.  
 For more details, please refer to [the official guide](https://neo4j.com/docs/operations-manual/current/tools/neo4j-admin-import/).
+Please note: a variable like __personId:ID__ means that it is bounded with some specific property. Although you name the variable __personId__, you will not see this tag __personId__ for your nodes in your neo4j database being imported.
+If you want to add such tag, you can name two variable with same value, for instance:
+```
+personId:ID, persionId
+```
+and the tag __personId__ will be add for these nodes.
 
 ### Step 3. Import the Data
 
